@@ -91,6 +91,7 @@ class UBRNLookup extends React.Component {
               message={this.state.errorMessage}
               close={this.closeModal}
             />
+            <h1>{JSON.stringify(this.props.data.results)}</h1>
             <br />
           </div>
         </div>

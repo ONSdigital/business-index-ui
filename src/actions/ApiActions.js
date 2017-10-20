@@ -73,7 +73,7 @@ export function ubrnSearch(id) {
     dispatch(sendingRequest(SENDING_UBRN_REQUEST, true));
     dispatch(setResults(SET_UBRN_RESULTS, { results: [] }));
     dispatch(setQuery(SET_UBRN_QUERY, id));
-    apiSearch.match(id, (success, data) => {
+    apiSearch.ubrn(id, (success, data) => {
       dispatch(sendingRequest(SENDING_UBRN_REQUEST, false));
       if (success) {
         dispatch(setResults(SET_UBRN_RESULTS, {
