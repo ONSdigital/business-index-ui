@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TitleAndDescription, BreadCrumb } from 'registers-react-library';
 import { connect } from 'react-redux';
-import { refSearch, setQuery } from '../actions/ApiActions';
+import { ubrnSearch, setQuery } from '../actions/ApiActions';
 import { SET_UBRN_QUERY } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
 import SearchRefForm from '../components/SearchRefForm';
@@ -44,7 +44,7 @@ class UBRNLookup extends React.Component {
     e.preventDefault();
     const query = this.props.data.query;
     if (query.length > 5 && query.length < 13) {
-      this.props.dispatch(refSearch(query.toUpperCase()));
+      this.props.dispatch(ubrnSearch(query.toUpperCase()));
     } else {
       // Possibly swap this action with a redux way of doing it?
       this.props.data.results = 0;
