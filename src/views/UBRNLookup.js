@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TitleAndDescription, BreadCrumb } from 'registers-react-library';
 import { connect } from 'react-redux';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 import { ubrnSearch, setQuery } from '../actions/ApiActions';
 import { SET_UBRN_QUERY } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
@@ -72,12 +74,12 @@ class UBRNLookup extends React.Component {
       <div>
         <BreadCrumb breadCrumbItems={items} />
         <TitleAndDescription
-          marginBottom="1"
-          title="UBRN Search"
-          description="Search the Business Index for a Unique Business Reference Number."
+          marginBottom='1'
+          title='UBRN Search'
+          description='Search the Business Index for a Unique Business Reference Number.'
         />
-        <div className="page-intro background--gallery">
-          <div className="wrapper">
+        <div className='page-intro background--gallery'>
+          <div className='wrapper'>
             <SearchRefForm
               ref={(ch) => (this.child = ch)}
               currentlySending={this.props.data.currentlySending}
@@ -91,7 +93,61 @@ class UBRNLookup extends React.Component {
               message={this.state.errorMessage}
               close={this.closeModal}
             />
-            <h1>{JSON.stringify(this.props.data.results)}</h1>
+            <br />
+            {this.props.data.results.length !== 0 &&
+              <ReactTable
+                data={[this.props.data.results]}
+                columns={[
+                  {
+                    Header: 'UBRN',
+                    id: 'id',
+                    accessor: d => d.id,
+                  },
+                  {
+                    Header: 'Business Name',
+                    id: 'businessName',
+                    accessor: d => d.businessName,
+                  },
+                  {
+                    Header: 'UPRN',
+                    id: 'uprn',
+                    accessor: d => d.uprn,
+                  },
+                  {
+                    Header: 'PostCode',
+                    id: 'postCode',
+                    accessor: d => d.postCode,
+                  },
+                  {
+                    Header: 'Industry Code',
+                    id: 'industryCode',
+                    accessor: d => d.industryCode,
+                  },
+                  {
+                    Header: 'Legal Status',
+                    id: 'legalStatus',
+                    accessor: d => d.legalStatus,
+                  },
+                  {
+                    Header: 'Trading Status',
+                    id: 'tradingStatus',
+                    accessor: d => d.tradingStatus,
+                  },
+                  {
+                    Header: 'Turnover',
+                    id: 'turnover',
+                    accessor: d => d.turnover,
+                  },
+                  {
+                    Header: 'Employment Bands',
+                    id: 'employmentBands',
+                    accessor: d => d.employmentBands,
+                  },
+                ]}
+                defaultPageSize={1}
+                className="-striped -highlight"
+              />
+            }
             <br />
           </div>
         </div>
