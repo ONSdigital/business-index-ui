@@ -1,0 +1,4 @@
+coverage/**/**/*.js
+test/**/**/*.js
+build/**/**/*.js
+server/node_modules/**/**/*.js

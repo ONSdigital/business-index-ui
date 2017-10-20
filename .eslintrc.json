@@ -1,0 +1,30 @@
+{
+    "extends": [
+      "airbnb",
+      "plugin:flowtype/recommended"
+    ],
+    "plugins": [
+        "react",
+        "import",
+        "flowtype",
+        "jsx-a11y"
+    ],
+    "rules": {
+        "no-use-before-define": "off",
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "react/self-closing-comp": ["error", {
+          "component": false,
+          "html": false
+        }],
+        "global-require": "off",
+        "class-methods-use-this": "off",
+        "func-names": "off",
+        "react/forbid-prop-types": "off",
+        "arrow-body-style": "off",
+        "no-return-assign": "off",
+        "arrow-parens": "off"
+    },
+    "env": {
+      "browser": true
+    }
+}
