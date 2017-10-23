@@ -96,6 +96,7 @@ class UBRNLookup extends React.Component {
             <br />
             {this.props.data.results.length !== 0 &&
               <ReactTable
+                showPagination={false}
                 data={[this.props.data.results]}
                 columns={[
                   {
