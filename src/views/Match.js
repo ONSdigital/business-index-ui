@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { matchSearch, setQuery } from '../actions/ApiActions';
 import { SET_MATCH_QUERY } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
-import SearchRefForm from '../components/SearchRefForm';
-import { validateRefSearch } from '../utils/validation';
+import MatchForm from '../components/MatchForm';
+import { validateUBRNSearch } from '../utils/validation';
 
 class Match extends React.Component {
   constructor(props) {
@@ -78,13 +78,13 @@ class Match extends React.Component {
         />
         <div className="page-intro background--gallery">
           <div className="wrapper">
-            <SearchRefForm
+            <MatchForm
               ref={(ch) => (this.child = ch)}
               currentlySending={this.props.data.currentlySending}
               onSubmit={this.onSubmit}
               onChange={this.changeQuery}
               value={this.props.data.query}
-              valid={validateRefSearch(this.props.data.query.length)}
+              valid={validateUBRNSearch(this.props.data.query.length)}
             />
             <ErrorModal
               show={this.state.show}
