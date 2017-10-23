@@ -14,6 +14,7 @@ class Match extends React.Component {
     this.state = {
       show: false,
       errorMessage: '',
+      formValues: {},
       results: [],
     };
     this.changeQuery = this.changeQuery.bind(this);
@@ -35,16 +36,15 @@ class Match extends React.Component {
       this.setState({ results: nextProps.data.results });
     }
   }
-  componentWillUpdate() {
-    if (!this.state.show) {
-      this.child.myInput.focus();
-    }
-  }
+  // componentWillUpdate() {
+  //   if (!this.state.show) {
+  //     this.child.myInput.focus();
+  //   }
+  // }
   onSubmit(e) {
     e.preventDefault();
-    const query = this.props.data.query;
-    if (query.length > 5 && query.length < 13) {
-      this.props.dispatch(matchSearch(query.toUpperCase()));
+    if (this.state.formValues !== {}) {
+      this.props.dispatch(matchSearch(this.state.formValues));
     } else {
       // Possibly swap this action with a redux way of doing it?
       this.props.data.results = 0;
@@ -59,9 +59,18 @@ class Match extends React.Component {
     this.setState({ show: false, errorMessage: '' });
   }
   changeQuery(evt) {
+    // if setting to empty, delete
+    const formValues = this.state.formValues;
+    if (evt.target.value === '') {
+      delete formValues[evt.target.id];
+    } else {
+      formValues[evt.target.id] = evt.target.value;
+    }
+    this.setState({ formValues });
+    //console.log(formValues);
     // Store the query in Redux store, so we can access it again if a user
     // presses 'back to search' on the Enterprise View page.
-    this.props.dispatch(setQuery(SET_MATCH_QUERY, evt.target.value));
+    // this.props.dispatch(setQuery(SET_MATCH_QUERY, evt.target.value));
   }
   render() {
     const items = [
