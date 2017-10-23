@@ -8,7 +8,10 @@ import { ubrnSearch, setQuery } from '../actions/ApiActions';
 import { SET_UBRN_QUERY } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
 import SearchRefForm from '../components/SearchRefForm';
-import { validateRefSearch } from '../utils/validation';
+import { validateUBRNSearch } from '../utils/validation';
+import config from '../config/validation';
+
+const { UBRN } = config;
 
 class UBRNLookup extends React.Component {
   constructor(props) {
@@ -45,15 +48,15 @@ class UBRNLookup extends React.Component {
   onSubmit(e) {
     e.preventDefault();
     const query = this.props.data.query;
-    if (query.length > 5 && query.length < 13) {
+    if (query.length <= UBRN.max && query.length >= UBRN.min) {
       this.props.dispatch(ubrnSearch(query.toUpperCase()));
     } else {
       // Possibly swap this action with a redux way of doing it?
-      this.props.data.results = 0;
+      //this.props.data.results = [];
       this.setState({
         results: [],
         show: true,
-        errorMessage: 'Please enter a valid VAT/PAYE/UBRN reference.',
+        errorMessage: 'Please enter a valid UBRN number.',
       });
     }
   }
@@ -74,19 +77,19 @@ class UBRNLookup extends React.Component {
       <div>
         <BreadCrumb breadCrumbItems={items} />
         <TitleAndDescription
-          marginBottom='1'
-          title='UBRN Search'
-          description='Search the Business Index for a Unique Business Reference Number.'
+          marginBottom="1"
+          title="UBRN Search"
+          description="Search the Business Index for a Unique Business Reference Number."
         />
-        <div className='page-intro background--gallery'>
-          <div className='wrapper'>
+        <div className="page-intro background--gallery">
+          <div className="wrapper">
             <SearchRefForm
               ref={(ch) => (this.child = ch)}
               currentlySending={this.props.data.currentlySending}
               onSubmit={this.onSubmit}
               onChange={this.changeQuery}
               value={this.props.data.query}
-              valid={validateRefSearch(this.props.data.query.length)}
+              valid={validateUBRNSearch(this.props.data.query.length)}
             />
             <ErrorModal
               show={this.state.show}
