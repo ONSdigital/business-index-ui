@@ -1,0 +1,5 @@
+---
+applications:
+- name: bi-ui
+  memory: 1024M
+  command: SERVE_HTML=true ENV=local node server/index.js

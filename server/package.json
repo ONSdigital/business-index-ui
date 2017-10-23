@@ -1,0 +1,29 @@
+{
+  "name": "bi-ui-node-server",
+  "version": "0.0.1",
+  "private": false,
+  "license": "MIT",
+  "description": "A node server for the Business Index user interface.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ONSdigital/bi-ui.git"
+  },
+  "dependencies": {
+    "base-64": "^0.1.0",
+    "compression": "^1.7.0",
+    "memory-cache": "^0.2.0",
+    "body-parser": "^1.17.2",
+    "express": "^4.14.0",
+    "jsonwebtoken": "^7.1.9",
+    "jwt-decode": "^2.2.0",
+    "morgan": "^1.7.0",
+    "winston": "^2.4.0"
+  },
+  "engines": {
+    "node": "5.10.1",
+    "npm": "3.8.3"
+  },
+  "scripts": {
+    "start": "SERVE_HTML=true ENV=local node index.js"
+  }
+}
