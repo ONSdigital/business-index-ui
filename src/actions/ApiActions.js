@@ -1,5 +1,6 @@
-import { ADD_MOST_RECENT_ERROR, REMOVE_LAST_ERROR, SET_UBRN_ERROR_MESSAGE, SENDING_UBRN_REQUEST, SET_UBRN_RESULTS, SET_UBRN_QUERY, SET_UBRN_HEADERS, SET_RANGE_HEADERS, SET_RANGE_ERROR_MESSAGE, SENDING_RANGE_REQUEST, SET_RANGE_RESULTS, SET_RANGE_QUERY, SET_PERIOD, SET_MATCH_RESULTS, SET_MATCH_HEADERS, SENDING_MATCH_REQUEST, SET_MATCH_QUERY, SET_MATCH_ERROR_MESSAGE } from '../constants/ApiConstants';
+import { SET_MATCH_FORMATTED_QUERY, ADD_MOST_RECENT_ERROR, REMOVE_LAST_ERROR, SET_UBRN_ERROR_MESSAGE, SENDING_UBRN_REQUEST, SET_UBRN_RESULTS, SET_UBRN_QUERY, SET_UBRN_HEADERS, SET_RANGE_HEADERS, SET_RANGE_ERROR_MESSAGE, SENDING_RANGE_REQUEST, SET_RANGE_RESULTS, SET_RANGE_QUERY, SET_PERIOD, SET_MATCH_RESULTS, SET_MATCH_HEADERS, SENDING_MATCH_REQUEST, SET_MATCH_QUERY, SET_MATCH_ERROR_MESSAGE } from '../constants/ApiConstants';
 import apiSearch from '../utils/apiSearch';
+import { formMatchQuery } from '../utils/formQuery';
 import periods from '../config/periods';
 
 /**
@@ -15,7 +16,9 @@ export function matchSearch(query) {
     dispatch(sendingRequest(SENDING_MATCH_REQUEST, true));
     dispatch(setResults(SET_MATCH_RESULTS, { results: [] }));
     dispatch(setQuery(SET_MATCH_QUERY, query));
-    apiSearch.match(query, (success, data) => {
+    const formattedQuery = formMatchQuery(query);
+    dispatch(setFormattedQuery(SET_MATCH_FORMATTED_QUERY, formattedQuery));
+    apiSearch.match(formattedQuery, (success, data) => {
       dispatch(sendingRequest(SENDING_MATCH_REQUEST, false));
       if (success) {
         dispatch(setResults(SET_MATCH_RESULTS, {
@@ -106,6 +109,10 @@ export function setPeriod(type, period) {
 }
 
 export function setQuery(type, query) {
+  return { type, query };
+}
+
+export function setFormattedQuery(type, query) {
   return { type, query };
 }
 

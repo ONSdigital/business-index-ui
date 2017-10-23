@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TitleAndDescription, BreadCrumb } from 'registers-react-library';
 import { connect } from 'react-redux';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 import { matchSearch, setQuery } from '../actions/ApiActions';
 import { SET_MATCH_QUERY } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
@@ -77,6 +79,7 @@ class Match extends React.Component {
       { name: 'Home', link: '/Home' },
       { name: 'Match', link: '' },
     ];
+    console.log(this.props.data.results);
     return (
       <div>
         <BreadCrumb breadCrumbItems={items} />
@@ -100,6 +103,62 @@ class Match extends React.Component {
               message={this.state.errorMessage}
               close={this.closeModal}
             />
+            <br />
+            {this.props.data.results.length !== 0 &&
+              <ReactTable
+                showPagination
+                data={this.props.data.results}
+                columns={[
+                  {
+                    Header: 'UBRN',
+                    id: 'id',
+                    accessor: d => d.id,
+                  },
+                  {
+                    Header: 'Business Name',
+                    id: 'businessName',
+                    accessor: d => d.businessName,
+                  },
+                  {
+                    Header: 'UPRN',
+                    id: 'uprn',
+                    accessor: d => d.uprn,
+                  },
+                  {
+                    Header: 'PostCode',
+                    id: 'postCode',
+                    accessor: d => d.postCode,
+                  },
+                  {
+                    Header: 'Industry Code',
+                    id: 'industryCode',
+                    accessor: d => d.industryCode,
+                  },
+                  {
+                    Header: 'Legal Status',
+                    id: 'legalStatus',
+                    accessor: d => d.legalStatus,
+                  },
+                  {
+                    Header: 'Trading Status',
+                    id: 'tradingStatus',
+                    accessor: d => d.tradingStatus,
+                  },
+                  {
+                    Header: 'Turnover',
+                    id: 'turnover',
+                    accessor: d => d.turnover,
+                  },
+                  {
+                    Header: 'Employment Bands',
+                    id: 'employmentBands',
+                    accessor: d => d.employmentBands,
+                  },
+                ]}
+                defaultPageSize={10}
+                className="-striped -highlight"
+              />
+            }
             <br />
           </div>
         </div>

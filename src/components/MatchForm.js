@@ -18,6 +18,13 @@ TextInput.defaultProps = {
   autoFocus: false,
 };
 
+TextInput.propTypes = {
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  autoFocus: PropTypes.bool.isRequired,
+};
+
 const SelectInput = ({ id, label, bands, onChange }) => {
   return (
     <div className="sdc-isolation field field--select">
@@ -25,26 +32,34 @@ const SelectInput = ({ id, label, bands, onChange }) => {
       </label>
       <select id={id} className="input input--select" name="select" onInput={onChange} style={{ padding: '0.3rem', fontSize: '1rem' }}>
         <option selected disabled>Select an option</option>
-        { Object.keys(bands).map(band => (<option value={band}>{band} [{bands[band]}]</option>))}
+        { Object.keys(bands).map(band => (<option key={band} value={band}>{band} [{bands[band]}]</option>))}
       </select>
     </div>
   );
 };
 
+SelectInput.propTypes = {
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  bands: PropTypes.object.isRequired,
+};
+
 class MatchForm extends React.Component {
+  // For the id of each input, we use the same name as the business-index-api input
   render() {
     return (
       <form>
-        <TextInput label="Business Name" id="businessName" autoFocus onChange={this.props.onChange} /><br />
-        <TextInput label="VAT Number" id="vatNumber" onChange={this.props.onChange} /><br />
-        <TextInput label="PAYE Number" id="payeNumber" onChange={this.props.onChange} /><br />
-        <TextInput label="Company Number" id="companyNumber" onChange={this.props.onChange} /><br />
-        <TextInput label="Industry Code" id="industryCode" onChange={this.props.onChange} /><br />
-        <SelectInput label="Employment Bands" id="employmentBands" onChange={this.props.onChange} bands={employmentBands} /><br />
-        <SelectInput label="Legal Status" id="legalStatus" onChange={this.props.onChange} bands={legalStatusBands} /><br />
-        <SelectInput label="Turnover" id="turnover" onChange={this.props.onChange} bands={turnoverBands} /><br />
-        <SelectInput label="Trading Status" id="tradingStatus" onChange={this.props.onChange} bands={tradingStatusBands} /><br />
-        <TextInput label="Post Code" id="postCode" onChange={this.props.onChange} /><br />
+        <TextInput label="Business Name" id="BusinessName" autoFocus onChange={this.props.onChange} /><br />
+        <TextInput label="VAT Number" id="VatRefs" onChange={this.props.onChange} /><br />
+        <TextInput label="PAYE Number" id="PayeRefs" onChange={this.props.onChange} /><br />
+        <TextInput label="Company Number" id="CompanyNo" onChange={this.props.onChange} /><br />
+        <TextInput label="Industry Code" id="IndustryCode" onChange={this.props.onChange} /><br />
+        <SelectInput label="Employment Bands" id="EmploymentBands" onChange={this.props.onChange} bands={employmentBands} /><br />
+        <SelectInput label="Legal Status" id="LegalStatus" onChange={this.props.onChange} bands={legalStatusBands} /><br />
+        <SelectInput label="Turnover" id="Turnover" onChange={this.props.onChange} bands={turnoverBands} /><br />
+        <SelectInput label="Trading Status" id="TradingStatus" onChange={this.props.onChange} bands={tradingStatusBands} /><br />
+        <TextInput label="Post Code" id="PostCode" onChange={this.props.onChange} /><br />
         <Button id="loginButton" size="wide" text="Search" onClick={!this.props.currentlySending ? this.props.onSubmit : null} ariaLabel="Login Button" type="submit" loading={this.props.currentlySending} />
       </form>
     );

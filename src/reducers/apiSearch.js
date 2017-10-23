@@ -12,7 +12,8 @@ const initialState = {
   match: {
     results: [],
     headers: [],
-    query: '',
+    query: {},
+    formattedQuery: '',
     currentlySending: false,
     errorMessage: '',
     timeStamp: '',
