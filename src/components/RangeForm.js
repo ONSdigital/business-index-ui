@@ -2,10 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'registers-react-library';
 import { employmentBands, legalStatusBands, turnoverBands, tradingStatusBands } from '../utils/convertBands';
-import TextInput from './TextInput';
-import SelectInput from './SelectInput';
 
-class MatchForm extends React.Component {
+class RangeForm extends React.Component {
   // For the id of each input, we use the same name as the business-index-api input
   render() {
     return (
@@ -37,15 +35,13 @@ class MatchForm extends React.Component {
   }
 }
 
-MatchForm.propTypes = {
+RangeForm.propTypes = {
   currentlySending: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
-  onClear: PropTypes.func.isRequired,
-  onChangeFilter: PropTypes.func.isRequired,
+  onFilterChange: PropTypes.func.isRequired,
   filter: PropTypes.bool.isRequired,
   showFilter: PropTypes.bool.isRequired,
-  initialValues: PropTypes.object.isRequired,
 };
 
-export default MatchForm;
+export default RangeForm;

@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import { rangeSearch, setQuery } from '../actions/ApiActions';
 import { SET_RANGE_QUERY } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
-import SearchRefForm from '../components/SearchRefForm';
-// import { validateRefSearch } from '../utils/validation';
+import RangeForm from '../components/RangeForm';
 import Select from 'react-select';
 import 'react-select/dist/react-select.min.css';
 
@@ -105,20 +104,24 @@ class RangeQuery extends React.Component {
         />
         <div className="page-intro background--gallery">
           <div className="wrapper">
-            <SearchRefForm
+            <RangeForm
               ref={(ch) => (this.child = ch)}
               currentlySending={this.props.data.currentlySending}
               onSubmit={this.onSubmit}
               onChange={this.changeQuery}
               value={this.props.data.query}
             />
+            <div className="sdc-isolation">
+              <label className="label" htmlFor="select">Employment Bands</label>
+            </div>
             <Select
+              style={{ width: '300px' }}
               closeOnSelect={false}
               disabled={false}
               multi
               onChange={this.handleSelectChange}
               options={options}
-              placeholder="Select your favourite(s)"
+              placeholder=""
               simpleValue
               value={this.state.value}
             />
