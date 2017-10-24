@@ -7,7 +7,7 @@ import 'react-table/react-table.css';
 import { ubrnSearch, setQuery } from '../actions/ApiActions';
 import { SET_UBRN_QUERY } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
-import SearchRefForm from '../components/SearchRefForm';
+import UBRNForm from '../components/UBRNForm';
 import { validateUBRNSearch } from '../utils/validation';
 import config from '../config/validation';
 
@@ -83,7 +83,7 @@ class UBRNLookup extends React.Component {
         />
         <div className="page-intro background--gallery">
           <div className="wrapper">
-            <SearchRefForm
+            <UBRNForm
               ref={(ch) => (this.child = ch)}
               currentlySending={this.props.data.currentlySending}
               onSubmit={this.onSubmit}

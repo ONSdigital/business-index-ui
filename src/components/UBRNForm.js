@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Loader from 'halogen/PulseLoader';
 
-class SearchRefForm extends React.Component {
+class UBRNForm extends React.Component {
   render() {
     const spinner = (<Loader color="#FFFFFF" size="10px" margin="0px" />);
     const icon = (<span className="icon icon-search--light"></span>);
@@ -19,7 +19,7 @@ class SearchRefForm extends React.Component {
   }
 }
 
-SearchRefForm.propTypes = {
+UBRNForm.propTypes = {
   currentlySending: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
@@ -27,4 +27,4 @@ SearchRefForm.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-export default SearchRefForm;
+export default UBRNForm;
