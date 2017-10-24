@@ -6,7 +6,7 @@ import { rangeSearch, setQuery } from '../actions/ApiActions';
 import { SET_RANGE_QUERY } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
 import SearchRefForm from '../components/SearchRefForm';
-import { validateRefSearch } from '../utils/validation';
+// import { validateRefSearch } from '../utils/validation';
 
 class RangeQuery extends React.Component {
   constructor(props) {
@@ -84,7 +84,6 @@ class RangeQuery extends React.Component {
               onSubmit={this.onSubmit}
               onChange={this.changeQuery}
               value={this.props.data.query}
-              valid={validateRefSearch(this.props.data.query.length)}
             />
             <ErrorModal
               show={this.state.show}

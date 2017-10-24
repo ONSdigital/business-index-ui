@@ -7,11 +7,11 @@ const { UBRN } = config;
 /**
  * @function validateUBRNSearch(length)
  *
- * @param  {int} length - The length of ref input
+ * @param  {string} query - The UBRN query
  *
  * @return {string} Validation state string for bootstrap
  */
-export function validateUBRNSearch(length: number) {
-  if (length >= UBRN.min && length <= UBRN.max) return 'success';
+export function validateUBRNSearch(query: string) {
+  if ((query.length >= UBRN.min && query.length <= UBRN.max) && !isNaN(query)) return 'success';
   return 'error';
 }

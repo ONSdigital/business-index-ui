@@ -89,7 +89,7 @@ class UBRNLookup extends React.Component {
               onSubmit={this.onSubmit}
               onChange={this.changeQuery}
               value={this.props.data.query}
-              valid={validateUBRNSearch(this.props.data.query.length)}
+              valid={validateUBRNSearch(this.props.data.query)}
             />
             <ErrorModal
               show={this.state.show}

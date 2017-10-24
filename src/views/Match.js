@@ -8,7 +8,6 @@ import { matchSearch, setQuery } from '../actions/ApiActions';
 import { SET_MATCH_QUERY } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
 import MatchForm from '../components/MatchForm';
-import { validateUBRNSearch } from '../utils/validation';
 
 class Match extends React.Component {
   constructor(props) {
@@ -106,7 +105,6 @@ class Match extends React.Component {
               onChange={this.changeQuery}
               onClear={this.clearQuery}
               value={this.props.data.query}
-              valid={validateUBRNSearch(this.props.data.query.length)}
             />
             <ErrorModal
               show={this.state.show}
@@ -129,11 +127,6 @@ class Match extends React.Component {
                     Header: 'Business Name',
                     id: 'businessName',
                     accessor: d => d.businessName,
-                  },
-                  {
-                    Header: 'UPRN',
-                    id: 'uprn',
-                    accessor: d => d.uprn,
                   },
                   {
                     Header: 'PostCode',
