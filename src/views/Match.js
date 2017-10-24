@@ -67,8 +67,8 @@ class Match extends React.Component {
     this.setState({ show: false, errorMessage: '' });
   }
   clearQuery() {
-    console.log('clearing query...')
     this.props.dispatch(setQuery(SET_MATCH_QUERY, {}));
+    this.setState({ formValues: {} });
   }
   changeQuery(evt) {
     // if setting to empty, delete
@@ -79,7 +79,6 @@ class Match extends React.Component {
       formValues[evt.target.id] = evt.target.value;
     }
     this.setState({ formValues });
-    //console.log(formValues);
     // Store the query in Redux store, so we can access it again if a user
     // presses 'back to search' on the Enterprise View page.
     this.props.dispatch(setQuery(SET_MATCH_QUERY, formValues));

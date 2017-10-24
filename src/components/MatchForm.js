@@ -25,13 +25,16 @@ TextInput.propTypes = {
   autoFocus: PropTypes.bool.isRequired,
 };
 
-const SelectInput = ({ id, label, bands, onChange }) => {
+const SelectInput = ({ id, label, bands, onChange, value }) => {
+  if (value === undefined) {
+    value = '';
+  }
   return (
     <div className="sdc-isolation field field--select">
       <label className="label" htmlFor="select">{label}
       </label>
-      <select id={id} className="input input--select" name="select" onInput={onChange} style={{ padding: '0.3rem', fontSize: '1rem' }}>
-        <option selected disabled>Select an option</option>
+      <select id={id} value={value} className="input input--select" name="select" onInput={onChange} style={{ padding: '0.3rem', fontSize: '1rem' }}>
+        <option value="">Select an option</option>
         { Object.keys(bands).map(band => (<option key={band} value={band}>{band} [{bands[band]}]</option>))}
       </select>
     </div>
@@ -43,6 +46,7 @@ SelectInput.propTypes = {
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   bands: PropTypes.object.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
 class MatchForm extends React.Component {
