@@ -1272,7 +1272,7 @@
   background-color: #4263c2;
 }
 .sdc-isolation .input--checkbox {
-  /* background: url("/assets//img/icons/icons--check.svg") no-repeat center center; */
+  background: url("../img/icons--check.svg") no-repeat center center;
   background-size: 0;
   transition: background-size 50ms ease-out;
 }

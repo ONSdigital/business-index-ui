@@ -7,6 +7,17 @@ import { SET_RANGE_QUERY } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
 import SearchRefForm from '../components/SearchRefForm';
 // import { validateRefSearch } from '../utils/validation';
+import Select from 'react-select';
+import 'react-select/dist/react-select.min.css';
+
+const FLAVOURS = [
+	{ label: 'Chocolate', value: 'chocolate' },
+	{ label: 'Vanilla', value: 'vanilla' },
+	{ label: 'Strawberry', value: 'strawberry' },
+	{ label: 'Caramel', value: 'caramel' },
+	{ label: 'Cookies and Cream', value: 'cookiescream' },
+	{ label: 'Peppermint', value: 'peppermint' },
+];
 
 class RangeQuery extends React.Component {
   constructor(props) {
@@ -15,10 +26,12 @@ class RangeQuery extends React.Component {
       show: false,
       errorMessage: '',
       results: [],
+      value: [],
     };
     this.changeQuery = this.changeQuery.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     // The Redux action for the api request will set the errorMessage in the
@@ -38,6 +51,12 @@ class RangeQuery extends React.Component {
   componentWillUpdate() {
     if (!this.state.show) {
       this.child.myInput.focus();
+    }
+  }
+  componentDidUpdate() {
+    const elements = document.getElementsByClassName('Select-value-icon');
+    for (let i = 0; i <= elements.length; i += 1) {
+      document.getElementsByClassName('Select-value-icon')[i].setAttribute('aria-hidden', 'false');
     }
   }
   onSubmit(e) {
@@ -63,11 +82,19 @@ class RangeQuery extends React.Component {
     // presses 'back to search' on the Enterprise View page.
     this.props.dispatch(setQuery(SET_RANGE_QUERY, evt.target.value));
   }
+  logChange(val) {
+    console.log("Selected: " + JSON.stringify(val));
+  }
+  handleSelectChange(value) {
+    console.log('You\'ve selected:', value);
+    this.setState({ value });
+  }
   render() {
     const items = [
       { name: 'Home', link: '/Home' },
       { name: 'Range Query', link: '' },
     ];
+    const options = FLAVOURS;
     return (
       <div>
         <BreadCrumb breadCrumbItems={items} />
@@ -85,6 +112,17 @@ class RangeQuery extends React.Component {
               onChange={this.changeQuery}
               value={this.props.data.query}
             />
+            <Select
+              closeOnSelect={false}
+              disabled={false}
+              multi
+              onChange={this.handleSelectChange}
+              options={options}
+              placeholder="Select your favourite(s)"
+              simpleValue
+              value={this.state.value}
+            />
+            <br /><br /><br /><br /><br /><br /><br /><br />
             <ErrorModal
               show={this.state.show}
               message={this.state.errorMessage}

@@ -67,6 +67,15 @@ class MatchForm extends React.Component {
         <Button id="loginButton" size="wide" text="Search" onClick={!this.props.currentlySending ? this.props.onSubmit : null} ariaLabel="Login Button" type="submit" loading={this.props.currentlySending} />
         &nbsp;
         <Button id="clearButton" size="wide" text="Clear" onClick={this.props.onClear} ariaLabel="Clear Button" type="reset" />
+        <br /><br />
+        {this.props.showFilter &&
+          <div className="sdc-isolation field field--checkbox field--multiplechoice">
+            <div className="field__item js-focusable-box">
+              <input onChange={this.props.onChangeFilter} value={this.props.filter} className="input input--checkbox js-focusable" type="checkbox" id="checkbox" />
+              <label className="label label--inline venus" htmlFor="checkbox">Filter Results</label>
+            </div>
+          </div>
+        }
       </form>
     );
   }
@@ -76,6 +85,9 @@ MatchForm.propTypes = {
   currentlySending: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
+  onFilterChange: PropTypes.func.isRequired,
+  filter: PropTypes.bool.isRequired,
+  showFilter: PropTypes.bool.isRequired,
   // valid: PropTypes.string.isRequired,
   // value: PropTypes.string.isRequired,
 };

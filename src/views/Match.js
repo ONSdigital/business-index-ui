@@ -17,12 +17,13 @@ class Match extends React.Component {
       errorMessage: '',
       formValues: {},
       results: [],
+      showFilter: false,
     };
     this.changeQuery = this.changeQuery.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.clearQuery = this.clearQuery.bind(this);
-    // this.getDefaultSize = this.getDefaultSize.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.changeFilter = this.changeFilter.bind(this);
   }
   componentDidMount() {
     // Reload the data from the store
@@ -69,6 +70,10 @@ class Match extends React.Component {
     this.props.dispatch(setQuery(SET_MATCH_QUERY, {}));
     this.setState({ formValues: {} });
   }
+  changeFilter() {
+    console.log('toggle');
+    this.setState({ showFilter: !this.state.showFilter });
+  }
   changeQuery(evt) {
     // if setting to empty, delete
     const formValues = this.state.formValues;
@@ -103,7 +108,10 @@ class Match extends React.Component {
               initialValues={this.props.data.query}
               onSubmit={this.onSubmit}
               onChange={this.changeQuery}
+              onChangeFilter={this.changeFilter}
+              filter={this.state.showFilter}
               onClear={this.clearQuery}
+              showFilter={this.props.data.results.length !== 0}
               value={this.props.data.query}
             />
             <ErrorModal
@@ -116,7 +124,7 @@ class Match extends React.Component {
               <ReactTable
                 showPagination
                 data={this.props.data.results}
-                filterable
+                filterable={this.state.showFilter}
                 columns={[
                   {
                     Header: 'UBRN',
