@@ -5,6 +5,24 @@ import { employmentBands, legalStatusBands, turnoverBands, tradingStatusBands } 
 import TextInput from './TextInput';
 import SelectInput from './SelectInput';
 
+const CheckBoxInput = ({ id, label, onChangeFilter, value }) => {
+  return (
+    <div className="sdc-isolation field field--checkbox field--multiplechoice">
+      <div className="field__item js-focusable-box">
+        <input onChange={onChangeFilter} value={this.props.filter} className="input input--checkbox js-focusable" type="checkbox" id={id} />
+        <label className="label label--inline venus" htmlFor="checkbox">{label}</label>
+      </div>
+    </div>
+  );
+};
+
+CheckBoxInput.propTypes = {
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  onChangeFilter: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+};
+
 class RangeForm extends React.Component {
   // For the id of each input, we use the same name as the business-index-api input
   render() {
@@ -18,12 +36,7 @@ class RangeForm extends React.Component {
         <Button id="clearButton" size="wide" text="Clear" onClick={this.props.onClear} ariaLabel="Clear Button" type="reset" />
         <br /><br />
         {this.props.showFilter &&
-          <div className="sdc-isolation field field--checkbox field--multiplechoice">
-            <div className="field__item js-focusable-box">
-              <input onChange={this.props.onChangeFilter} value={this.props.filter} className="input input--checkbox js-focusable" type="checkbox" id="checkbox" />
-              <label className="label label--inline venus" htmlFor="checkbox">Filter Results</label>
-            </div>
-          </div>
+          <CheckBoxInput value={this.props.initialValues.IndustryCode} label="Filter Results" id="FilterCheckbox" onChangeFilter={this.props.onChange} />
         }
       </form>
     );
