@@ -16,7 +16,6 @@ class Match extends React.Component {
       show: false,
       errorMessage: '',
       formValues: {},
-      results: [],
       showFilter: false,
     };
     this.changeQuery = this.changeQuery.bind(this);
@@ -42,6 +41,12 @@ class Match extends React.Component {
       });
     } else {
       this.setState({ results: nextProps.data.results });
+    }
+  }
+  componentDidUpdate() {
+    // Scroll to the bottom of the page
+    if (this.props.data.results.length > 0) {
+      document.getElementById('react-table').scrollIntoView(false);
     }
   }
   // componentWillUpdate() {
@@ -71,7 +76,6 @@ class Match extends React.Component {
     this.setState({ formValues: {} });
   }
   changeFilter() {
-    console.log('toggle');
     this.setState({ showFilter: !this.state.showFilter });
   }
   changeQuery(evt) {
@@ -121,55 +125,57 @@ class Match extends React.Component {
             />
             <br />
             {this.props.data.results.length !== 0 &&
-              <ReactTable
-                showPagination
-                data={this.props.data.results}
-                filterable={this.state.showFilter}
-                columns={[
-                  {
-                    Header: 'UBRN',
-                    id: 'id',
-                    accessor: d => d.id,
-                  },
-                  {
-                    Header: 'Business Name',
-                    id: 'businessName',
-                    accessor: d => d.businessName,
-                  },
-                  {
-                    Header: 'PostCode',
-                    id: 'postCode',
-                    accessor: d => d.postCode,
-                  },
-                  {
-                    Header: 'Industry Code',
-                    id: 'industryCode',
-                    accessor: d => d.industryCode,
-                  },
-                  {
-                    Header: 'Legal Status',
-                    id: 'legalStatus',
-                    accessor: d => d.legalStatus,
-                  },
-                  {
-                    Header: 'Trading Status',
-                    id: 'tradingStatus',
-                    accessor: d => d.tradingStatus,
-                  },
-                  {
-                    Header: 'Turnover',
-                    id: 'turnover',
-                    accessor: d => d.turnover,
-                  },
-                  {
-                    Header: 'Employment Bands',
-                    id: 'employmentBands',
-                    accessor: d => d.employmentBands,
-                  },
-                ]}
-                defaultPageSize={10}
-                className="-striped -highlight"
-              />
+              <div id="react-table">
+                <ReactTable
+                  showPagination
+                  data={this.props.data.results}
+                  filterable={this.state.showFilter}
+                  columns={[
+                    {
+                      Header: 'UBRN',
+                      id: 'id',
+                      accessor: d => d.id,
+                    },
+                    {
+                      Header: 'Business Name',
+                      id: 'businessName',
+                      accessor: d => d.businessName,
+                    },
+                    {
+                      Header: 'PostCode',
+                      id: 'postCode',
+                      accessor: d => d.postCode,
+                    },
+                    {
+                      Header: 'Industry Code',
+                      id: 'industryCode',
+                      accessor: d => d.industryCode,
+                    },
+                    {
+                      Header: 'Legal Status',
+                      id: 'legalStatus',
+                      accessor: d => d.legalStatus,
+                    },
+                    {
+                      Header: 'Trading Status',
+                      id: 'tradingStatus',
+                      accessor: d => d.tradingStatus,
+                    },
+                    {
+                      Header: 'Turnover',
+                      id: 'turnover',
+                      accessor: d => d.turnover,
+                    },
+                    {
+                      Header: 'Employment Bands',
+                      id: 'employmentBands',
+                      accessor: d => d.employmentBands,
+                    },
+                  ]}
+                  defaultPageSize={10}
+                  className="-striped -highlight"
+                />
+              </div>
             }
             <br />
           </div>

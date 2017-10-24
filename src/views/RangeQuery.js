@@ -24,13 +24,19 @@ class RangeQuery extends React.Component {
     this.state = {
       show: false,
       errorMessage: '',
-      results: [],
-      value: [],
+      formValues: {},
+      values: [],
+      showFilter: false,
     };
     this.changeQuery = this.changeQuery.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.clearQuery = this.clearQuery.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
+  }
+  componentDidMount() {
+    // Reload the data from the store
+    this.setState({ formValues: this.props.data.query });
   }
   componentWillReceiveProps(nextProps) {
     // The Redux action for the api request will set the errorMessage in the
@@ -47,11 +53,11 @@ class RangeQuery extends React.Component {
       this.setState({ results: nextProps.data.results });
     }
   }
-  componentWillUpdate() {
-    if (!this.state.show) {
-      this.child.myInput.focus();
-    }
-  }
+  // componentWillUpdate() {
+  //   if (!this.state.show) {
+  //     this.child.myInput.focus();
+  //   }
+  // }
   componentDidUpdate() {
     const elements = document.getElementsByClassName('Select-value-icon');
     for (let i = 0; i <= elements.length; i += 1) {
@@ -72,6 +78,13 @@ class RangeQuery extends React.Component {
         errorMessage: 'Please enter a valid VAT/PAYE/UBRN reference.',
       });
     }
+  }
+  clearQuery() {
+    this.props.dispatch(setQuery(SET_RANGE_QUERY, {}));
+    this.setState({ formValues: {} });
+  }
+  changeFilter() {
+    this.setState({ showFilter: !this.state.showFilter });
   }
   closeModal() {
     this.setState({ show: false, errorMessage: '' });
@@ -107,8 +120,13 @@ class RangeQuery extends React.Component {
             <RangeForm
               ref={(ch) => (this.child = ch)}
               currentlySending={this.props.data.currentlySending}
+              initialValues={this.props.data.query}
               onSubmit={this.onSubmit}
               onChange={this.changeQuery}
+              onChangeFilter={this.changeFilter}
+              filter={this.state.showFilter}
+              onClear={this.clearQuery}
+              showFilter={this.props.data.results.length !== 0}
               value={this.props.data.query}
             />
             <div className="sdc-isolation">
