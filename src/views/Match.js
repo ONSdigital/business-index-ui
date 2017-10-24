@@ -17,6 +17,7 @@ class Match extends React.Component {
       errorMessage: '',
       formValues: {},
       showFilter: false,
+      scroll: false,
     };
     this.changeQuery = this.changeQuery.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -42,11 +43,17 @@ class Match extends React.Component {
     } else {
       this.setState({ results: nextProps.data.results });
     }
+    
+    // Set the scroll flag if the user has completed a search
+    if (JSON.stringify(nextProps.data.results) !== JSON.stringify(this.props.data.results)) {
+      this.setState({ scroll: true });
+    }
   }
   componentDidUpdate() {
     // Scroll to the bottom of the page
-    if (this.props.data.results.length > 0) {
+    if (this.state.scroll && this.props.data.results.length > 0) {
       document.getElementById('react-table').scrollIntoView(false);
+      this.setState({ scroll: false });
     }
   }
   // componentWillUpdate() {
