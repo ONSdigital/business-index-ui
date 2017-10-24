@@ -9,9 +9,9 @@ class SearchRefForm extends React.Component {
     const buttonContent = (this.props.currentlySending) ? spinner : icon;
     return (
       <form className="col-wrap search__form" action="/search" method="get">
-        <label className="search__label col col--md-5 col--lg-6" htmlFor="nav-search">Search</label>
-        <input ref={ip => (this.myInput = ip)} placeholder="Enter ref to search..." autoFocus onChange={this.props.onChange} type="search" autoComplete="on" className="search__input col col--md-21 col--lg-32" id="nav-search" name="q" value={this.props.value} />
-        <button onClick={!this.props.currentlySending ? this.props.onSubmit : null} aria-label="Search reference button" type="submit" className={`search__button col--md-3 col--lg-3 ${this.props.valid}`} id="nav-search-submit">
+        <label className="search__label col col--md-5 col--lg-6" htmlFor="nav-search">UBRN</label>
+        <input ref={ip => (this.myInput = ip)} placeholder="Enter UBRN to search..." autoFocus onChange={this.props.onChange} type="search" autoComplete="on" className="search__input col col--md-21 col--lg-32" id="nav-search" name="q" value={this.props.value} />
+        <button onClick={!this.props.currentlySending ? this.props.onSubmit : null} aria-label="Search UBRN button" type="submit" className={`search__button col--md-3 col--lg-3 ${this.props.valid}`} id="nav-search-submit">
           {buttonContent}
         </button>
       </form>

@@ -48,7 +48,7 @@ class UBRNLookup extends React.Component {
   onSubmit(e) {
     e.preventDefault();
     const query = this.props.data.query;
-    if (query.length <= UBRN.max && query.length >= UBRN.min) {
+    if (validateUBRNSearch(this.props.data.query) === 'success') {
       this.props.dispatch(ubrnSearch(query.toUpperCase()));
     } else {
       // Possibly swap this action with a redux way of doing it?
@@ -78,7 +78,7 @@ class UBRNLookup extends React.Component {
         <BreadCrumb breadCrumbItems={items} />
         <TitleAndDescription
           marginBottom="1"
-          title="UBRN Search"
+          title="UBRN Lookup"
           description="Search the Business Index for a Unique Business Reference Number."
         />
         <div className="page-intro background--gallery">
