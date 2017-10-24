@@ -21,7 +21,13 @@ class Match extends React.Component {
     };
     this.changeQuery = this.changeQuery.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.clearQuery = this.clearQuery.bind(this);
+    // this.getDefaultSize = this.getDefaultSize.bind(this);
     this.closeModal = this.closeModal.bind(this);
+  }
+  componentDidMount() {
+    // Reload the data from the store
+    this.setState({ formValues: this.props.data.query });
   }
   componentWillReceiveProps(nextProps) {
     // The Redux action for the api request will set the errorMessage in the
@@ -60,6 +66,10 @@ class Match extends React.Component {
   closeModal() {
     this.setState({ show: false, errorMessage: '' });
   }
+  clearQuery() {
+    console.log('clearing query...')
+    this.props.dispatch(setQuery(SET_MATCH_QUERY, {}));
+  }
   changeQuery(evt) {
     // if setting to empty, delete
     const formValues = this.state.formValues;
@@ -72,14 +82,13 @@ class Match extends React.Component {
     //console.log(formValues);
     // Store the query in Redux store, so we can access it again if a user
     // presses 'back to search' on the Enterprise View page.
-    // this.props.dispatch(setQuery(SET_MATCH_QUERY, evt.target.value));
+    this.props.dispatch(setQuery(SET_MATCH_QUERY, formValues));
   }
   render() {
     const items = [
       { name: 'Home', link: '/Home' },
       { name: 'Match', link: '' },
     ];
-    console.log(this.props.data.results);
     return (
       <div>
         <BreadCrumb breadCrumbItems={items} />
@@ -93,8 +102,10 @@ class Match extends React.Component {
             <MatchForm
               ref={(ch) => (this.child = ch)}
               currentlySending={this.props.data.currentlySending}
+              initialValues={this.props.data.query}
               onSubmit={this.onSubmit}
               onChange={this.changeQuery}
+              onClear={this.clearQuery}
               value={this.props.data.query}
               valid={validateUBRNSearch(this.props.data.query.length)}
             />
@@ -108,6 +119,7 @@ class Match extends React.Component {
               <ReactTable
                 showPagination
                 data={this.props.data.results}
+                filterable
                 columns={[
                   {
                     Header: 'UBRN',

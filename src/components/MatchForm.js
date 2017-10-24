@@ -4,12 +4,12 @@ import { Button } from 'registers-react-library';
 import { employmentBands, legalStatusBands, turnoverBands, tradingStatusBands } from '../utils/convertBands';
 import '../resources/css/sdc-isolation.css';
 
-const TextInput = ({ id, label, onChange, autoFocus }) => {
+const TextInput = ({ id, label, onChange, autoFocus, value }) => {
   return (
     <div className="sdc-isolation field">
       <label className="label" htmlFor="text-input">{label}
       </label>
-      <input autoFocus={autoFocus} className="input input--text" onChange={onChange} type="text" id={id} />
+      <input value={value} autoFocus={autoFocus} className="input input--text" onChange={onChange} type="text" id={id} />
     </div>
   );
 };
@@ -50,17 +50,19 @@ class MatchForm extends React.Component {
   render() {
     return (
       <form>
-        <TextInput label="Business Name" id="BusinessName" autoFocus onChange={this.props.onChange} /><br />
-        <TextInput label="VAT Number" id="VatRefs" onChange={this.props.onChange} /><br />
-        <TextInput label="PAYE Number" id="PayeRefs" onChange={this.props.onChange} /><br />
-        <TextInput label="Company Number" id="CompanyNo" onChange={this.props.onChange} /><br />
-        <TextInput label="Industry Code" id="IndustryCode" onChange={this.props.onChange} /><br />
-        <SelectInput label="Employment Bands" id="EmploymentBands" onChange={this.props.onChange} bands={employmentBands} /><br />
-        <SelectInput label="Legal Status" id="LegalStatus" onChange={this.props.onChange} bands={legalStatusBands} /><br />
-        <SelectInput label="Turnover" id="Turnover" onChange={this.props.onChange} bands={turnoverBands} /><br />
-        <SelectInput label="Trading Status" id="TradingStatus" onChange={this.props.onChange} bands={tradingStatusBands} /><br />
+        <TextInput value={this.props.initialValues.BusinessName} label="Business Name" id="BusinessName" autoFocus onChange={this.props.onChange} /><br />
+        <TextInput value={this.props.initialValues.VatRefs} label="VAT Number" id="VatRefs" onChange={this.props.onChange} /><br />
+        <TextInput value={this.props.initialValues.PayeRefs} label="PAYE Number" id="PayeRefs" onChange={this.props.onChange} /><br />
+        <TextInput value={this.props.initialValues.CompanyNo} label="Company Number" id="CompanyNo" onChange={this.props.onChange} /><br />
+        <TextInput value={this.props.initialValues.IndustryCode} label="Industry Code" id="IndustryCode" onChange={this.props.onChange} /><br />
+        <SelectInput value={this.props.initialValues.EmploymentBands} label="Employment Bands" id="EmploymentBands" onChange={this.props.onChange} bands={employmentBands} /><br />
+        <SelectInput value={this.props.initialValues.LegalStatus} label="Legal Status" id="LegalStatus" onChange={this.props.onChange} bands={legalStatusBands} /><br />
+        <SelectInput value={this.props.initialValues.Turnover} label="Turnover" id="Turnover" onChange={this.props.onChange} bands={turnoverBands} /><br />
+        <SelectInput value={this.props.initialValues.TradingStatus} label="Trading Status" id="TradingStatus" onChange={this.props.onChange} bands={tradingStatusBands} /><br />
         <TextInput label="Post Code" id="PostCode" onChange={this.props.onChange} /><br />
         <Button id="loginButton" size="wide" text="Search" onClick={!this.props.currentlySending ? this.props.onSubmit : null} ariaLabel="Login Button" type="submit" loading={this.props.currentlySending} />
+        &nbsp;
+        <Button id="clearButton" size="wide" text="Clear" onClick={this.props.onClear} ariaLabel="Clear Button" type="reset" />
       </form>
     );
   }
@@ -70,8 +72,8 @@ MatchForm.propTypes = {
   currentlySending: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
-  valid: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  // valid: PropTypes.string.isRequired,
+  // value: PropTypes.string.isRequired,
 };
 
 export default MatchForm;
