@@ -97,7 +97,11 @@ class Match extends React.Component {
     if (evt.target.value === '') {
       delete formValues[evt.target.id];
     } else {
-      formValues[evt.target.id] = evt.target.value;
+      if (evt.target.id === 'BusinessName') {
+        formValues[evt.target.id] = evt.target.value.toUpperCase();
+      } else {
+        formValues[evt.target.id] = evt.target.value;
+      }
     }
     this.setState({ formValues });
     // Store the query in Redux store, so we can access it again if a user
