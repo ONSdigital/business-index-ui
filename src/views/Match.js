@@ -81,7 +81,7 @@ class Match extends React.Component {
   clearQuery() {
     this.props.dispatch(setQuery(SET_MATCH_QUERY, {}));
     this.props.dispatch(setResults(SET_MATCH_RESULTS, { results: [] }));
-    this.setState({ formValues: {} });
+    this.setState({ formValues: {}, showFilter: false });
     // Scroll to the top of the page and focus on the first input
     document.getElementsByClassName('wrapper')[0].scrollIntoView(false);
     this.child.childTextInput.myInput.focus();
@@ -117,7 +117,6 @@ class Match extends React.Component {
         />
         <div className="page-intro background--gallery">
           <div className="wrapper">
-            {/* <input ref={ip => (this.myInput = ip)} /> */}
             <MatchForm
               ref={(ch) => (this.child = ch)}
               currentlySending={this.props.data.currentlySending}

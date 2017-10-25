@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TitleAndDescription, BreadCrumb } from 'registers-react-library';
 import { connect } from 'react-redux';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 import { rangeSearch, setQuery, setResults } from '../actions/ApiActions';
 import { SET_RANGE_QUERY, SET_RANGE_RESULTS } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
@@ -22,9 +24,6 @@ class RangeQuery extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.clearQuery = this.clearQuery.bind(this);
     this.closeModal = this.closeModal.bind(this);
-  }
-  onSubmit() {
-    console.log('submitting...');
   }
   componentDidMount() {
     // Reload the data from the store
@@ -68,9 +67,9 @@ class RangeQuery extends React.Component {
   }
   onSubmit(e) {
     e.preventDefault();
-    const query = this.props.data.query;
-    if (query.length > 5 && query.length < 13) {
-      this.props.dispatch(rangeSearch(query.toUpperCase()));
+    const query = this.state.formValues;
+    if (query !== {}) {
+      this.props.dispatch(rangeSearch(query));
     } else {
       // Possibly swap this action with a redux way of doing it?
       this.props.data.results = 0;
@@ -82,7 +81,6 @@ class RangeQuery extends React.Component {
     }
   }
   clearQuery() {
-    console.log('clearing range')
     this.props.dispatch(setQuery(SET_RANGE_QUERY, {}));
     this.props.dispatch(setResults(SET_RANGE_RESULTS, { results: [] }));
     this.setState({ formValues: {} });
@@ -140,6 +138,60 @@ class RangeQuery extends React.Component {
               message={this.state.errorMessage}
               close={this.closeModal}
             />
+            <br />
+            {this.props.data.results.length !== 0 &&
+              <div id="react-table">
+                <ReactTable
+                  showPagination
+                  data={this.props.data.results}
+                  filterable={this.state.showFilter}
+                  columns={[
+                    {
+                      Header: 'UBRN',
+                      id: 'id',
+                      accessor: d => d.id,
+                    },
+                    {
+                      Header: 'Business Name',
+                      id: 'businessName',
+                      accessor: d => d.businessName,
+                    },
+                    {
+                      Header: 'PostCode',
+                      id: 'postCode',
+                      accessor: d => d.postCode,
+                    },
+                    {
+                      Header: 'Industry Code',
+                      id: 'industryCode',
+                      accessor: d => d.industryCode,
+                    },
+                    {
+                      Header: 'Legal Status',
+                      id: 'legalStatus',
+                      accessor: d => d.legalStatus,
+                    },
+                    {
+                      Header: 'Trading Status',
+                      id: 'tradingStatus',
+                      accessor: d => d.tradingStatus,
+                    },
+                    {
+                      Header: 'Turnover',
+                      id: 'turnover',
+                      accessor: d => d.turnover,
+                    },
+                    {
+                      Header: 'Employment Bands',
+                      id: 'employmentBands',
+                      accessor: d => d.employmentBands,
+                    },
+                  ]}
+                  defaultPageSize={10}
+                  className="-striped -highlight"
+                />
+              </div>
+            }
             <br />
           </div>
         </div>
