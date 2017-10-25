@@ -27,11 +27,10 @@ class SelectMultipleInput extends React.Component {
     }
   }
   formValues(value) {
-    console.log('value: ', value);
     if (value === undefined) {
       return [];
     }
-    return value.split(',');
+    return value.join(',');
   }
   formProperJson(json) {
     const arr = Object.keys(json).map((key) => {
@@ -39,13 +38,13 @@ class SelectMultipleInput extends React.Component {
     });
     return arr;
   }
-  handleSelectChange(value) {
-    this.setState({ value });
+  handleSelectChange(values) {
+    this.setState({ values });
     // Make our lives easier by mimicking the exact json of an input event
     const evt = {
       target: {
         id: this.props.id,
-        value: value.split(','),
+        value: values.split(','),
       },
     };
     this.props.onChange(evt);
@@ -65,7 +64,7 @@ class SelectMultipleInput extends React.Component {
           options={this.state.inputsJson}
           placeholder=""
           simpleValue
-          value={this.state.value}
+          value={this.state.values}
         />
       </div>
     );
@@ -77,6 +76,7 @@ SelectMultipleInput.propTypes = {
   label: PropTypes.string.isRequired,
   bands: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
+  value: PropTypes.array.isRequired,
 };
 
 class RangeForm extends React.Component {
@@ -87,9 +87,9 @@ class RangeForm extends React.Component {
         <TextInput value={this.props.initialValues.IndustryCode} label="Industry Code" id="IndustryCode" onChange={this.props.onChange} /><br />
         <TextInput value={this.props.initialValues.PostCode} label="Post Code" id="PostCode" onChange={this.props.onChange} /><br />
         <SelectMultipleInput value={this.props.initialValues.EmploymentBands} id="EmploymentBands" onChange={this.props.onChange} label="Employment Bands" bands={employmentBands} /><br />
-        <SelectMultipleInput id="LegalStatus" onChange={this.props.onChange} label="Legal Status Bands" bands={legalStatusBands} /><br />
-        <SelectMultipleInput id="Turnover" onChange={this.props.onChange} label="Turnover Bands" bands={turnoverBands} /><br />
-        <SelectMultipleInput id="TradingStatus" onChange={this.props.onChange} label="Trading Status Bands" bands={tradingStatusBands} /><br />
+        <SelectMultipleInput value={this.props.initialValues.LegalStatus} id="LegalStatus" onChange={this.props.onChange} label="Legal Status Bands" bands={legalStatusBands} /><br />
+        <SelectMultipleInput value={this.props.initialValues.Turnover} id="Turnover" onChange={this.props.onChange} label="Turnover Bands" bands={turnoverBands} /><br />
+        <SelectMultipleInput value={this.props.initialValues.TradingStatus} id="TradingStatus" onChange={this.props.onChange} label="Trading Status Bands" bands={tradingStatusBands} /><br />
         <br />
         <Button id="loginButton" size="wide" text="Search" onClick={!this.props.currentlySending ? this.props.onSubmit : null} ariaLabel="Login Button" type="submit" loading={this.props.currentlySending} />
         &nbsp;
