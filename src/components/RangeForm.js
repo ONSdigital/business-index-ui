@@ -26,7 +26,7 @@ class RangeForm extends React.Component {
         <Button id="clearButton" size="wide" text="Clear" onClick={this.props.onClear} ariaLabel="Clear Button" type="reset" />
         <br /><br />
         {this.props.showFilter &&
-          <CheckBoxInput value={this.props.initialValues.IndustryCode} label="Filter Results" id="FilterCheckbox" onChangeFilter={this.props.onChange} />
+          <CheckBoxInput value={this.props.filter} label="Filter Results" id="FilterCheckbox" onChangeFilter={this.props.onChangeFilter} />
         }
       </form>
     );
