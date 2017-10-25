@@ -7,13 +7,14 @@ import { employmentBands, legalStatusBands, turnoverBands, tradingStatusBands } 
 import TextInput from './TextInput';
 import CheckBoxInput from './CheckBoxInput';
 import SelectMultipleInput from './SelectMultipleInput';
+import TextInputInline from './TextInputInline';
 
 class RangeForm extends React.Component {
   // For the id of each input, we use the same name as the business-index-api input
   render() {
     return (
       <form>
-        <TextInput autoFocus ref={ip => (this.childTextInput = ip)} value={this.props.initialValues.IndustryCode} label="Industry Code" id="IndustryCode" onChange={this.props.onChange} /><br />
+        <TextInputInline autoFocus ref={ip => (this.childTextInput = ip)} placeholderMin="Industry Code Min" placeholderMax="Industry Code Max" value={this.props.initialValues.IndustryCode} label="Industry Code" id="IndustryCode" onChange={this.props.onChange} /><br />
         <TextInput value={this.props.initialValues.PostCode} label="Post Code" id="PostCode" onChange={this.props.onChange} /><br />
         <SelectMultipleInput value={this.props.initialValues.EmploymentBands} id="EmploymentBands" onChange={this.props.onChange} label="Employment Bands" bands={employmentBands} /><br />
         <SelectMultipleInput value={this.props.initialValues.LegalStatus} id="LegalStatus" onChange={this.props.onChange} label="Legal Status Bands" bands={legalStatusBands} /><br />
