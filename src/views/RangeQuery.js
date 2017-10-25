@@ -24,6 +24,7 @@ class RangeQuery extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.clearQuery = this.clearQuery.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.changeFilter = this.changeFilter.bind(this);
   }
   componentDidMount() {
     // Reload the data from the store
@@ -83,7 +84,7 @@ class RangeQuery extends React.Component {
   clearQuery() {
     this.props.dispatch(setQuery(SET_RANGE_QUERY, {}));
     this.props.dispatch(setResults(SET_RANGE_RESULTS, { results: [] }));
-    this.setState({ formValues: {} });
+    this.setState({ formValues: {}, showFilter: false });
     // Scroll to the top of the page and focus on the first input
     document.getElementsByClassName('wrapper')[0].scrollIntoView(false);
     this.child.childTextInput.myInput.focus();
