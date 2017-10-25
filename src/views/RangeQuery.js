@@ -70,12 +70,14 @@ class RangeQuery extends React.Component {
     e.preventDefault();
     const query = this.state.formValues;
     if (query !== {}) {
+      this.setState({ showFilter: false });
       this.props.dispatch(rangeSearch(query));
     } else {
       // Possibly swap this action with a redux way of doing it?
       this.props.data.results = 0;
       this.setState({
         results: [],
+        showFilter: false,
         show: true,
         errorMessage: 'Please enter a valid VAT/PAYE/UBRN reference.',
       });
