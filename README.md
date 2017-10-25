@@ -8,7 +8,7 @@ The following tutorials were used to help with the deployment using Node.js, the
 ), [Login](https://github.com/mxstbr/login-flow) and [Bootstrap Isolation](https://formden.com/blog/isolate-bootstrap).
 
 ### Table of Contents
-**[1. Environment Setup](#environment-setup)**<br>
+**[1. Environment Setup](#environment-setup-for-the-ui)**<br>
 **[2. Running the UI](#running-the-ui)**<br>
 **[3. Running the API](#running-the-api)**<br>
 **[4. Testing](#testing)**<br>
@@ -16,7 +16,7 @@ The following tutorials were used to help with the deployment using Node.js, the
 **[6. Logging into the UI](#logging-into-the-ui)**<br>
 **[7. Troubleshooting](#troubleshooting)**<br>
 **[8. Contributing](#contributing)**<br>
-**[9. License](#License)**<br>
+**[9. License](#license)**<br>
 
 ## Environment Setup for the UI
 
