@@ -22,7 +22,8 @@
         "react/forbid-prop-types": "off",
         "arrow-body-style": "off",
         "no-return-assign": "off",
-        "arrow-parens": "off"
+        "arrow-parens": "off",
+        "react/no-did-mount-set-state": "off"
     },
     "env": {
       "browser": true

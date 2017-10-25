@@ -1,15 +1,17 @@
 // @flow
 
+import config from '../config/validation';
+
+const { UBRN } = config;
+
 /**
- * @function validateRefSearch(length)
+ * @function validateUBRNSearch(length)
  *
- * @param  {int} length - The length of ref input
+ * @param  {string} query - The UBRN query
  *
  * @return {string} Validation state string for bootstrap
  */
-export function validateRefSearch(length: number) {
-  if (length > 12) return 'error';
-  else if (length > 5) return 'success';
-  else if (length > 0) return 'error';
+export function validateUBRNSearch(query: string) {
+  if ((query.length >= UBRN.min && query.length <= UBRN.max) && !isNaN(query)) return 'success';
   return 'error';
 }

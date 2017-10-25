@@ -2,7 +2,7 @@
 
 import config from '../config/api-urls';
 
-const { API_URL, API_VERSION } = config;
+const { API_URL, API_VERSION, SEARCH_ENDPOINT } = config;
 
 /**
  * API lib for searching business-index-api
@@ -14,7 +14,7 @@ const apiSearch = {
    * @param  {Function} callback Called with returned data.
    */
   match(query: string, callback: (success: boolean, data: {}, response?: {}) => void) {
-    fetch(`${API_URL}/${API_VERSION}/search?${query}`, {
+    fetch(`${API_URL}/${API_VERSION}/${SEARCH_ENDPOINT}${query}`, {
       method: 'GET',
     }).then((response) => {
       if (response.status === 200) {
