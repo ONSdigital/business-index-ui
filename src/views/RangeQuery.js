@@ -15,6 +15,7 @@ class RangeQuery extends React.Component {
       errorMessage: '',
       formValues: {},
       values: [],
+      scroll: false,
       showFilter: false,
     };
     this.changeQuery = this.changeQuery.bind(this);
@@ -43,6 +44,11 @@ class RangeQuery extends React.Component {
     } else {
       this.setState({ results: nextProps.data.results });
     }
+
+    // Set the scroll flag if the user has completed a search
+    if (JSON.stringify(nextProps.data.results) !== JSON.stringify(this.props.data.results)) {
+      this.setState({ scroll: true });
+    }
   }
   // componentWillUpdate() {
   //   if (!this.state.show) {
@@ -54,6 +60,11 @@ class RangeQuery extends React.Component {
     // for (let i = 0; i <= elements.length; i += 1) {
     //   document.getElementsByClassName('Select-value-icon')[i].setAttribute('aria-hidden', 'false');
     // }
+    // Scroll to the bottom of the page
+    if (this.state.scroll && this.props.data.results.length > 0) {
+      document.getElementById('react-table').scrollIntoView(false);
+      this.setState({ scroll: false });
+    }
   }
   onSubmit(e) {
     e.preventDefault();
@@ -71,6 +82,7 @@ class RangeQuery extends React.Component {
     }
   }
   clearQuery() {
+    console.log('clearing range')
     this.props.dispatch(setQuery(SET_RANGE_QUERY, {}));
     this.props.dispatch(setResults(SET_RANGE_RESULTS, { results: [] }));
     this.setState({ formValues: {} });
@@ -87,7 +99,7 @@ class RangeQuery extends React.Component {
   changeQuery(evt) {
     // if setting to empty, delete
     const formValues = this.state.formValues;
-    if (evt.target.value === '') {
+    if (evt.target.value === '' || evt.target.value[0] === '') {
       delete formValues[evt.target.id];
     } else {
       formValues[evt.target.id] = evt.target.value;

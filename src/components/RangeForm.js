@@ -16,14 +16,22 @@ class SelectMultipleInput extends React.Component {
       inputsJson: this.formProperJson(this.props.bands),
     };
     this.handleSelectChange = this.handleSelectChange.bind(this);
-    // Look at index.css for .Select-menu-outer
+    // Look at index.css for .Select-menu-outer for a 'position' fix
+    // to push down items below when the options menu is open
   }
   componentDidUpdate() {
+    // This is to fix a bug with react-select where the little cross symbol does
+    // not appear due to an aria-hidden attribute.
     const elements = document.getElementsByClassName('Select-value-icon');
     for (let i = 0; i <= elements.length; i += 1) {
       if (document.getElementsByClassName('Select-value-icon')[i] !== undefined) {
         document.getElementsByClassName('Select-value-icon')[i].setAttribute('aria-hidden', 'false');
       }
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.value !== nextProps.value) {
+      this.setState({ values: this.formValues(nextProps.value) });
     }
   }
   formValues(value) {
@@ -84,7 +92,7 @@ class RangeForm extends React.Component {
   render() {
     return (
       <form>
-        <TextInput value={this.props.initialValues.IndustryCode} label="Industry Code" id="IndustryCode" onChange={this.props.onChange} /><br />
+        <TextInput autoFocus ref={ip => (this.childTextInput = ip)} value={this.props.initialValues.IndustryCode} label="Industry Code" id="IndustryCode" onChange={this.props.onChange} /><br />
         <TextInput value={this.props.initialValues.PostCode} label="Post Code" id="PostCode" onChange={this.props.onChange} /><br />
         <SelectMultipleInput value={this.props.initialValues.EmploymentBands} id="EmploymentBands" onChange={this.props.onChange} label="Employment Bands" bands={employmentBands} /><br />
         <SelectMultipleInput value={this.props.initialValues.LegalStatus} id="LegalStatus" onChange={this.props.onChange} label="Legal Status Bands" bands={legalStatusBands} /><br />
