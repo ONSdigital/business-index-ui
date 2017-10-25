@@ -2,21 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TitleAndDescription, BreadCrumb } from 'registers-react-library';
 import { connect } from 'react-redux';
-import { rangeSearch, setQuery } from '../actions/ApiActions';
-import { SET_RANGE_QUERY } from '../constants/ApiConstants';
+import { rangeSearch, setQuery, setResults } from '../actions/ApiActions';
+import { SET_RANGE_QUERY, SET_RANGE_RESULTS } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
 import RangeForm from '../components/RangeForm';
-import Select from 'react-select';
-import 'react-select/dist/react-select.min.css';
-
-const FLAVOURS = [
-	{ label: 'Chocolate', value: 'chocolate' },
-	{ label: 'Vanilla', value: 'vanilla' },
-	{ label: 'Strawberry', value: 'strawberry' },
-	{ label: 'Caramel', value: 'caramel' },
-	{ label: 'Cookies and Cream', value: 'cookiescream' },
-	{ label: 'Peppermint', value: 'peppermint' },
-];
 
 class RangeQuery extends React.Component {
   constructor(props) {
@@ -32,7 +21,9 @@ class RangeQuery extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.clearQuery = this.clearQuery.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.handleSelectChange = this.handleSelectChange.bind(this);
+  }
+  onSubmit() {
+    console.log('submitting...');
   }
   componentDidMount() {
     // Reload the data from the store
@@ -59,10 +50,10 @@ class RangeQuery extends React.Component {
   //   }
   // }
   componentDidUpdate() {
-    const elements = document.getElementsByClassName('Select-value-icon');
-    for (let i = 0; i <= elements.length; i += 1) {
-      document.getElementsByClassName('Select-value-icon')[i].setAttribute('aria-hidden', 'false');
-    }
+    // const elements = document.getElementsByClassName('Select-value-icon');
+    // for (let i = 0; i <= elements.length; i += 1) {
+    //   document.getElementsByClassName('Select-value-icon')[i].setAttribute('aria-hidden', 'false');
+    // }
   }
   onSubmit(e) {
     e.preventDefault();
@@ -81,7 +72,11 @@ class RangeQuery extends React.Component {
   }
   clearQuery() {
     this.props.dispatch(setQuery(SET_RANGE_QUERY, {}));
+    this.props.dispatch(setResults(SET_RANGE_RESULTS, { results: [] }));
     this.setState({ formValues: {} });
+    // Scroll to the top of the page and focus on the first input
+    document.getElementsByClassName('wrapper')[0].scrollIntoView(false);
+    this.child.childTextInput.myInput.focus();
   }
   changeFilter() {
     this.setState({ showFilter: !this.state.showFilter });
@@ -90,23 +85,22 @@ class RangeQuery extends React.Component {
     this.setState({ show: false, errorMessage: '' });
   }
   changeQuery(evt) {
-    // Store the query in Redux store, so we can access it again if a user
-    // presses 'back to search' on the Enterprise View page.
-    this.props.dispatch(setQuery(SET_RANGE_QUERY, evt.target.value));
-  }
-  logChange(val) {
-    console.log("Selected: " + JSON.stringify(val));
-  }
-  handleSelectChange(value) {
-    console.log('You\'ve selected:', value);
-    this.setState({ value });
+    // if setting to empty, delete
+    const formValues = this.state.formValues;
+    if (evt.target.value === '') {
+      delete formValues[evt.target.id];
+    } else {
+      formValues[evt.target.id] = evt.target.value;
+    }
+    this.setState({ formValues });
+    // Store the query in Redux store, so we can access it again
+    this.props.dispatch(setQuery(SET_RANGE_QUERY, formValues));
   }
   render() {
     const items = [
       { name: 'Home', link: '/Home' },
       { name: 'Range Query', link: '' },
     ];
-    const options = FLAVOURS;
     return (
       <div>
         <BreadCrumb breadCrumbItems={items} />
@@ -129,21 +123,6 @@ class RangeQuery extends React.Component {
               showFilter={this.props.data.results.length !== 0}
               value={this.props.data.query}
             />
-            <div className="sdc-isolation">
-              <label className="label" htmlFor="select">Employment Bands</label>
-            </div>
-            <Select
-              style={{ width: '300px' }}
-              closeOnSelect={false}
-              disabled={false}
-              multi
-              onChange={this.handleSelectChange}
-              options={options}
-              placeholder=""
-              simpleValue
-              value={this.state.value}
-            />
-            <br /><br /><br /><br /><br /><br /><br /><br />
             <ErrorModal
               show={this.state.show}
               message={this.state.errorMessage}

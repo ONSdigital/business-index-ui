@@ -4,23 +4,79 @@ import { Button } from 'registers-react-library';
 import { employmentBands, legalStatusBands, turnoverBands, tradingStatusBands } from '../utils/convertBands';
 import TextInput from './TextInput';
 import SelectInput from './SelectInput';
+import CheckBoxInput from './CheckBoxInput';
+import Select from 'react-select';
+import 'react-select/dist/react-select.min.css';
 
-const CheckBoxInput = ({ id, label, onChangeFilter, value }) => {
-  return (
-    <div className="sdc-isolation field field--checkbox field--multiplechoice">
-      <div className="field__item js-focusable-box">
-        <input onChange={onChangeFilter} value={this.props.filter} className="input input--checkbox js-focusable" type="checkbox" id={id} />
-        <label className="label label--inline venus" htmlFor="checkbox">{label}</label>
+class SelectMultipleInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      values: this.formValues(this.props.value),
+      inputsJson: this.formProperJson(this.props.bands),
+    };
+    this.handleSelectChange = this.handleSelectChange.bind(this);
+    // Look at index.css for .Select-menu-outer
+  }
+  componentDidUpdate() {
+    const elements = document.getElementsByClassName('Select-value-icon');
+    for (let i = 0; i <= elements.length; i += 1) {
+      if (document.getElementsByClassName('Select-value-icon')[i] !== undefined) {
+        document.getElementsByClassName('Select-value-icon')[i].setAttribute('aria-hidden', 'false');
+      }
+    }
+  }
+  formValues(value) {
+    console.log('value: ', value);
+    if (value === undefined) {
+      return [];
+    }
+    return value.split(',');
+  }
+  formProperJson(json) {
+    const arr = Object.keys(json).map((key) => {
+      return { label: `${key} [${json[key]}]`, value: key };
+    });
+    return arr;
+  }
+  handleSelectChange(value) {
+    this.setState({ value });
+    // Make our lives easier by mimicking the exact json of an input event
+    const evt = {
+      target: {
+        id: this.props.id,
+        value: value.split(','),
+      },
+    };
+    this.props.onChange(evt);
+  }
+  render() {
+    return (
+      <div id={this.props.id}>
+        <div className="sdc-isolation">
+          <label className="label" htmlFor="select">{this.props.label}</label>
+        </div>
+        <Select
+          style={{ width: '400px' }}
+          closeOnSelect={false}
+          disabled={false}
+          multi
+          onChange={this.handleSelectChange}
+          options={this.state.inputsJson}
+          placeholder=""
+          simpleValue
+          value={this.state.value}
+        />
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
-CheckBoxInput.propTypes = {
+SelectMultipleInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  onChangeFilter: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
+  bands: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 class RangeForm extends React.Component {
@@ -30,7 +86,11 @@ class RangeForm extends React.Component {
       <form>
         <TextInput value={this.props.initialValues.IndustryCode} label="Industry Code" id="IndustryCode" onChange={this.props.onChange} /><br />
         <TextInput value={this.props.initialValues.PostCode} label="Post Code" id="PostCode" onChange={this.props.onChange} /><br />
-        <SelectInput value={this.props.initialValues.EmploymentBands} label="Employment Bands" id="EmploymentBands" onChange={this.props.onChange} bands={employmentBands} /><br />
+        <SelectMultipleInput value={this.props.initialValues.EmploymentBands} id="EmploymentBands" onChange={this.props.onChange} label="Employment Bands" bands={employmentBands} /><br />
+        <SelectMultipleInput id="LegalStatus" onChange={this.props.onChange} label="Legal Status Bands" bands={legalStatusBands} /><br />
+        <SelectMultipleInput id="Turnover" onChange={this.props.onChange} label="Turnover Bands" bands={turnoverBands} /><br />
+        <SelectMultipleInput id="TradingStatus" onChange={this.props.onChange} label="Trading Status Bands" bands={tradingStatusBands} /><br />
+        <br />
         <Button id="loginButton" size="wide" text="Search" onClick={!this.props.currentlySending ? this.props.onSubmit : null} ariaLabel="Login Button" type="submit" loading={this.props.currentlySending} />
         &nbsp;
         <Button id="clearButton" size="wide" text="Clear" onClick={this.props.onClear} ariaLabel="Clear Button" type="reset" />

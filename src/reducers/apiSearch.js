@@ -21,7 +21,8 @@ const initialState = {
   range: {
     results: [],
     headers: [],
-    query: '',
+    query: {},
+    formattedQuery: '',
     currentlySending: false,
     errorMessage: '',
     timeStamp: '',

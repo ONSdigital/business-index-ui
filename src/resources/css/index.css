@@ -4,6 +4,12 @@
   font-family: 'Open Sans', sans-serif;
 }*/
 
+.Select-menu-outer {
+  overflow: auto;
+  z-index: 1;
+  position: relative;
+}
+
 #treeWrapper:-webkit-full-screen {
   height: 100%;
   width: 100%;
