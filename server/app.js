@@ -148,4 +148,71 @@ app.post('/logout', (req, res) => {
   res.sendStatus(200);
 });
 
+app.post('/api', (req, res) => {
+  // re route api requests with API key
+  const method = req.body.method;
+  const endpoint = req.body.endpoint;
+  const accessToken = req.get('Authorization');
+
+  if (sessions[accessToken]) {
+    const key = sessions[accessToken].key;
+    if (method === 'GET') {
+      getApiEndpoint(`${urls.API_GW}/bi/${endpoint}`, key)
+        .then((response) => {
+          logger.info('Returning GET response from API Gateway');
+          return res.send(response);
+        })
+        .catch((err) => {
+          logger.info('Error in API Gateway for GET request');
+          return res.status(err.statusCode).send(err);
+        });
+    } else if (method === 'POST') {
+      const postBody = req.body.postBody;
+      postApiEndpoint(`${urls.API_GW}/bi/${endpoint}`, postBody, key)
+        .then((response) => {
+          logger.info('Returning POST response from API Gateway');
+          return res.send(response);
+        })
+        .catch((err) => {
+          logger.info('Error in API Gateway for POST request');
+          return res.status(err.statusCode).send(err);
+        });
+    }
+  } else {
+    logger.info('Unable to use /api endpoint, not authenticated');
+    return res.sendStatus(401);
+  }
+});
+
+function getApiEndpoint(url, apiKey) {
+  logger.debug(`GET API endpoint for url: ${url}`);
+  const options = {
+    method: 'GET',
+    headers: {
+      'Authorization': apiKey
+    },
+    uri: url,
+    timeout: timeouts.API_GET
+  };
+
+  return rp(options);
+}
+
+function postApiEndpoint(url, postBody, apiKey) {
+  logger.debug(`POST API endpoint for url: ${url}`);
+  const options = {
+    method: 'POST',
+    uri: url,
+    timeout: timeouts.API_POST,
+    headers: {
+      'Authorization': apiKey,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(postBody), // '{"updatedBy":"name","vars":{"ent_name":"name"}}',
+    json: false
+  };
+
+  return rp(options);
+}
+
 module.exports = app;
