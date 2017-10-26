@@ -191,6 +191,16 @@ class Match extends React.Component {
                   ]}
                   defaultPageSize={10}
                   className="-striped -highlight"
+                  SubComponent={row => {
+                    return (
+                      <div style={{ padding: "20px" }}>
+                        <em>
+                          Expand view will go here.
+                        </em>
+                      </div>
+                    );
+                  }}
+                />
                 />
               </div>
             }
