@@ -7,9 +7,8 @@
 const express = require('express');
 const morgan = require('morgan');
 const myParser = require('body-parser');
+const base64 = require('base-64');
 const compression = require('compression');
-const bcrypt = require('bcryptjs');
-const genSalt = require('./helpers/salt.js');
 const rp = require('request-promise');
 const timeouts = require('./config/timeouts');
 const urls = require('./config/urls');
@@ -24,14 +23,10 @@ const ADMIN_PASSWORD = process.env.BI_UI_TEST_ADMIN_PASSWORD;
 const USER_USERNAME = process.env.BI_UI_TEST_USER_USERNAME;
 const USER_PASSWORD = process.env.BI_UI_TEST_USER_PASSWORD;
 
-// Create the hashed password using the salt
-const ADMIN_HASHED_PASSWORD = bcrypt.hashSync(ADMIN_PASSWORD, genSalt(ADMIN_USERNAME));
-const USER_HASHED_PASSWORD = bcrypt.hashSync(USER_PASSWORD, genSalt(USER_USERNAME));
-
 // We use the users JSON as a mock database holding { username: hashed_password }
 const users = {};
-users[ADMIN_USERNAME] = ADMIN_HASHED_PASSWORD;
-users[USER_USERNAME] = USER_HASHED_PASSWORD;
+users[ADMIN_USERNAME] = `Basic ${base64.encode(`${ADMIN_USERNAME}:${ADMIN_PASSWORD}`)}`;
+users[USER_USERNAME] = `Basic ${base64.encode(`${USER_USERNAME}:${USER_PASSWORD}`)}`;
 
 // We need to store all the valid API keys that uuidv4() has made
 const validApiKeys = {};
@@ -42,20 +37,20 @@ app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:htt
 app.use(myParser.json()); // For parsing body of POSTs
 
 app.post('/auth', (req, res) => {
-  // Get the username/password from the body of the POST
+  logger.info('Checking /auth');
   const username = req.body.username;
-  const password = req.body.password;
+  const basicAuth = req.get('Authorization');
 
-  // If the provided username/password match the username/password in the users JSON,
-  // return an API key and the user role
-  if (users[username] && users[username] === password) {
+  // If the provided basic authentication matches any of our own base64 encoded
+  // Authorization keys in the users JSON
+  if (users[username] === basicAuth) {
     logger.info('Creating API Key for user');
     const key = uuidv4();
-    validApiKeys[key] = username;
+    validApiKeys[key] = basicAuth;
     res.setHeader('Content-Type', 'application/json');
     return res.send(JSON.stringify({
       key,
-      role: username
+      role: 'admin'
     }));
   }
   return res.sendStatus(401);

@@ -23,6 +23,7 @@ const initialState = {
   currentlySending: false,
   loggedIn: false,
   errorMessage: '',
+  accessToken: '',
 };
 
 // Takes care of changing the application state
@@ -33,6 +34,7 @@ function loginReducer(state = initialState, action) {
         ...state,
         username: action.newState.username,
         role: action.newState.role,
+        accessToken: action.newState.accessToken,
       });
     case SET_AUTH:
       return assign({}, state, {
