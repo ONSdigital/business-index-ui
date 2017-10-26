@@ -2,8 +2,21 @@
 
 [![phase](https://img.shields.io/badge/phase-BETA-orange.svg)](https://img.shields.io/badge/phase-BETA-orange.svg) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](./LICENSE)
 
-The following tutorials were used to help with the deployment using Node.js, the login with redux and the isolation of bootstrap styles: [Node](https://medium.com/@patriciolpezjuri/using-create-react-app-with-react-router-express-js-8fa658bf892d#.mt6bbdd8m
+The `bi-ui` allows a user to query the [business-index-api](https://github.com/ONSdigital/business-index-api).
+
+The following tutorials were used to help with the deployment using Node.js, the login with redux and the isolation of `sdc-global-design-patterns` styles: [Node](https://medium.com/@patriciolpezjuri/using-create-react-app-with-react-router-express-js-8fa658bf892d#.mt6bbdd8m
 ), [Login](https://github.com/mxstbr/login-flow) and [Bootstrap Isolation](https://formden.com/blog/isolate-bootstrap).
+
+### Table of Contents
+**[1. Environment Setup](#environment-setup-for-the-ui)**<br>
+**[2. Running the UI](#running-the-ui)**<br>
+**[3. Running the API](#running-the-api)**<br>
+**[4. Testing](#testing)**<br>
+**[5. Useful Extensions](#useful-extensions)**<br>
+**[6. Logging into the UI](#logging-into-the-ui)**<br>
+**[7. Troubleshooting](#troubleshooting)**<br>
+**[8. Contributing](#contributing)**<br>
+**[9. License](#license)**<br>
 
 ## Environment Setup for the UI
 
@@ -19,7 +32,7 @@ export BI_UI_TEST_USER_PASSWORD=test
 export JWT_SECRET=SECRET
 ```
 
-## Running the Demo UI:
+## Running the UI:
 
 1. Clone this repo, install dependencies and start NPM
 
@@ -100,23 +113,23 @@ The node server will carry on running afterwards, you can shut it down with `kil
 
 * [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) - for seeing what is happening in your Redux store
 
-## Logging into the Demo UI:
+## Logging into the UI:
 
 Username and password are `test` or `admin`.
 
 ## Troubleshooting
 
-### Using Bootstrap
+### Using SDC Patterns
 
-If you wish to use any React component that requires Bootstrap CSS/JS, do the following:
+If you want to use any patterns from the [sdc-global-design-patterns library](https://onsdigital.github.io/sdc-global-design-patterns/index.html), you need to wrap your code in the following `div`:
 
-```html
-<div className="bootstrap-iso">
-  <your code here>
+```javascript
+<div className="sdc-isolation">
+  ...
 </div>
 ```
 
-More details on this can be found [here](https://github.com/ONSdigital/sbr-ui/pull/50).
+If you want to use the sdc patterns inside a grid, it's probably a good idea to use the grid in the sdc pattern library, as many of the components inherit styles, so when using the external style library grid, you'll run into lots of problems with your sdc components inheriting the wrong colour/size etc.
 
 ## Contributing
 

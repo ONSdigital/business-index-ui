@@ -25,9 +25,11 @@
 
 import { browserHistory } from 'react-router';
 import { SET_AUTH, USER_LOGOUT, SENDING_REQUEST, SET_ERROR_MESSAGE, SET_USER_DETAILS } from '../constants/LoginConstants';
+import { SET_MATCH_QUERY, SET_RANGE_QUERY } from '../constants/ApiConstants';
 import * as errorMessages from '../constants/MessageConstants';
 import auth from '../utils/auth';
 import { getUiInfo, getApiInfo } from '../actions/InfoActions';
+import { setQuery } from '../actions/ApiActions';
 
 /**
  * Logs an user in
@@ -59,6 +61,10 @@ export function login(username, password) {
         }));
         dispatch(getUiInfo());
         dispatch(getApiInfo());
+        // We setQuery to {} as a hacky solution to the issue below:
+        // https://github.com/ONSdigital/bi-ui/issues/3
+        // dispatch(setQuery(SET_MATCH_QUERY, {}));
+        // dispatch(setQuery(SET_RANGE_QUERY, {}));
         forwardTo('/Home');
       } else {
         switch (data.type) {
@@ -87,6 +93,10 @@ export function checkAuth(token) {
         sessionStorage.clear();
         forwardTo('/');
       } else if (success) {
+        // We setQuery to {} as a hacky solution to the issue below:
+        // https://github.com/ONSdigital/bi-ui/issues/3
+        // dispatch(setQuery(SET_MATCH_QUERY, {}));
+        // dispatch(setQuery(SET_RANGE_QUERY, {}));
         if (window.location.pathname === '/') {
           forwardTo('/Home');
         }
