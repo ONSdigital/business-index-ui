@@ -12,7 +12,7 @@ const initialState = {
   match: {
     results: [],
     headers: [],
-    query: '',
+    query: {},
     formattedQuery: '',
     currentlySending: false,
     errorMessage: '',
@@ -21,7 +21,7 @@ const initialState = {
   range: {
     results: [],
     headers: [],
-    query: '',
+    query: {},
     formattedQuery: '',
     currentlySending: false,
     errorMessage: '',

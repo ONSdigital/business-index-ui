@@ -63,8 +63,8 @@ export function login(username, password) {
         dispatch(getApiInfo());
         // We setQuery to {} as a hacky solution to the issue below:
         // https://github.com/ONSdigital/bi-ui/issues/3
-        dispatch(setQuery(SET_MATCH_QUERY, {}));
-        dispatch(setQuery(SET_RANGE_QUERY, {}));
+        // dispatch(setQuery(SET_MATCH_QUERY, {}));
+        // dispatch(setQuery(SET_RANGE_QUERY, {}));
         forwardTo('/Home');
       } else {
         switch (data.type) {
@@ -95,8 +95,8 @@ export function checkAuth(token) {
       } else if (success) {
         // We setQuery to {} as a hacky solution to the issue below:
         // https://github.com/ONSdigital/bi-ui/issues/3
-        dispatch(setQuery(SET_MATCH_QUERY, {}));
-        dispatch(setQuery(SET_RANGE_QUERY, {}));
+        // dispatch(setQuery(SET_MATCH_QUERY, {}));
+        // dispatch(setQuery(SET_RANGE_QUERY, {}));
         if (window.location.pathname === '/') {
           forwardTo('/Home');
         }
