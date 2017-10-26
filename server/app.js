@@ -95,9 +95,7 @@ app.post('/login', (req, res) => {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         Authorization: `${basicAuth}`
-      },
-      json: true,
-      body: { username }
+      }
     };
   }
 
