@@ -76,28 +76,28 @@ app.post('/login', (req, res) => {
   const username = req.body.username;
 
   const basicAuth = req.get('Authorization');
+  // let options = {
+  //   method: 'POST',
+  //   uri: urls.AUTH_URL,
+  //   timeout: timeouts.API_GW,
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     Authorization: `${basicAuth}`
+  //   },
+  //   json: true,
+  //   body: { username }
+  // };
+  //if (ENV === 'prod') {
   let options = {
     method: 'POST',
     uri: urls.AUTH_URL,
     timeout: timeouts.API_GW,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
       Authorization: `${basicAuth}`
-    },
-    json: true,
-    body: { username }
+    }
   };
-  if (ENV === 'prod') {
-    options = {
-      method: 'POST',
-      uri: urls.AUTH_URL,
-      timeout: timeouts.API_GW,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        Authorization: `${basicAuth}`
-      }
-    };
-  }
+  //}
 
   rp(options)
     .then((gatewayJson) => {
