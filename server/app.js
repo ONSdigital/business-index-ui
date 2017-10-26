@@ -7,10 +7,12 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
+const uuidv4 = require('uuid/v4');
 const myParser = require('body-parser');
-const jwt = require('jsonwebtoken');
-const jwtDecode = require('jwt-decode');
+const urls = require('./config/urls');
+const timeouts = require('./config/timeouts');
 const version = require('./package.json').version;
+const rp = require('request-promise');
 const compression = require('compression');
 const cache = require('./helpers/cache');
 const formatDate = require('./helpers/formatDate.js');
@@ -24,16 +26,8 @@ const SERVE_HTML = (process.env.SERVE_HTML === 'true');
 logger.info(`ENV: ${ENV}`);
 logger.info(`SERVE_HTML: ${SERVE_HTML}`);
 
-// Get the admin/user credentials from environment variables
-const ADMIN_USERNAME = process.env.BI_UI_TEST_ADMIN_USERNAME;
-const ADMIN_PASSWORD = process.env.BI_UI_TEST_ADMIN_PASSWORD;
-const USER_USERNAME = process.env.BI_UI_TEST_USER_USERNAME;
-const USER_PASSWORD = process.env.BI_UI_TEST_USER_PASSWORD;
-const SECRET = process.env.JWT_SECRET;
-
-const users = {}; // For the user sessions
+const sessions = {}; // For the user sessions
 const startTime = formatDate(new Date());
-const TOKEN_EXPIRE = 60 * 60 * 24;
 
 const app = express();
 
@@ -53,7 +47,7 @@ if (ENV === 'local') {
   logger.info('Using Access-Control-Allow-Origin CORS headers');
   app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     next();
   });
 }
@@ -78,75 +72,68 @@ if (SERVE_HTML) {
 
 app.post('/login', (req, res) => {
   logger.info('Logging user in');
-  // Get the username/password from the body of the POST
+  // Get the username from the body of the POST
   const username = req.body.username;
-  const password = req.body.password;
 
-  if (ENV === 'local') {
-    /*
-     * For local environment, need to compare username/password against
-     * environment variables. If the provided username/password is correct, a
-     * new key:value pair is added to the 'users' variable.
-     *
-     * key:value
-     * username:hashed/salted(role,apiKey)
-     *
-     */
-    if ((username === ADMIN_USERNAME && password === ADMIN_PASSWORD)
-      || (username === USER_USERNAME && password === USER_PASSWORD)) {
-      const apiKey = 'API Key';
-
-      let role = 'user';
-      if (username === ADMIN_USERNAME) {
-        role = 'admin';
-      }
-
-      const payload = { username, role, apiKey };
-      const jToken = jwt.sign(payload, SECRET, {
-        expiresIn: TOKEN_EXPIRE
-      });
-
-      // Add user to key:value json store
-      users[jToken] = { username, role };
-
-      logger.info('Successful login to local environment');
-      res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify({ jToken, username, role }));
-    } else {
-      logger.info('Unsuccessful login to local environment');
-      // Return 401 NOT AUTHORIZED if incorrect username/password
-      res.sendStatus(401);
-    }
-  } else if (ENV === 'deployed') {
-    /*
-     * For the deployed environment, the username/password is sent off to the
-     * gateway, which will return 200 OK for a correct username/password or
-     * 401 UNAUTHORIZED if they are incorrect.
-     *
-     *
-     *
-     */
+  const basicAuth = req.get('Authorization');
+  let options = {
+    method: 'POST',
+    uri: urls.AUTH_URL,
+    timeout: timeouts.API_GW,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `${basicAuth}`
+    },
+    json: true,
+    body: { username }
+  };
+  if (ENV === 'prod') {
+    options = {
+      method: 'POST',
+      uri: urls.AUTH_URL,
+      timeout: timeouts.API_GW,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        Authorization: `${basicAuth}`
+      },
+      json: true,
+      body: { username }
+    };
   }
+
+  rp(options)
+    .then((gatewayJson) => {
+      // Create user session
+      const accessToken = uuidv4();
+      sessions[accessToken] = {
+        key: gatewayJson.key,
+        role: gatewayJson.role,
+        username
+      };
+
+      logger.info('Successful login');
+      res.setHeader('Content-Type', 'application/json');
+      return res.send(JSON.stringify({
+        username,
+        accessToken,
+        role: gatewayJson.role
+      }));
+    })
+    .catch((err) => {
+      logger.error('Unable to login, timeout or server error');
+      if (err.statusCode) return res.sendStatus(err.statusCode);
+      return res.sendStatus(504); // Timeout
+    });
 });
 
 app.post('/checkToken', (req, res) => {
   logger.info('Checking token');
-  const token = req.body.token;
-  if (users[token] !== undefined) {
-    jwt.verify(token, SECRET, (err) => {
-      if (err) {
-        delete users[token];
-        logger.info('Invalid token');
-        res.sendStatus(401);
-      } else {
-        const decode = jwtDecode(token);
-        const username = decode.username;
-        const role = decode.role;
-        logger.info('Valid token');
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({ token, username, role }));
-      }
-    });
+  const accessToken = req.body.accessToken;
+
+  if (sessions[accessToken]) {
+    logger.info('Valid token');
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ username: sessions[accessToken].username, accessToken }));
   } else {
     logger.info('Invalid token');
     res.sendStatus(401);
@@ -156,9 +143,76 @@ app.post('/checkToken', (req, res) => {
 app.post('/logout', (req, res) => {
   const token = req.body.token;
   // Remove user from storage
-  delete users[token];
+  delete sessions[token];
   logger.info('Logging user out');
   res.sendStatus(200);
 });
+
+app.post('/api', (req, res) => {
+  // re route api requests with API key
+  const method = req.body.method;
+  const endpoint = req.body.endpoint;
+  const accessToken = req.get('Authorization');
+
+  if (sessions[accessToken]) {
+    const key = sessions[accessToken].key;
+    if (method === 'GET') {
+      getApiEndpoint(`${urls.API_GW}/bi/${endpoint}`, key)
+        .then((response) => {
+          logger.info('Returning GET response from API Gateway');
+          return res.send(response);
+        })
+        .catch((err) => {
+          logger.info('Error in API Gateway for GET request');
+          return res.status(err.statusCode).send(err);
+        });
+    } else if (method === 'POST') {
+      const postBody = req.body.postBody;
+      postApiEndpoint(`${urls.API_GW}/bi/${endpoint}`, postBody, key)
+        .then((response) => {
+          logger.info('Returning POST response from API Gateway');
+          return res.send(response);
+        })
+        .catch((err) => {
+          logger.info('Error in API Gateway for POST request');
+          return res.status(err.statusCode).send(err);
+        });
+    }
+  } else {
+    logger.info('Unable to use /api endpoint, not authenticated');
+    return res.sendStatus(401);
+  }
+});
+
+function getApiEndpoint(url, apiKey) {
+  logger.debug(`GET API endpoint for url: ${url}`);
+  const options = {
+    method: 'GET',
+    headers: {
+      'Authorization': apiKey
+    },
+    uri: url,
+    timeout: timeouts.API_GET
+  };
+
+  return rp(options);
+}
+
+function postApiEndpoint(url, postBody, apiKey) {
+  logger.debug(`POST API endpoint for url: ${url}`);
+  const options = {
+    method: 'POST',
+    uri: url,
+    timeout: timeouts.API_POST,
+    headers: {
+      'Authorization': apiKey,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(postBody), // '{"updatedBy":"name","vars":{"ent_name":"name"}}',
+    json: false
+  };
+
+  return rp(options);
+}
 
 module.exports = app;

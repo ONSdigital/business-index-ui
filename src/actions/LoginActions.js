@@ -24,12 +24,11 @@
  */
 
 import { browserHistory } from 'react-router';
+import base64 from 'base-64';
 import { SET_AUTH, USER_LOGOUT, SENDING_REQUEST, SET_ERROR_MESSAGE, SET_USER_DETAILS } from '../constants/LoginConstants';
-import { SET_MATCH_QUERY, SET_RANGE_QUERY } from '../constants/ApiConstants';
 import * as errorMessages from '../constants/MessageConstants';
 import auth from '../utils/auth';
 import { getUiInfo, getApiInfo } from '../actions/InfoActions';
-import { setQuery } from '../actions/ApiActions';
 
 /**
  * Logs an user in
@@ -48,7 +47,8 @@ export function login(username, password) {
       return;
     }
 
-    auth.login(username, password, (success, data) => {
+    const basicAuth = base64.encode(`${username}:${password}`);
+    auth.login(username, basicAuth, (success, data) => {
       // When the request is finished, hide the loading indicator
       dispatch(sendingRequest(false));
       dispatch(setAuthState(success));
@@ -57,8 +57,10 @@ export function login(username, password) {
         dispatch(setUserState({
           username,
           role: data.role,
-          apiKey: data.apiKey,
+          accessToken: data.accessToken,
         }));
+        sessionStorage.setItem('accessToken', data.accessToken);
+        sessionStorage.setItem('username', username);
         dispatch(getUiInfo());
         dispatch(getApiInfo());
         // We setQuery to {} as a hacky solution to the issue below:
@@ -85,7 +87,7 @@ export function login(username, password) {
 /**
  * Check the users token
  */
-export function checkAuth(token) {
+export function checkAuth(username, token) {
   return (dispatch) => {
     auth.checkToken(token, (success, data) => {
       dispatch(setAuthState(success));
@@ -93,10 +95,6 @@ export function checkAuth(token) {
         sessionStorage.clear();
         forwardTo('/');
       } else if (success) {
-        // We setQuery to {} as a hacky solution to the issue below:
-        // https://github.com/ONSdigital/bi-ui/issues/3
-        // dispatch(setQuery(SET_MATCH_QUERY, {}));
-        // dispatch(setQuery(SET_RANGE_QUERY, {}));
         if (window.location.pathname === '/') {
           forwardTo('/Home');
         }
@@ -104,8 +102,9 @@ export function checkAuth(token) {
         dispatch(getApiInfo());
         dispatch(setUserState({
           username: data.username,
-          role: data.role,
+          accessToken: data.newAccessToken,
         }));
+        sessionStorage.setItem('accessToken', data.newAccessToken);
       }
     });
   };
@@ -117,8 +116,8 @@ export function checkAuth(token) {
 export function logout() {
   return (dispatch) => {
     dispatch(sendingRequest(true));
-    auth.logout((success) => {
-      if (success === true) {
+    auth.logout(sessionStorage.accessToken, (success) => {
+      if (success) {
         dispatch(sendingRequest(false));
         dispatch(setAuthState(false));
         localStorage.clear();

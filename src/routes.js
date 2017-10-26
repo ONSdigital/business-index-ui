@@ -40,16 +40,16 @@ export const store = createStoreWithMiddleware(
 // if there the token gets checked with the node server for authentication
 // if no token is present, the user gets redirected back to the login.
 function checkAuthentication(nextState, replaceState) {
-  if (sessionStorage.token) {
-    store.dispatch(checkAuth(sessionStorage.token));
+  if (sessionStorage.accessToken && sessionStorage.username) {
+    store.dispatch(checkAuth(sessionStorage.username, sessionStorage.accessToken));
   } else {
     replaceState(null, '/');
   }
 }
 
 function checkLogin() {
-  if (sessionStorage.token) {
-    store.dispatch(checkAuth(sessionStorage.token));
+  if (sessionStorage.accessToken && sessionStorage.username) {
+    store.dispatch(checkAuth(sessionStorage.username, sessionStorage.accessToken));
   }
 }
 
