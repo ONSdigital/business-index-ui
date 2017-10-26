@@ -26,7 +26,7 @@ pipeline {
         deleteDir()
         checkout scm
         dir('conf') {
-          git(url: "$GITLAB_URL/BusinessIndex/bi-ui.git", credentialsId: 'sbr-gitlab-id', branch: 'feature/manifests')
+          git(url: "$GITLAB_URL/BusinessIndex/bi-ui.git", credentialsId: 'bi-gitlab-id', branch: 'feature/manifests')
         }
         stash name: 'app'
       }
