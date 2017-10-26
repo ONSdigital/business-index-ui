@@ -76,33 +76,36 @@ app.post('/login', (req, res) => {
   const username = req.body.username;
 
   const basicAuth = req.get('Authorization');
-  // let options = {
-  //   method: 'POST',
-  //   uri: urls.AUTH_URL,
-  //   timeout: timeouts.API_GW,
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     Authorization: `${basicAuth}`
-  //   },
-  //   json: true,
-  //   body: { username }
-  // };
-  //if (ENV === 'prod') {
   let options = {
     method: 'POST',
     uri: urls.AUTH_URL,
     timeout: timeouts.API_GW,
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      Authorization: `${basicAuth}`
-    }
+      'Content-Type': 'application/json',
+      'Authorization': `${basicAuth}`
+    },
+    json: true,
+    body: { username }
   };
-  //}
+  if (ENV === 'prod') {
+    logger.info('Using request options for ENV=prod');
+    options = {
+      method: 'POST',
+      uri: urls.AUTH_URL,
+      timeout: timeouts.API_GW,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Authorization': `${basicAuth}`
+      }
+    };
+  }
 
   rp(options)
     .then((gatewayJson) => {
       // Create user session
+      logger.info('Creating uuid()');
       const accessToken = uuidv4();
+      logger.info('Creating session - add key/role/username');
       sessions[accessToken] = {
         key: gatewayJson.key,
         role: gatewayJson.role,
@@ -119,6 +122,7 @@ app.post('/login', (req, res) => {
     })
     .catch((err) => {
       logger.error('Unable to login, timeout or server error');
+      logger.error('err: ', err);
       if (err.statusCode) return res.sendStatus(err.statusCode);
       return res.sendStatus(504); // Timeout
     });
