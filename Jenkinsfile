@@ -26,7 +26,7 @@ pipeline {
         deleteDir()
         checkout scm
         dir('conf') {
-          git(url: "$GITLAB_URL/StatBusReg/bi-ui.git", credentialsId: 'bi-gitlab-id', branch: 'develop')
+          git(url: "$GITLAB_URL/BusinessIndex/bi-ui.git", credentialsId: 'bi-gitlab-id', branch: 'develop')
         }
         stash name: 'app'
       }
@@ -93,7 +93,8 @@ pipeline {
           colourText("info","Zipping project...")
           colourText("info","Host is: ${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}")
           sh "sed -i -e 's|Local|dev|g' src/config/constants.js"
-          sh "sed -i -e 's|http://localhost:9002|https://dev-bi-api.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}|g' src/config/api-urls.js"
+          sh "sed -i -e 's|http://localhost:3001/auth|${api_gw/auth}|g' server/config/urls.js"
+          sh "sed -i -e 's|http://localhost:3001|${api_gw/bi/route}|g' server/config/urls.js"
           sh "sed -i -e 's|http://localhost:3001|https://dev-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}|g' src/config/api-urls.js"
           sh 'npm run build'
           // For deployment, only need the node_modules/package.json for the server
