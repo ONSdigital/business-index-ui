@@ -91,6 +91,7 @@ app.post('/login', (req, res) => {
     logger.info('Using request options for ENV=prod');
     options = {
       method: 'POST',
+      family: 4,
       uri: urls.AUTH_URL,
       timeout: timeouts.API_GW,
       headers: {
