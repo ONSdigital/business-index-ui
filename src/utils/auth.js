@@ -25,7 +25,7 @@ const auth = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Basic ${base64.encode('admin:admin')}`,
+        Authorization: `Basic ${basicAuth}`,
       },
       body: JSON.stringify({ username }),
     }).then((response) => {
