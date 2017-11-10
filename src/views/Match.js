@@ -9,6 +9,7 @@ import { SET_MATCH_QUERY, SET_MATCH_RESULTS } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
 import MatchForm from '../components/MatchForm';
 import SummaryTable from '../components/SummaryTable';
+import ChildRefTable from '../components/ChildRefTable';
 
 class Match extends React.Component {
   constructor(props) {
@@ -25,6 +26,7 @@ class Match extends React.Component {
     this.clearQuery = this.clearQuery.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.changeFilter = this.changeFilter.bind(this);
+    this.fetchData = this.fetchData.bind(this);
   }
   componentDidMount() {
     // Reload the data from the store
@@ -108,6 +110,19 @@ class Match extends React.Component {
     // Store the query in Redux store, so we can access it again if a user
     // presses 'back to search' on the Enterprise View page.
     this.props.dispatch(setQuery(SET_MATCH_QUERY, formValues));
+  }
+  fetchData(row) {
+    console.log('fetch data...: ', row.original.id);
+    fetch(`http://localhost:9000/v1/business/${row.original.id}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Something went wrong ...');
+      }
+    })
+    .then(data => this.setState({ data, isLoading: false }))
+    .catch(error => this.setState({ error, isLoading: false }));
   }
   render() {
     const items = [
@@ -194,11 +209,7 @@ class Match extends React.Component {
                   className="-striped -highlight"
                   SubComponent={row => {
                     return (
-                      <div style={{ padding: "20px" }}>
-                        <em>
-                          Expand view will go here.
-                        </em>
-                      </div>
+                      <ChildRefTable row={row} />
                     );
                   }}
                 />
