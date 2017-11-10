@@ -25,7 +25,7 @@
 
 import { browserHistory } from 'react-router';
 import base64 from 'base-64';
-import { SET_AUTH, USER_LOGOUT, SENDING_REQUEST, SET_ERROR_MESSAGE, SET_USER_DETAILS } from '../constants/LoginConstants';
+import { SET_AUTH, SET_CONFETTI, USER_LOGOUT, SENDING_REQUEST, SET_ERROR_MESSAGE, SET_USER_DETAILS } from '../constants/LoginConstants';
 import * as errorMessages from '../constants/MessageConstants';
 import auth from '../utils/auth';
 import { getUiInfo, getApiInfo } from '../actions/InfoActions';
@@ -53,6 +53,7 @@ export function login(username, password) {
       dispatch(sendingRequest(false));
       dispatch(setAuthState(success));
       if (success) {
+        dispatch(setConfetti(data.showConfetti));
         // If the login worked, forward the user to the dashboard and clear the form
         dispatch(setUserState({
           username,
@@ -131,6 +132,15 @@ export function logout() {
       }
     });
   };
+}
+
+/**
+ * Sets the user details state of the application (username, role)
+ * @param  {boolean} show              Whether or not to show the the confetti
+ * @return {object}                    Formatted action for the reducer to handle
+ */
+export function setConfetti(show) {
+  return { type: SET_CONFETTI, show };
 }
 
 export function resetState() {

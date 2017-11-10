@@ -10,7 +10,7 @@
  *   });
  */
 
-import { CHECK_AUTH, SET_AUTH, SENDING_REQUEST, SET_ERROR_MESSAGE, SET_USER_DETAILS } from '../constants/LoginConstants';
+import { CHECK_AUTH, SET_CONFETTI, SET_AUTH, SENDING_REQUEST, SET_ERROR_MESSAGE, SET_USER_DETAILS } from '../constants/LoginConstants';
 
 // Object.assign is not yet fully supported in all browsers, so we fallback to
 // a polyfill
@@ -24,6 +24,7 @@ const initialState = {
   loggedIn: false,
   errorMessage: '',
   accessToken: '',
+  showConfetti: false,
 };
 
 // Takes care of changing the application state
@@ -35,6 +36,11 @@ function loginReducer(state = initialState, action) {
         username: action.newState.username,
         role: action.newState.role,
         accessToken: action.newState.accessToken,
+      });
+    case SET_CONFETTI:
+      return assign({}, state, {
+        ...state,
+        showConfetti: action.show,
       });
     case SET_AUTH:
       return assign({}, state, {

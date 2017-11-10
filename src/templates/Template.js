@@ -4,6 +4,7 @@ import Header from './Header';
 import NavBar from './NavBar';
 import Banner from './Banner';
 import Footer from './Footer';
+import ShowConfetti from '../components/Confetti';
 import config from '../config/constants';
 
 const { ENV } = config;
@@ -24,6 +25,7 @@ const Template = (props) => {
   }
   return (
     <div>
+      <ShowConfetti seconds={config.SHOW_CONFETTI_TIME} />
       {banner}
       <Header />
       <NavBar primary={props.location.pathname} />
