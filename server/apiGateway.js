@@ -13,7 +13,7 @@ const rp = require('request-promise');
 const timeouts = require('./config/timeouts');
 const urls = require('./config/urls');
 const uuidv4 = require('uuid/v4');
-const logger = require('./logger');
+const logger = require('./logger')(module);
 
 const PORT = process.env.PORT || 3002;
 
@@ -133,6 +133,5 @@ function postApiEndpoint(url, postBody) {
 }
 
 app.listen(PORT, () => {
-  console.log(`bi-ui-mock-api-gateway listening on port ${PORT}!`);
   logger.info(`bi-ui-mock-api-gateway listening on port ${PORT}!`);
 });

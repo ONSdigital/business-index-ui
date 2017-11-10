@@ -2,8 +2,10 @@
 @Library('jenkins-pipeline-shared@develop') _
  
 /*
-* bi-ui Jenkins Pipeline
-*/
+ * bi-ui Jenkins Pipeline
+ * 
+ * We use the 'GMU' build slave because it has the correct certificates for CF.
+ */
 pipeline {
   agent none
   options {
@@ -26,13 +28,13 @@ pipeline {
         deleteDir()
         checkout scm
         dir('conf') {
-          git(url: "$GITLAB_URL/StatBusReg/bi-ui.git", credentialsId: 'bi-gitlab-id', branch: 'develop')
+          git(url: "$GITLAB_URL/BusinessIndex/bi-ui.git", credentialsId: 'bi-gitlab-id', branch: 'feature/manifests')
         }
         stash name: 'app'
       }
     }
     stage('Install Dependancies & Build') {
-      agent { label 'build' }
+      agent { label 'GMU' }
       steps {
         colourText("info","Running 'npm install' and 'npm build'...")
         deleteDir()
@@ -80,7 +82,7 @@ pipeline {
       }
     }
     stage('Zip Project') {
-      agent { label 'build' }
+      agent { label 'GMU' }
       when {
         anyOf {
           branch "develop"
@@ -93,7 +95,8 @@ pipeline {
           colourText("info","Zipping project...")
           colourText("info","Host is: ${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}")
           sh "sed -i -e 's|Local|dev|g' src/config/constants.js"
-          sh "sed -i -e 's|http://localhost:9002|https://dev-bi-api.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}|g' src/config/api-urls.js"
+          sh "sed -i -e 's|http://localhost:3002/auth|${api_gw/auth}|g' server/config/urls.js"
+          sh "sed -i -e 's|http://localhost:3001|${api_gw/bi/route}|g' server/config/urls.js"
           sh "sed -i -e 's|http://localhost:3001|https://dev-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}|g' src/config/api-urls.js"
           sh 'npm run build'
           // For deployment, only need the node_modules/package.json for the server
@@ -110,7 +113,7 @@ pipeline {
       }
     }
     stage('Deploy - DEV') {
-      agent { label 'build' }
+      agent { label 'GMU' }
       when {
         anyOf {
           branch "develop"
@@ -125,7 +128,7 @@ pipeline {
       }
     }
     stage('Integration Tests') {
-      agent { label 'build' }
+      agent { label 'GMU' }
       when {
         anyOf {
           branch "release"
@@ -139,7 +142,7 @@ pipeline {
       }
     }
     stage('Deploy - TEST') {
-      agent { label 'build' }
+      agent { label 'GMU' }
       when {
         anyOf {
           branch "release"
@@ -154,7 +157,7 @@ pipeline {
       }
     }
     stage('Promote to BETA?') {
-      agent { label 'build' }
+      agent { label 'GMU' }
       when {
         anyOf {
           branch "master"
@@ -170,7 +173,7 @@ pipeline {
       }
     }
     stage('Deploy - BETA') {
-      agent { label 'build' }
+      agent { label 'GMU' }
       when {
         anyOf {
           branch "master"

@@ -16,15 +16,12 @@ const rp = require('request-promise');
 const compression = require('compression');
 const cache = require('./helpers/cache');
 const formatDate = require('./helpers/formatDate.js');
-const logger = require('./logger');
+const logger = require('./logger')(module);
 
 // To allow hot-reloading, the node server only serves the React.js index.html
 // in the /build file if SERVE_HTML is true
 const ENV = process.env.ENV;
 const SERVE_HTML = (process.env.SERVE_HTML === 'true');
-
-logger.info(`ENV: ${ENV}`);
-logger.info(`SERVE_HTML: ${SERVE_HTML}`);
 
 const sessions = {}; // For the user sessions
 const startTime = formatDate(new Date());
@@ -32,7 +29,8 @@ const startTime = formatDate(new Date());
 const app = express();
 
 app.use(compression()); // gzip all responses
-app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms'));
+morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms');
+app.use(morgan('combined', { stream: logger.stream }));
 app.use(myParser.json()); // For parsing body of POSTs
 
 // Serve static assets (static js files for React from 'npm run build')
@@ -82,7 +80,7 @@ app.post('/login', (req, res) => {
     timeout: timeouts.API_GW,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `${basicAuth}`
+      'Authorization': `${basicAuth}`
     },
     json: true,
     body: { username }
@@ -94,10 +92,9 @@ app.post('/login', (req, res) => {
       timeout: timeouts.API_GW,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        Authorization: `${basicAuth}`
+        'Authorization': `${basicAuth}`
       },
-      json: true,
-      body: { username }
+      json: true
     };
   }
 
@@ -105,6 +102,8 @@ app.post('/login', (req, res) => {
     .then((gatewayJson) => {
       // Create user session
       const accessToken = uuidv4();
+      // We get the showConfetti env var on every login, as it can dynamically change in CF
+      const showConfetti = (process.env.SHOW_CONFETTI === 'true');
       sessions[accessToken] = {
         key: gatewayJson.key,
         role: gatewayJson.role,
@@ -116,7 +115,8 @@ app.post('/login', (req, res) => {
       return res.send(JSON.stringify({
         username,
         accessToken,
-        role: gatewayJson.role
+        role: gatewayJson.role,
+        showConfetti
       }));
     })
     .catch((err) => {
@@ -208,7 +208,7 @@ function postApiEndpoint(url, postBody, apiKey) {
       'Authorization': apiKey,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(postBody), // '{"updatedBy":"name","vars":{"ent_name":"name"}}',
+    body: JSON.stringify(postBody),
     json: false
   };
 

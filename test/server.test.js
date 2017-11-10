@@ -1,6 +1,7 @@
 const exec = require('mz/child_process').exec;
 const request = require('supertest-as-promised');
 const expect = require('chai').expect;
+const base64 = require('base-64');
 
 const app = require('../server/app');
 
@@ -45,14 +46,14 @@ describe('routes and authentication work', function () {
     return request(app)
       .post('/login')
       .type('application/json')
+      .set('Authorization', `Basic ${base64.encode('admin:admin')}`)
       .send({
         'username': 'admin',
-        'password': 'admin'
       })
       .then(res => {
         expect('Content-Type', 'application/json; charset=utf-8')
         const resp = JSON.parse(res.text);
-        adminToken = resp.jToken;
+        adminToken = resp.accessToken;
         expect(200);
       });
   });
@@ -62,7 +63,7 @@ describe('routes and authentication work', function () {
       .post('/checkToken')
       .type('application/json')
       .send({
-        'token': adminToken
+        'accessToken': adminToken
       })
       .expect(200);
   });
@@ -72,7 +73,7 @@ describe('routes and authentication work', function () {
       .post('/logout')
       .type('application/json')
       .send({
-        'token': adminToken
+        'accessToken': adminToken
       })
       .expect(200);
   });
@@ -81,14 +82,14 @@ describe('routes and authentication work', function () {
     return request(app)
       .post('/login')
       .type('application/json')
+      .set('Authorization', `Basic ${base64.encode('test:test')}`)
       .send({
         'username': 'test',
-        'password': 'test'
       })
       .then(res => {
         expect('Content-Type', 'application/json; charset=utf-8')
         const resp = JSON.parse(res.text);
-        userToken = resp.jToken;
+        userToken = resp.accessToken;
         expect(200);
       });
   });
@@ -98,7 +99,7 @@ describe('routes and authentication work', function () {
       .post('/checkToken')
       .type('application/json')
       .send({
-        'token': userToken
+        'accessToken': userToken
       })
       .expect(200);
   });

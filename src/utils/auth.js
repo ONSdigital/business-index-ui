@@ -25,7 +25,7 @@ const auth = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Basic ${base64.encode('admin:admin')}`,
+        Authorization: `Basic ${basicAuth}`,
       },
       body: JSON.stringify({ username }),
     }).then((response) => {
@@ -34,10 +34,11 @@ const auth = {
           // const token: string = json.jToken;
           const loginName: string = json.username;
           const accessToken: string = json.accessToken;
+          const showConfetti: string = json.showConfetti;
           // const role: string = json.role;
           // sessionStorage.setItem('token', token);
           // Send auth request to save token username pair
-          callback(true, { username: loginName, accessToken });
+          callback(true, { username: loginName, accessToken, showConfetti });
         });
       }
       return callback(false, { message: 'Unable to login.' });

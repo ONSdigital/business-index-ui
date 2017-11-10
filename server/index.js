@@ -5,7 +5,7 @@
 
 const fork = require('child_process').fork;
 const app = require('./app');
-const logger = require('./logger');
+const logger = require('./logger')(module);
 
 const PORT = process.env.PORT || 3001;
 
@@ -17,7 +17,6 @@ logger.info('Started Winston logger & created log file');
 
 app.maxSockets = 500;
 app.listen(PORT, () => {
-  console.log(`bi-ui-node-server listening on port ${PORT}!`);
   logger.info(`bi-ui-node-server listening on port ${PORT}!`);
 });
 
