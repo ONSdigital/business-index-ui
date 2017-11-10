@@ -8,6 +8,7 @@ import { matchSearch, setQuery, setResults } from '../actions/ApiActions';
 import { SET_MATCH_QUERY, SET_MATCH_RESULTS } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
 import MatchForm from '../components/MatchForm';
+import SummaryTable from '../components/SummaryTable';
 
 class Match extends React.Component {
   constructor(props) {
@@ -201,6 +202,13 @@ class Match extends React.Component {
                     );
                   }}
                 />
+                <br /><br />
+                <SummaryTable
+                  title="Useful Information"
+                  items={[
+                    { key: 'Number of results', value: this.props.data.results.length },
+                    { key: 'Results capped at 10,000', value: (this.props.data.results.length === 10000) ? 'true' : 'false' },
+                  ]}
                 />
               </div>
             }

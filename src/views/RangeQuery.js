@@ -8,6 +8,7 @@ import { rangeSearch, setQuery, setResults } from '../actions/ApiActions';
 import { SET_RANGE_QUERY, SET_RANGE_RESULTS } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
 import RangeForm from '../components/RangeForm';
+import SummaryTable from '../components/SummaryTable';
 
 class RangeQuery extends React.Component {
   constructor(props) {
@@ -192,6 +193,14 @@ class RangeQuery extends React.Component {
                   ]}
                   defaultPageSize={10}
                   className="-striped -highlight"
+                />
+                <br /><br />
+                <SummaryTable
+                  title="Useful Information"
+                  items={[
+                    { key: 'Number of results', value: this.props.data.results.length },
+                    { key: 'Results capped at 10,000', value: (this.props.data.results.length === 10000) ? 'true' : 'false' },
+                  ]}
                 />
               </div>
             }
