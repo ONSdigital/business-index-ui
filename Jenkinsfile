@@ -2,8 +2,10 @@
 @Library('jenkins-pipeline-shared@develop') _
  
 /*
-* bi-ui Jenkins Pipeline
-*/
+ * bi-ui Jenkins Pipeline
+ * 
+ * We use the 'GMU' build slave because it has the correct certificates for CF.
+ */
 pipeline {
   agent none
   options {
@@ -32,7 +34,7 @@ pipeline {
       }
     }
     stage('Install Dependancies & Build') {
-      agent { label 'build' }
+      agent { label 'GMU' }
       steps {
         colourText("info","Running 'npm install' and 'npm build'...")
         deleteDir()
@@ -80,7 +82,7 @@ pipeline {
       }
     }
     stage('Zip Project') {
-      agent { label 'build' }
+      agent { label 'GMU' }
       when {
         anyOf {
           branch "develop"
@@ -93,7 +95,7 @@ pipeline {
           colourText("info","Zipping project...")
           colourText("info","Host is: ${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}")
           sh "sed -i -e 's|Local|dev|g' src/config/constants.js"
-          sh "sed -i -e 's|http://localhost:3001/auth|${api_gw/auth}|g' server/config/urls.js"
+          sh "sed -i -e 's|http://localhost:3002/auth|${api_gw/auth}|g' server/config/urls.js"
           sh "sed -i -e 's|http://localhost:3001|${api_gw/bi/route}|g' server/config/urls.js"
           sh "sed -i -e 's|http://localhost:3001|https://dev-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}|g' src/config/api-urls.js"
           sh 'npm run build'
@@ -111,7 +113,7 @@ pipeline {
       }
     }
     stage('Deploy - DEV') {
-      agent { label 'build' }
+      agent { label 'GMU' }
       when {
         anyOf {
           branch "develop"
@@ -126,7 +128,7 @@ pipeline {
       }
     }
     stage('Integration Tests') {
-      agent { label 'build' }
+      agent { label 'GMU' }
       when {
         anyOf {
           branch "release"
@@ -140,7 +142,7 @@ pipeline {
       }
     }
     stage('Deploy - TEST') {
-      agent { label 'build' }
+      agent { label 'GMU' }
       when {
         anyOf {
           branch "release"
@@ -155,7 +157,7 @@ pipeline {
       }
     }
     stage('Promote to BETA?') {
-      agent { label 'build' }
+      agent { label 'GMU' }
       when {
         anyOf {
           branch "master"
@@ -171,7 +173,7 @@ pipeline {
       }
     }
     stage('Deploy - BETA') {
-      agent { label 'build' }
+      agent { label 'GMU' }
       when {
         anyOf {
           branch "master"
