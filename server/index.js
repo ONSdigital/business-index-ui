@@ -5,7 +5,7 @@
 
 const fork = require('child_process').fork;
 const app = require('./app');
-const logger = require('./logger');
+const logger = require('./logger')(module);
 
 const PORT = process.env.PORT || 3001;
 
