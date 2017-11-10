@@ -17,7 +17,6 @@ logger.info('Started Winston logger & created log file');
 
 app.maxSockets = 500;
 app.listen(PORT, () => {
-  console.log(`bi-ui-node-server listening on port ${PORT}!`);
   logger.info(`bi-ui-node-server listening on port ${PORT}!`);
 });
 

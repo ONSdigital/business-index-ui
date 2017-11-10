@@ -23,9 +23,6 @@ const logger = require('./logger');
 const ENV = process.env.ENV;
 const SERVE_HTML = (process.env.SERVE_HTML === 'true');
 
-logger.info(`ENV: ${ENV}`);
-logger.info(`SERVE_HTML: ${SERVE_HTML}`);
-
 const sessions = {}; // For the user sessions
 const startTime = formatDate(new Date());
 
@@ -88,10 +85,8 @@ app.post('/login', (req, res) => {
     body: { username }
   };
   if (ENV === 'prod') {
-    logger.info('Using request options for ENV=prod');
     options = {
       method: 'POST',
-      family: 4,
       uri: urls.AUTH_URL,
       timeout: timeouts.API_GW,
       headers: {
@@ -105,9 +100,7 @@ app.post('/login', (req, res) => {
   rp(options)
     .then((gatewayJson) => {
       // Create user session
-      logger.info('Creating uuid()');
       const accessToken = uuidv4();
-      logger.info('Creating session - add key/role/username');
       sessions[accessToken] = {
         key: gatewayJson.key,
         role: gatewayJson.role,
@@ -124,7 +117,6 @@ app.post('/login', (req, res) => {
     })
     .catch((err) => {
       logger.error('Unable to login, timeout or server error');
-      logger.error('err: ', err);
       if (err.statusCode) return res.sendStatus(err.statusCode);
       return res.sendStatus(504); // Timeout
     });
@@ -212,7 +204,7 @@ function postApiEndpoint(url, postBody, apiKey) {
       'Authorization': apiKey,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(postBody), // '{"updatedBy":"name","vars":{"ent_name":"name"}}',
+    body: JSON.stringify(postBody),
     json: false
   };
 

@@ -133,6 +133,5 @@ function postApiEndpoint(url, postBody) {
 }
 
 app.listen(PORT, () => {
-  console.log(`bi-ui-mock-api-gateway listening on port ${PORT}!`);
   logger.info(`bi-ui-mock-api-gateway listening on port ${PORT}!`);
 });
