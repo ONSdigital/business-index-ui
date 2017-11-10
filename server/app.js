@@ -102,6 +102,8 @@ app.post('/login', (req, res) => {
     .then((gatewayJson) => {
       // Create user session
       const accessToken = uuidv4();
+      // We get the showConfetti env var on every login, as it can dynamically change in CF
+      const showConfetti = (process.env.SHOW_CONFETTI === 'true');
       sessions[accessToken] = {
         key: gatewayJson.key,
         role: gatewayJson.role,
@@ -113,7 +115,8 @@ app.post('/login', (req, res) => {
       return res.send(JSON.stringify({
         username,
         accessToken,
-        role: gatewayJson.role
+        role: gatewayJson.role,
+        showConfetti
       }));
     })
     .catch((err) => {
