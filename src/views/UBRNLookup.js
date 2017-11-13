@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TitleAndDescription, BreadCrumb } from 'registers-react-library';
 import { connect } from 'react-redux';
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
 import { ubrnSearch, setQuery } from '../actions/ApiActions';
 import { SET_UBRN_QUERY } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
 import UBRNForm from '../components/UBRNForm';
 import { validateUBRNSearch } from '../utils/validation';
 import config from '../config/validation';
+import ResultsTable from '../components/ResultsTable';
 
 const { UBRN } = config;
 
@@ -98,59 +97,7 @@ class UBRNLookup extends React.Component {
             />
             <br />
             {this.props.data.results.length !== 0 &&
-              <ReactTable
-                showPagination={false}
-                data={[this.props.data.results]}
-                columns={[
-                  {
-                    Header: 'UBRN',
-                    id: 'id',
-                    accessor: d => d.id,
-                  },
-                  {
-                    Header: 'Business Name',
-                    id: 'businessName',
-                    accessor: d => d.businessName,
-                  },
-                  {
-                    Header: 'UPRN',
-                    id: 'uprn',
-                    accessor: d => d.uprn,
-                  },
-                  {
-                    Header: 'PostCode',
-                    id: 'postCode',
-                    accessor: d => d.postCode,
-                  },
-                  {
-                    Header: 'Industry Code',
-                    id: 'industryCode',
-                    accessor: d => d.industryCode,
-                  },
-                  {
-                    Header: 'Legal Status',
-                    id: 'legalStatus',
-                    accessor: d => d.legalStatus,
-                  },
-                  {
-                    Header: 'Trading Status',
-                    id: 'tradingStatus',
-                    accessor: d => d.tradingStatus,
-                  },
-                  {
-                    Header: 'Turnover',
-                    id: 'turnover',
-                    accessor: d => d.turnover,
-                  },
-                  {
-                    Header: 'Employment Bands',
-                    id: 'employmentBands',
-                    accessor: d => d.employmentBands,
-                  },
-                ]}
-                defaultPageSize={1}
-                className="-striped -highlight"
-              />
+              <ResultsTable results={[this.props.data.results]} showFilter={false} />
             }
             <br />
           </div>

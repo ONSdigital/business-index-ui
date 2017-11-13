@@ -8,8 +8,7 @@ import { matchSearch, setQuery, setResults } from '../actions/ApiActions';
 import { SET_MATCH_QUERY, SET_MATCH_RESULTS } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
 import MatchForm from '../components/MatchForm';
-import SummaryTable from '../components/SummaryTable';
-import ChildRefTable from '../components/ChildRefTable';
+import ResultsTable from '../components/ResultsTable';
 
 class Match extends React.Component {
   constructor(props) {
@@ -158,70 +157,7 @@ class Match extends React.Component {
             />
             <br />
             {this.props.data.results.length !== 0 &&
-              <div id="react-table">
-                <ReactTable
-                  showPagination
-                  data={this.props.data.results}
-                  filterable={this.state.showFilter}
-                  columns={[
-                    {
-                      Header: 'UBRN',
-                      id: 'id',
-                      accessor: d => d.id,
-                    },
-                    {
-                      Header: 'Business Name',
-                      id: 'businessName',
-                      accessor: d => d.businessName,
-                    },
-                    {
-                      Header: 'PostCode',
-                      id: 'postCode',
-                      accessor: d => d.postCode,
-                    },
-                    {
-                      Header: 'Industry Code',
-                      id: 'industryCode',
-                      accessor: d => d.industryCode,
-                    },
-                    {
-                      Header: 'Legal Status',
-                      id: 'legalStatus',
-                      accessor: d => d.legalStatus,
-                    },
-                    {
-                      Header: 'Trading Status',
-                      id: 'tradingStatus',
-                      accessor: d => d.tradingStatus,
-                    },
-                    {
-                      Header: 'Turnover',
-                      id: 'turnover',
-                      accessor: d => d.turnover,
-                    },
-                    {
-                      Header: 'Employment Bands',
-                      id: 'employmentBands',
-                      accessor: d => d.employmentBands,
-                    },
-                  ]}
-                  defaultPageSize={10}
-                  className="-striped -highlight"
-                  SubComponent={row => {
-                    return (
-                      <ChildRefTable row={row} />
-                    );
-                  }}
-                />
-                <br /><br />
-                <SummaryTable
-                  title="Useful Information"
-                  items={[
-                    { key: 'Number of results', value: this.props.data.results.length },
-                    { key: 'Results capped at 10,000', value: (this.props.data.results.length === 10000) ? 'true' : 'false' },
-                  ]}
-                />
-              </div>
+              <ResultsTable results={this.props.data.results} showFilter={this.state.showFilter} />
             }
             <br />
           </div>
