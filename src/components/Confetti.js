@@ -30,7 +30,7 @@ class ShowConfetti extends React.Component {
     return (
       <div>
         {(this.state.count < (this.props.seconds / 0.25) && this.props.showConfetti) &&
-          <Confetti opacity={this.state.opacity} width={`${window.innerWidth}px`} height={`${window.innerHeight}px`} />
+          <Confetti opacity={this.state.opacity} width={window.innerWidth-100} height={window.innerHeight} />
         }
       </div>
     );
