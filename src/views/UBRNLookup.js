@@ -97,7 +97,12 @@ class UBRNLookup extends React.Component {
             />
             <br />
             {this.props.data.results.length !== 0 &&
-              <ResultsTable results={[this.props.data.results]} showFilter={false} />
+              <ResultsTable
+                results={[this.props.data.results]}
+                showFilter={false}
+                showPagination={false}
+                defaultPageSize={1}
+              />
             }
             <br />
           </div>

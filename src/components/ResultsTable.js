@@ -5,11 +5,11 @@ import 'react-table/react-table.css';
 import SummaryTable from '../components/SummaryTable';
 import ChildRefTable from '../components/ChildRefTable';
 
-const ResultsTable = ({ results, showFilter }) => {
+const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize }) => {
   return (
     <div id="react-table">
       <ReactTable
-        showPagination
+        showPagination={showPagination}
         data={results}
         filterable={showFilter}
         columns={[
@@ -54,7 +54,7 @@ const ResultsTable = ({ results, showFilter }) => {
             accessor: d => d.employmentBands,
           },
         ]}
-        defaultPageSize={10}
+        defaultPageSize={defaultPageSize}
         className="-striped -highlight"
         SubComponent={row => {
           return (
@@ -74,10 +74,15 @@ const ResultsTable = ({ results, showFilter }) => {
   );
 };
 
+ResultsTable.defaultProps = {
+  defaultPageSize: 10,
+};
 
 ResultsTable.propTypes = {
   results: PropTypes.array.isRequired,
   showFilter: PropTypes.bool.isRequired,
+  showPagination: PropTypes.bool.isRequired,
+  defaultPageSize: PropTypes.number,
 };
 
 export default ResultsTable;

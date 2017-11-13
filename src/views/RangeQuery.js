@@ -142,7 +142,11 @@ class RangeQuery extends React.Component {
             />
             <br />
             {this.props.data.results.length !== 0 &&
-              <ResultsTable results={this.props.data.results} showFilter={this.state.showFilter} />
+              <ResultsTable
+                results={this.props.data.results}
+                showFilter={this.state.showFilter}
+                showPagination
+              />
             }
             <br />
           </div>
