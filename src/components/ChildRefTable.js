@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import ErrorModal from '../components/ErrorModal';
 import industryCodeDescription from '../utils/siccode';
+import config from '../config/api-urls';
+
+const { REROUTE_URL, API_VERSION, BUSINESS_ENDPOINT } = config;
 
 class ChildRefTable extends React.Component {
   constructor(props) {
@@ -20,7 +23,17 @@ class ChildRefTable extends React.Component {
     this.fetchData(this.props.row);
   }
   fetchData(row) {
-    fetch(`http://localhost:9000/v1/business/${row.original.id}`)
+    fetch(`${REROUTE_URL}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': sessionStorage.getItem('accessToken'),
+      },
+      body: JSON.stringify({
+        method: 'GET',
+        endpoint: `${API_VERSION}/${BUSINESS_ENDPOINT}/${row.original.id}`,
+      }),
+    })
     .then(response => {
       if (response.ok) {
         return response.json();
