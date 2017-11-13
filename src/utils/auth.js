@@ -1,7 +1,6 @@
 // @flow
 
 import config from '../config/api-urls';
-import base64 from 'base-64';
 
 const { AUTH_URL } = config;
 

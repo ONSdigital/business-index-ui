@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TitleAndDescription, BreadCrumb } from 'registers-react-library';
 import { connect } from 'react-redux';
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
 import { matchSearch, setQuery, setResults } from '../actions/ApiActions';
 import { SET_MATCH_QUERY, SET_MATCH_RESULTS } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
