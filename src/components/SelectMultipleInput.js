@@ -74,12 +74,16 @@ class SelectMultipleInput extends React.Component {
   }
 }
 
+SelectMultipleInput.defaultProps = {
+  value: undefined,
+};
+
 SelectMultipleInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   bands: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.array.isRequired,
+  value: PropTypes.array,
 };
 
 export default SelectMultipleInput;

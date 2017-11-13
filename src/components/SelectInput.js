@@ -17,12 +17,16 @@ const SelectInput = ({ id, label, bands, onChange, value }) => {
   );
 };
 
+SelectInput.defaultProps = {
+  value: '',
+};
+
 SelectInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   bands: PropTypes.object.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
 };
 
 export default SelectInput;
