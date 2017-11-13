@@ -62,3 +62,28 @@ export function getLegalStatusDescription(status: string) {
       return 'Not Allocated';
   }
 }
+
+export function maxSize(...args) {
+  return args.reduce((a, b) => (a > b ? a.length : b.length), 0);
+}
+
+export function formatData(business: {}) {
+  const largestRef = maxSize(business.vatRefs, business.payeRefs);
+  const formattedData = [];
+  for (let i = 0; i <= largestRef; i += 1) {
+    if (i === 0) {
+      formattedData.push({
+        companyNo: business.companyNo,
+        vatRefs: business.vatRefs[i],
+        payeRefs: business.payeRefs[i],
+      });
+    } else {
+      formattedData.push({
+        companyNo: '',
+        vatRefs: business.vatRefs[i],
+        payeRefs: business.payeRefs[i],
+      });
+    }
+  }
+  return formattedData;
+}

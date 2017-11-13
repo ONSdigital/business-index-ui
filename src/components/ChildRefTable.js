@@ -4,6 +4,7 @@ import ReactTable from 'react-table';
 import ErrorModal from '../components/ErrorModal';
 import industryCodeDescription from '../utils/siccode';
 import config from '../config/api-urls';
+import { formatData } from '../utils/helperMethods';
 
 const { REROUTE_URL, API_VERSION, BUSINESS_ENDPOINT } = config;
 
@@ -40,7 +41,7 @@ class ChildRefTable extends React.Component {
       }
       throw new Error(`Error: ${response.status} ${response.statusText}`);
     })
-    .then(data => this.setState({ data: [data], isLoading: false }))
+    .then(data => this.setState({ data: formatData(data), isLoading: false }))
     .catch(error => this.setState({ errorMessage: error.message, error: true, isLoading: false }));
   }
   closeModal() {
