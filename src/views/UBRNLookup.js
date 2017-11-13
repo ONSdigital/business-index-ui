@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TitleAndDescription, BreadCrumb } from 'registers-react-library';
 import { connect } from 'react-redux';
-import { ubrnSearch, setQuery } from '../actions/ApiActions';
-import { SET_UBRN_QUERY } from '../constants/ApiConstants';
+import { ubrnSearch, setQuery, setResults } from '../actions/ApiActions';
+import { SET_UBRN_QUERY, SET_UBRN_RESULTS } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
 import UBRNForm from '../components/UBRNForm';
 import { validateUBRNSearch } from '../utils/validation';
@@ -23,6 +23,7 @@ class UBRNLookup extends React.Component {
     this.changeQuery = this.changeQuery.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.clearQuery = this.clearQuery.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     // The Redux action for the api request will set the errorMessage in the
@@ -39,11 +40,11 @@ class UBRNLookup extends React.Component {
       this.setState({ results: nextProps.data.results });
     }
   }
-  componentWillUpdate() {
-    if (!this.state.show) {
-      this.child.myInput.focus();
-    }
-  }
+  // componentWillUpdate() {
+  //   if (!this.state.show) {
+  //     this.child.myInput.focus();
+  //   }
+  // }
   onSubmit(e) {
     e.preventDefault();
     const query = this.props.data.query;
@@ -58,6 +59,13 @@ class UBRNLookup extends React.Component {
         errorMessage: 'Please enter a valid UBRN number.',
       });
     }
+  }
+  clearQuery() {
+    this.props.dispatch(setQuery(SET_UBRN_QUERY, ''));
+    this.props.dispatch(setResults(SET_UBRN_RESULTS, { results: [] }));
+    // Scroll to the top of the page and focus on the first input
+    document.getElementsByClassName('wrapper')[0].scrollIntoView(false);
+    this.child.childTextInput.myInput.focus();
   }
   closeModal() {
     this.setState({ show: false, errorMessage: '' });
@@ -89,6 +97,7 @@ class UBRNLookup extends React.Component {
               onChange={this.changeQuery}
               value={this.props.data.query}
               valid={validateUBRNSearch(this.props.data.query)}
+              onClear={this.clearQuery}
             />
             <ErrorModal
               show={this.state.show}
