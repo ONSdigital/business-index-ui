@@ -104,6 +104,7 @@ export function checkAuth(username, token) {
         dispatch(setUserState({
           username: data.username,
           accessToken: data.newAccessToken,
+          role: data.role,
         }));
         sessionStorage.setItem('accessToken', data.newAccessToken);
       }

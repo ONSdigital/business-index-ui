@@ -133,7 +133,11 @@ app.post('/checkToken', (req, res) => {
   if (sessions[accessToken]) {
     logger.info('Valid token');
     res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ username: sessions[accessToken].username, accessToken }));
+    res.send(JSON.stringify({
+      username: sessions[accessToken].username,
+      accessToken,
+      role: sessions[accessToken].role
+    }));
   } else {
     logger.info('Invalid token');
     res.sendStatus(401);
