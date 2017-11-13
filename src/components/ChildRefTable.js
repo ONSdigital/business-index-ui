@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import ErrorModal from '../components/ErrorModal';
+import industryCodeDescription from '../utils/siccode';
 
 class ChildRefTable extends React.Component {
   constructor(props) {
@@ -57,6 +58,7 @@ class ChildRefTable extends React.Component {
           showPaginationTop={false}
           showPaginationBottom={false}
         />
+        <h3>Industry Code: {industryCodeDescription[this.state.data.industryCode]}</h3>
         <ErrorModal
           show={this.state.error}
           message={this.state.errorMessage}
