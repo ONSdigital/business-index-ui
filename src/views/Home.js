@@ -19,7 +19,7 @@ const Home = ({ username, role, uiVersion, apiVersion }) => {
               Welcome to the</span> Business Index
               </h1>
                 <p className="page-intro__content page-intro__content--home-big">
-                  The Business Index (BI) is a ...
+                  The Business Index is definitive list of the UK business population based on authoritative sources, for statistical use across Government.
                 </p>
               </div>
               <div className="a-z col col--md-47 col--lg-23 col--lg-offset-2 margin-top-lg--3" style={{ textAlign: 'center' }}>
