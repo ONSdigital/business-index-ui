@@ -9,7 +9,7 @@ const SummaryTable = ({ title, items }) => {
         {
           items.map((item) => {
             return (
-              <div className="summary__items">
+              <div key={item.key} className="summary__items">
                 <div className="summary__question" id="">
                   {item.key}
                 </div>
