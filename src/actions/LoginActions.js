@@ -118,8 +118,8 @@ export function logout() {
   return (dispatch) => {
     dispatch(sendingRequest(true));
     auth.logout(sessionStorage.accessToken, (success) => {
+      dispatch(sendingRequest(false));
       if (success) {
-        dispatch(sendingRequest(false));
         dispatch(setAuthState(false));
         localStorage.clear();
         browserHistory.push('/');
@@ -129,6 +129,9 @@ export function logout() {
         dispatch(resetState(undefined));
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
+        localStorage.clear();
+        browserHistory.push('/');
+        dispatch(resetState(undefined));
       }
     });
   };

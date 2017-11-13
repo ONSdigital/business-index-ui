@@ -148,6 +148,20 @@ app.post('/logout', (req, res) => {
   res.sendStatus(200);
 });
 
+app.post('/logout', (req, res) => {
+  logger.info('Logging user out');
+  const token = req.body.token;
+  try {
+    // Remove user from storage
+    delete sessions[token];
+    logger.info('Successful logout');
+    res.sendStatus(200);
+  } catch (e) {
+    logger.error(`Unable to log user out: ${e}`);
+    res.sendStatus(500);
+  }
+});
+
 app.post('/api', (req, res) => {
   // re route api requests with API key
   const method = req.body.method;
