@@ -118,10 +118,10 @@ export function logout() {
   return (dispatch) => {
     dispatch(sendingRequest(true));
     auth.logout(sessionStorage.accessToken, (success) => {
+      dispatch(sendingRequest(false));
       if (success) {
-        dispatch(sendingRequest(false));
         dispatch(setAuthState(false));
-        localStorage.clear();
+        sessionStorage.clear();
         browserHistory.push('/');
         // This needs to go at the end, or else if we logout whilst on a page
         // that uses the redux store, an error will occur before the user
@@ -129,6 +129,9 @@ export function logout() {
         dispatch(resetState(undefined));
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
+        sessionStorage.clear();
+        browserHistory.push('/');
+        dispatch(resetState(undefined));
       }
     });
   };
