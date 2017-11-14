@@ -16,7 +16,7 @@ CheckBoxInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   onChangeFilter: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.bool.isRequired,
 };
 
 export default CheckBoxInput;

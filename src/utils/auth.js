@@ -1,7 +1,6 @@
 // @flow
 
 import config from '../config/api-urls';
-import base64 from 'base-64';
 
 const { AUTH_URL } = config;
 
@@ -35,10 +34,11 @@ const auth = {
           const loginName: string = json.username;
           const accessToken: string = json.accessToken;
           const showConfetti: string = json.showConfetti;
+          const role: string = json.role;
           // const role: string = json.role;
           // sessionStorage.setItem('token', token);
           // Send auth request to save token username pair
-          callback(true, { username: loginName, accessToken, showConfetti });
+          callback(true, { username: loginName, accessToken, showConfetti, role });
         });
       }
       return callback(false, { message: 'Unable to login.' });
@@ -59,9 +59,9 @@ const auth = {
         return response.json().then((json) => {
           const newAccessToken: string = json.accessToken;
           const username: string = json.username;
-          // const role: string = json.role;
+          const role: string = json.role;
           // Send auth request to save token username pair
-          callback(true, { username, newAccessToken });
+          callback(true, { username, newAccessToken, role });
         });
       }
       return callback(false);

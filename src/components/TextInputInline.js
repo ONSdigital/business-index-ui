@@ -61,6 +61,10 @@ class TextInputInline extends React.Component {
   }
 }
 
+TextInputInline.defaultProps = {
+  value: undefined,
+};
+
 TextInputInline.propTypes = {
   onChange: PropTypes.func.isRequired,
   autoFocus: PropTypes.bool.isRequired,
@@ -68,7 +72,7 @@ TextInputInline.propTypes = {
   label: PropTypes.string.isRequired,
   placeholderMin: PropTypes.string.isRequired,
   placeholderMax: PropTypes.string.isRequired,
-  value: PropTypes.arr,
+  value: PropTypes.array,
 };
 
 export default TextInputInline;

@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'registers-react-library';
-import Select from 'react-select';
-import 'react-select/dist/react-select.min.css';
 import { employmentBands, legalStatusBands, turnoverBands, tradingStatusBands } from '../utils/convertBands';
 import TextInput from './TextInput';
 import CheckBoxInput from './CheckBoxInput';

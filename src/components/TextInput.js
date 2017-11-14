@@ -21,6 +21,7 @@ class TextInput extends React.Component {
 
 TextInput.defaultProps = {
   autoFocus: false,
+  value: '',
 };
 
 TextInput.propTypes = {
@@ -28,7 +29,7 @@ TextInput.propTypes = {
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   autoFocus: PropTypes.bool.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
 };
 
 export default TextInput;

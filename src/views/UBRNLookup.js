@@ -7,10 +7,7 @@ import { SET_UBRN_QUERY, SET_UBRN_RESULTS } from '../constants/ApiConstants';
 import ErrorModal from '../components/ErrorModal';
 import UBRNForm from '../components/UBRNForm';
 import { validateUBRNSearch } from '../utils/validation';
-import config from '../config/validation';
 import ResultsTable from '../components/ResultsTable';
-
-const { UBRN } = config;
 
 class UBRNLookup extends React.Component {
   constructor(props) {

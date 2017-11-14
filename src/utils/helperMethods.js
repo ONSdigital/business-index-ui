@@ -64,13 +64,13 @@ export function getLegalStatusDescription(status: string) {
 }
 
 export function maxSize(...args) {
-  return args.reduce((a, b) => (a > b ? a.length : b.length), 0);
+  return args.reduce((a, b) => (b.length > a ? b.length : a), 0);
 }
 
 export function formatData(business: {}) {
   const largestRef = maxSize(business.vatRefs, business.payeRefs);
   const formattedData = [];
-  for (let i = 0; i <= largestRef; i += 1) {
+  for (let i = 0; i <= largestRef - 1; i += 1) {
     if (i === 0) {
       formattedData.push({
         companyNo: business.companyNo,
