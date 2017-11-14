@@ -48,6 +48,9 @@ class ChildRefTable extends React.Component {
     this.setState({ error: false, errorMessage: '' });
   }
   render() {
+    const business = this.props.row.original;
+    const description = (industryCodeDescription[business.industryCode] === undefined)
+      ? 'No industry code description found' : industryCodeDescription[business.industryCode];
     return (
       <div style={{ padding: '20px' }}>
         <ReactTable
@@ -66,13 +69,13 @@ class ChildRefTable extends React.Component {
               accessor: 'payeRefs',
             },
           ]}
-          defaultPageSize={1}
+          pageSize={this.state.data.length}
           loading={this.state.isLoading}
           className="-striped -highlight"
           showPaginationTop={false}
           showPaginationBottom={false}
         />
-        <h3>Industry Code: {industryCodeDescription[this.state.data.industryCode]}</h3>
+        <h4>Industry Code [{business.industryCode}]: {description}</h4>
         <ErrorModal
           show={this.state.error}
           message={this.state.errorMessage}
