@@ -68,7 +68,7 @@ export function maxSize(...args) {
 }
 
 export function formatData(business: {}) {
-  const largestRef = maxSize(business.vatRefs, business.payeRefs);
+  const largestRef = maxSize(business.vatRefs, business.payeRefs, [business.companyNo]);
   const formattedData = [];
   for (let i = 0; i <= largestRef - 1; i += 1) {
     if (i === 0) {
