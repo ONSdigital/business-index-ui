@@ -24,7 +24,6 @@ class ChildRefTable extends React.Component {
     this.fetchData(this.props.row);
   }
   fetchData(row) {
-    console.log('fetching...')
     fetch(`${REROUTE_URL}`, {
       method: 'POST',
       headers: {
