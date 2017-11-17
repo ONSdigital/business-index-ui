@@ -137,10 +137,9 @@ class Match extends React.Component {
               onChangeBands={this.changeBands}
               filter={this.state.showFilter}
               onClear={this.clearQuery}
-              showFilter={this.props.data.results.length !== 0}
+              showFilters={this.props.data.results.length !== 0}
               convertBands={this.state.convertBands}
               value={this.props.data.query}
-              showBandsFilter={this.props.data.results.length !== 0}
             />
             <ErrorModal
               show={this.state.show}
