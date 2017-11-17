@@ -26,10 +26,17 @@ class RangeForm extends React.Component {
         {this.props.showFilter &&
           <CheckBoxInput value={this.props.filter} label="Filter Results" id="FilterCheckbox" onChangeFilter={this.props.onChangeFilter} />
         }
+        {this.props.showBandsFilter &&
+          <CheckBoxInput value={this.props.convertBands} label="Convert Bands" id="ConvertBandsCheckbox" onChangeFilter={this.props.onChangeBands} />
+        }
       </form>
     );
   }
 }
+
+RangeForm.defaultProps = {
+  convertBands: true,
+};
 
 RangeForm.propTypes = {
   currentlySending: PropTypes.bool.isRequired,
@@ -37,9 +44,12 @@ RangeForm.propTypes = {
   onChange: PropTypes.func.isRequired,
   onClear: PropTypes.func.isRequired,
   onChangeFilter: PropTypes.func.isRequired,
+  onChangeBands: PropTypes.func.isRequired,
   filter: PropTypes.bool.isRequired,
   showFilter: PropTypes.bool.isRequired,
+  showBandsFilter: PropTypes.bool.isRequired,
   initialValues: PropTypes.object.isRequired,
+  convertBands: PropTypes.bool,
 };
 
 export default RangeForm;
