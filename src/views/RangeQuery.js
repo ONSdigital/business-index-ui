@@ -140,6 +140,7 @@ class RangeQuery extends React.Component {
               onClear={this.clearQuery}
               showFilter={this.props.data.results.length !== 0}
               value={this.props.data.query}
+              convertBands={this.state.convertBands}
               showBandsFilter={this.props.data.results.length !== 0}
             />
             <ErrorModal
