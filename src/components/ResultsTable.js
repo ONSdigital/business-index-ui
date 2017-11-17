@@ -4,6 +4,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import SummaryTable from '../components/SummaryTable';
 import ChildRefTable from '../components/ChildRefTable';
+import { employmentBands, legalStatusBands, tradingStatusBands, turnoverBands } from '../utils/convertBands';
 
 const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize }) => {
   return (
@@ -36,22 +37,22 @@ const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize }) 
           {
             Header: 'Legal Status',
             id: 'legalStatus',
-            accessor: d => d.legalStatus,
+            accessor: d => legalStatusBands[d.legalStatus],
           },
           {
             Header: 'Trading Status',
             id: 'tradingStatus',
-            accessor: d => d.tradingStatus,
+            accessor: d => tradingStatusBands[d.tradingStatus],
           },
           {
             Header: 'Turnover',
             id: 'turnover',
-            accessor: d => d.turnover,
+            accessor: d => turnoverBands[d.turnover],
           },
           {
             Header: 'Employment Bands',
             id: 'employmentBands',
-            accessor: d => d.employmentBands,
+            accessor: d => employmentBands[d.employmentBands],
           },
         ]}
         defaultPageSize={defaultPageSize}
