@@ -1,3 +1,7 @@
+import config from '../config/export';
+
+const { NAME } = config;
+
 export function exportCSV(header, results) {
   const columnNames = ['id', 'businessName', 'postCode', 'industryCode', 'legalStatus', 'tradingStatus', 'turnover', 'employmentBands', 'companyNo'];
   let CSV = '';
@@ -20,12 +24,11 @@ export function exportCSV(header, results) {
 
 export function downloadCSV(results) {
   const header = 'UBRN,Business Name,PostCode,Industry Code,Legal Status,Trading Status,Turnover,Employment,Company Reference Number';
-  const name = 'CSV_Download';
-  const csv = exportCSV(header, results, name);
+  const csv = exportCSV(header, results, NAME);
   const uri = `data:text/csv;charset=utf-8,${escape(csv)}`;
   const link = document.createElement('a');
   link.href = uri;
-  const filename = `${name}.csv`;
+  const filename = `${NAME}.csv`;
   link.download = filename;
   // Below append/remove child is to ensure the download button works on
   // Firefox, link.click()
