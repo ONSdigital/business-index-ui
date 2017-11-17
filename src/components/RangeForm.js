@@ -23,13 +23,26 @@ class RangeForm extends React.Component {
         &nbsp;
         <Button id="clearButton" size="wide" text="Clear" onClick={this.props.onClear} ariaLabel="Clear Button" type="reset" />
         <br /><br />
-        {this.props.showFilter &&
-          <CheckBoxInput value={this.props.filter} label="Filter Results" id="FilterCheckbox" onChangeFilter={this.props.onChangeFilter} />
+        {this.props.showFilters &&
+          <div className="sdc-isolation field">
+            <div className="grid grid--tight" style={{ margin: '0', padding: '0' }}>
+              <div className="grid__col col-3@m" style={{ margin: '0', padding: '0' }}>
+                <CheckBoxInput value={this.props.filter} label="Filter Results" id="FilterCheckbox" onChangeFilter={this.props.onChangeFilter} />
+              </div>
+              <div className="grid__col col-3@m">
+                <CheckBoxInput value={this.props.convertBands} label="Convert Bands" id="ConvertBandsCheckbox" onChangeFilter={this.props.onChangeBands} />
+              </div>
+            </div>
+          </div>
         }
       </form>
     );
   }
 }
+
+RangeForm.defaultProps = {
+  convertBands: true,
+};
 
 RangeForm.propTypes = {
   currentlySending: PropTypes.bool.isRequired,
@@ -37,9 +50,11 @@ RangeForm.propTypes = {
   onChange: PropTypes.func.isRequired,
   onClear: PropTypes.func.isRequired,
   onChangeFilter: PropTypes.func.isRequired,
+  onChangeBands: PropTypes.func.isRequired,
   filter: PropTypes.bool.isRequired,
-  showFilter: PropTypes.bool.isRequired,
+  showFilters: PropTypes.bool.isRequired,
   initialValues: PropTypes.object.isRequired,
+  convertBands: PropTypes.bool,
 };
 
 export default RangeForm;

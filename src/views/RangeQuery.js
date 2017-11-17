@@ -18,12 +18,14 @@ class RangeQuery extends React.Component {
       values: [],
       scroll: false,
       showFilter: false,
+      convertBands: true,
     };
     this.changeQuery = this.changeQuery.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.clearQuery = this.clearQuery.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.changeFilter = this.changeFilter.bind(this);
+    this.changeBands = this.changeBands.bind(this);
   }
   componentDidMount() {
     // Reload the data from the store
@@ -93,6 +95,9 @@ class RangeQuery extends React.Component {
   changeFilter() {
     this.setState({ showFilter: !this.state.showFilter });
   }
+  changeBands() {
+    this.setState({ convertBands: !this.state.convertBands });
+  }
   closeModal() {
     this.setState({ show: false, errorMessage: '' });
   }
@@ -130,10 +135,12 @@ class RangeQuery extends React.Component {
               onSubmit={this.onSubmit}
               onChange={this.changeQuery}
               onChangeFilter={this.changeFilter}
+              onChangeBands={this.changeBands}
               filter={this.state.showFilter}
               onClear={this.clearQuery}
-              showFilter={this.props.data.results.length !== 0}
+              showFilters={this.props.data.results.length !== 0}
               value={this.props.data.query}
+              convertBands={this.state.convertBands}
             />
             <ErrorModal
               show={this.state.show}
@@ -143,6 +150,7 @@ class RangeQuery extends React.Component {
             <br />
             {this.props.data.results.length !== 0 &&
               <ResultsTable
+                convertBands={this.state.convertBands}
                 results={this.props.data.results}
                 showFilter={this.state.showFilter}
                 showPagination

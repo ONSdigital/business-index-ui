@@ -16,6 +16,7 @@ class Match extends React.Component {
       errorMessage: '',
       formValues: {},
       showFilter: false,
+      convertBands: true,
       scroll: false,
     };
     this.changeQuery = this.changeQuery.bind(this);
@@ -23,6 +24,7 @@ class Match extends React.Component {
     this.clearQuery = this.clearQuery.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.changeFilter = this.changeFilter.bind(this);
+    this.changeBands = this.changeBands.bind(this);
   }
   componentDidMount() {
     // Reload the data from the store
@@ -90,6 +92,9 @@ class Match extends React.Component {
   changeFilter() {
     this.setState({ showFilter: !this.state.showFilter });
   }
+  changeBands() {
+    this.setState({ convertBands: !this.state.convertBands });
+  }
   changeQuery(evt) {
     // if setting to empty, delete
     const formValues = this.state.formValues;
@@ -129,9 +134,11 @@ class Match extends React.Component {
               onSubmit={this.onSubmit}
               onChange={this.changeQuery}
               onChangeFilter={this.changeFilter}
+              onChangeBands={this.changeBands}
               filter={this.state.showFilter}
               onClear={this.clearQuery}
-              showFilter={this.props.data.results.length !== 0}
+              showFilters={this.props.data.results.length !== 0}
+              convertBands={this.state.convertBands}
               value={this.props.data.query}
             />
             <ErrorModal
@@ -142,6 +149,7 @@ class Match extends React.Component {
             <br />
             {this.props.data.results.length !== 0 &&
               <ResultsTable
+                convertBands={this.state.convertBands}
                 results={this.props.data.results}
                 showFilter={this.state.showFilter}
                 showPagination

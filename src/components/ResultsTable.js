@@ -4,8 +4,9 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import SummaryTable from '../components/SummaryTable';
 import ChildRefTable from '../components/ChildRefTable';
+import { employmentBands, legalStatusBands, tradingStatusBands, turnoverBands } from '../utils/convertBands';
 
-const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize }) => {
+const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize, convertBands }) => {
   return (
     <div id="react-table">
       <ReactTable
@@ -36,22 +37,22 @@ const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize }) 
           {
             Header: 'Legal Status',
             id: 'legalStatus',
-            accessor: d => d.legalStatus,
+            accessor: d => ((convertBands) ? legalStatusBands[d.legalStatus] : d.legalStatus),
           },
           {
             Header: 'Trading Status',
             id: 'tradingStatus',
-            accessor: d => d.tradingStatus,
+            accessor: d => ((convertBands) ? tradingStatusBands[d.tradingStatus] : d.tradingStatus),
           },
           {
             Header: 'Turnover',
             id: 'turnover',
-            accessor: d => d.turnover,
+            accessor: d => ((convertBands) ? turnoverBands[d.turnover] : d.turnover),
           },
           {
             Header: 'Employment Bands',
             id: 'employmentBands',
-            accessor: d => d.employmentBands,
+            accessor: d => ((convertBands) ? employmentBands[d.employmentBands] : d.employmentBands),
           },
         ]}
         defaultPageSize={defaultPageSize}
@@ -76,6 +77,7 @@ const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize }) 
 
 ResultsTable.defaultProps = {
   defaultPageSize: 10,
+  convertBands: true,
 };
 
 ResultsTable.propTypes = {
@@ -83,6 +85,7 @@ ResultsTable.propTypes = {
   showFilter: PropTypes.bool.isRequired,
   showPagination: PropTypes.bool.isRequired,
   defaultPageSize: PropTypes.number,
+  convertBands: PropTypes.bool,
 };
 
 export default ResultsTable;
