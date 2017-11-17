@@ -36,3 +36,12 @@ export function downloadCSV(results) {
   link.click();
   document.body.removeChild(link);
 }
+
+export function downloadJSON(results) {
+  const jsonStr = JSON.stringify(results, null, 2);
+  const uri = `data:text/json;charset=utf-8,${escape(jsonStr)}`;
+  const link = document.createElement('a');
+  link.href = uri;
+  link.download = `${NAME}.json`;
+  link.click();
+}
