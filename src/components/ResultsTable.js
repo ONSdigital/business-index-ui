@@ -5,6 +5,7 @@ import 'react-table/react-table.css';
 import SummaryTable from '../components/SummaryTable';
 import ChildRefTable from '../components/ChildRefTable';
 import { employmentBands, legalStatusBands, tradingStatusBands, turnoverBands } from '../utils/convertBands';
+import { downloadCSV, downloadJSON } from '../utils/export';
 
 const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize, convertBands }) => {
   return (
@@ -63,7 +64,16 @@ const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize, co
           );
         }}
       />
-      <br /><br />
+      <br />
+      <div className="sdc-isolation">
+        <div className="summary">
+          <h2 className="summary__title saturn" id="">Export Results</h2>
+          <button className="btn btn--secondary" onClick={() => downloadCSV(results)}>Save as CSV</button>
+          &nbsp;
+          <button className="btn btn--secondary" onClick={() => downloadJSON(results)}>Save as JSON</button>
+        </div>
+      </div>
+      <br />
       <SummaryTable
         title="Useful Information"
         items={[
