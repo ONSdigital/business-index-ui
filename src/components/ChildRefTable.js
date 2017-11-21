@@ -60,7 +60,7 @@ class ChildRefTable extends React.Component {
               Header: 'Company Number',
               accessor: 'companyNo',
               Cell: row => (
-                <a target="_blank" href={`http://data.companieshouse.gov.uk/doc/company/${row.value}`}>{row.value}</a>
+                <a target="_blank" rel="noopener noreferrer" href={`http://data.companieshouse.gov.uk/doc/company/${row.value}`}>{row.value}</a>
               ),
             },
             {
