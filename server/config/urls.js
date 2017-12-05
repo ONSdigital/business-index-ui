@@ -1,6 +1,6 @@
 const urls = {
-  AUTH_URL: 'http://localhost:3002/auth',
-  API_GW: 'http://localhost:3002',
+  AUTH_URL: process.env.SERVER_AUTH_URL,
+  API_GW: process.env.SERVER_API_GW_URL,
   API_URL: 'http://localhost:9000',
   API_VERSION: 'v1',
 };
