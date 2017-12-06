@@ -20,7 +20,7 @@ const auth = {
     // routes.js before this method is called
 
     // POST to the backend with username/password
-    fetch(`${AUTH_URL}/login`, {
+    fetch(`${AUTH_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,12 +48,12 @@ const auth = {
     });
   },
   checkToken(accessToken: string, callback: (success: boolean, data: ?{}) => void) {
-    fetch(`${AUTH_URL}/checkToken`, {
+    fetch(`${AUTH_URL}/auth/checkToken`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': sessionStorage.accessToken,
       },
-      body: JSON.stringify({ accessToken }),
     }).then((response) => {
       if (response.status === 200) {
         return response.json().then((json) => {
@@ -75,12 +75,12 @@ const auth = {
    */
   logout(accessToken: string, callback: (success: boolean) => void) {
     // const token: string = sessionStorage.token;
-    fetch(`${AUTH_URL}/logout`, {
+    fetch(`${AUTH_URL}/auth/logout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': sessionStorage.accessToken,
       },
-      body: JSON.stringify({ accessToken }),
     }).then(() => {
       // Whatever the response, log the user out.
       sessionStorage.clear();
