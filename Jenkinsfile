@@ -90,17 +90,17 @@ pipeline {
         parallel (
           "Unit" :  {
             colourText("info","Running unit tests...")
-            sh 'npm run-script test-unit'
+            sh 'npm run test-unit'
           },
           "Stress" :  {
             colourText("info","Running stress tests...")
-            sh 'ENV=local node server/ & HOST=http://localhost:3001 REQUEST=5000 REQ_PER_SECOND=50 npm run-script test-load'
+            sh 'ENV=local node server/ & HOST=http://localhost:3001 REQUEST=5000 REQ_PER_SECOND=50 npm run test-load'
             // sh 'killall node'
             // The above command will leave node running, will this be closed along with the workspace?
           },
           "Server" : {
             colourText("info","Running server tests...")
-            sh "npm run-script test-server"
+            sh "npm run test-server"
           }
         )
       }
@@ -124,11 +124,11 @@ pipeline {
         parallel (
           "Coverage Report" : {
             colourText("info","Generating coverage report...")
-            sh "npm run-script cover"
+            sh "npm run cover"
           },
           "Style Report" : {
             colourText("info","Generating style report...")
-            sh 'npm run-script lint-report-xml'
+            sh 'npm run lint-report-xml'
           }
         )
       }
