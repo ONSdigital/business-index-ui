@@ -2,7 +2,7 @@
 
 import config from '../config/api-urls';
 
-const { AUTH_URL, API_URL } = config;
+const { AUTH_URL, REROUTE_URL, API_VERSION } = config;
 
 /**
  * API lib for getting info (version/last updated etc.)
@@ -38,8 +38,16 @@ const apiInfo = {
    * @param  {Function} callback Called with returned data.
    */
   getApiInfo(callback: (success: boolean, data: {}) => void) {
-    fetch(`${API_URL}/version`, {
-      method: 'GET',
+    fetch(`${REROUTE_URL}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': sessionStorage.getItem('accessToken'),
+      },
+      body: JSON.stringify({
+        method: 'GET',
+        endpoint: 'version',
+      }),
     }).then((response) => {
       if (response.status === 200) {
         return response.json().then((json) => {
