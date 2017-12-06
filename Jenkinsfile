@@ -169,13 +169,6 @@ pipeline {
             sh 'npm install'
           }
 
-          // Do some replacements (will be migrating to use environment variables instead)
-          // sh "sed -i -e 's|Local|${env.DEPLOY_NAME}|g' src/config/constants.js"
-          // sh "sed -i -e 's|http://localhost:3002/auth|${env.API_GW_URL}/${env.DEPLOY_NAME}/bi/v1/auth|g' server/config/urls.js"
-          // sh "sed -i -e 's|http://localhost:3002|${env.API_GW_URL}/${env.DEPLOY_NAME}|g' server/config/urls.js"
-          // sh "sed -i -e 's|http://localhost:3001|https://${env.DEPLOY_NAME}-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}|g' src/config/api-urls.js"
-          // sh "sed -i -e 's|http://localhost:3001/api|https://${env.DEPLOY_NAME}-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}/api|g' src/config/api-urls.js"
-
           // Run npm run build
           sh "REACT_APP_ENV=${env.DEPLOY_NAME} REACT_APP_AUTH_URL=https://${env.DEPLOY_NAME}-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX} REACT_APP_API_URL=https://${env.DEPLOY_NAME}-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}/api npm run build"
           
@@ -184,7 +177,6 @@ pipeline {
           sh 'cp -r server/node_modules .'
           sh 'rm -rf package.json'
           sh 'cp server/package.json .'
-          sh 'rm -rf manifest.yml'
  
           // Get the proper manifest from Gitlab
           sh 'cp conf/dev/manifest.yml .'
