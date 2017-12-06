@@ -175,13 +175,9 @@ pipeline {
           // sh "sed -i -e 's|http://localhost:3002|${env.API_GW_URL}/${env.DEPLOY_NAME}|g' server/config/urls.js"
           // sh "sed -i -e 's|http://localhost:3001|https://${env.DEPLOY_NAME}-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}|g' src/config/api-urls.js"
           // sh "sed -i -e 's|http://localhost:3001/api|https://${env.DEPLOY_NAME}-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}/api|g' src/config/api-urls.js"
- 
-          sh """
-            REACT_APP_ENV=${env.DEPLOY_NAME}
-            REACT_APP_AUTH_URL=https://${env.DEPLOY_NAME}-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}
-            REACT_APP_API_URL=https://${env.DEPLOY_NAME}-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}/api
-            npm run build
-          """
+
+          // Run npm run build
+          sh "REACT_APP_ENV=${env.DEPLOY_NAME} REACT_APP_AUTH_URL=https://${env.DEPLOY_NAME}-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX} REACT_APP_API_URL=https://${env.DEPLOY_NAME}-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}/api npm run build"
           
           // For deployment, only need the node_modules/package.json for the server
           sh 'rm -rf node_modules'
