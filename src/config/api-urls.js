@@ -6,4 +6,7 @@ const apiUrls = {
   API_VERSION: 'v1',
 };
 
+console.log('AUTH_URL: ', apiUrls.AUTH_URL);
+console.log('process.env.REACT_APP_AUTH_URL: ', process.env.REACT_APP_AUTH_URL);
+
 export default apiUrls;

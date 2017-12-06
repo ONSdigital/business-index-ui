@@ -19,6 +19,8 @@ const auth = {
     // Do not need to check if user is already logged in, this is done in
     // routes.js before this method is called
 
+    console.log('(login) AUTH_URL: ', AUTH_URL);
+
     // POST to the backend with username/password
     fetch(`${AUTH_URL}/login`, {
       method: 'POST',
