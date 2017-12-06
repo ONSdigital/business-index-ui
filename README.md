@@ -29,32 +29,29 @@ export BI_UI_TEST_ADMIN_USERNAME=admin
 export BI_UI_TEST_ADMIN_PASSWORD=admin
 export BI_UI_TEST_USER_USERNAME=test
 export BI_UI_TEST_USER_PASSWORD=test
-export JWT_SECRET=SECRET
 ```
 
 ## Running the UI:
 
-1. Clone this repo, install dependencies and start NPM
+1. Clone this repo and install dependencies
 
 ```shell
 git clone https://github.com/ONSdigital/bi-ui.git
 cd bi-ui
 npm install
-npm start
 ```
 
-The NPM start command uses the following commands:
+2. Start the `Node.js` server
 
 ```shell
-npm run build
-SERVE_HTML=true ENV=local node server
+npm run start:server
 ```
 
-This will run Node and React on localhost:3001, since Node is serving
-`index.html`, hot-reloading will not work.
+3. Start the `React.js` development server (with hot reloading)
 
-To use hot-reloading, use `npm restart` which runs `react-scripts start`, this
-will start React on port 3000. To start the server, use `ENV=local node server/index.js`.
+```shell
+npm run start:react
+```
 
 ## Running the API
 
