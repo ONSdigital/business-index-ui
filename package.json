@@ -69,7 +69,7 @@
     "npm": "3.8.3"
   },
   "scripts": {
-    "start": "npm run build; SERVE_HTML=true NODE_ENV=development SERVER_AUTH_URL=http://localhost:3002/auth SERVER_API_GW_URL=http://localhost:3002 node server",
+    "start": "REACT_APP_ENV=local REACT_APP_AUTH_URL=http://localhost:3001 REACT_APP_API_URL=http://localhost:3001/api npm run build; SERVE_HTML=true NODE_ENV=development SERVER_AUTH_URL=http://localhost:3002/auth SERVER_API_GW_URL=http://localhost:3002 node server",
     "start:server": "NODE_ENV=development SERVER_AUTH_URL=http://localhost:3002/auth SERVER_API_GW_URL=http://localhost:3002 node server",
     "start:react": "REACT_APP_ENV=local REACT_APP_AUTH_URL=http://localhost:3001 REACT_APP_API_URL=http://localhost:3001/api react-scripts start",
     "build": "react-scripts build",

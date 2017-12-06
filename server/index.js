@@ -76,9 +76,9 @@ app.session = session;
 app.env = ENV;
 
 // Routes
-if (SERVE_HTML) app.use(require('./routes/staticFiles'));
 app.use(require('./routes/auth'));
 app.use(require('./routes/api'));
+if (SERVE_HTML) app.use(require('./routes/staticFiles'));
 
 app.listen(PORT, () => {
   logger.info(`bi-ui-node-server listening on port ${PORT}!`);
