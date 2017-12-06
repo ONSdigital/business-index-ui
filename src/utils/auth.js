@@ -79,8 +79,8 @@ const auth = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': sessionStorage.accessToken,
       },
-      body: JSON.stringify({ accessToken }),
     }).then(() => {
       // Whatever the response, log the user out.
       sessionStorage.clear();
