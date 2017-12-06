@@ -155,9 +155,9 @@ pipeline {
       agent { label 'GMU' }
       when {
         anyOf {
-          branch DEPLOY_DEV
-          branch DEPLOY_TEST
-          branch DEPLOY_PROD
+          branch BRANCH_DEV
+          branch BRANCH_TEST
+          branch BRANCH_PROD
         }
       }
       steps {
@@ -189,8 +189,8 @@ pipeline {
       agent { label 'GMU' }
       when {
         anyOf {
-          branch DEPLOY_DEV
-          branch DEPLOY_TEST
+          branch BRANCH_DEV
+          branch BRANCH_TEST
         }
       }
       steps {
@@ -205,8 +205,8 @@ pipeline {
       agent { label 'GMU' }
       when {
         anyOf {
-          branch DEPLOY_DEV
-          branch DEPLOY_TEST
+          branch BRANCH_DEV
+          branch BRANCH_TEST
         }
       }
       steps {
@@ -219,7 +219,7 @@ pipeline {
       agent { label 'GMU' }
       when {
         anyOf {
-          branch DEPLOY_PROD
+          branch BRANCH_PROD
         }
       }
       steps {
@@ -235,7 +235,7 @@ pipeline {
       agent { label 'GMU' }
       when {
         anyOf {
-          branch "master"
+          branch BRANCH_PROD
         }
       }
       steps {
