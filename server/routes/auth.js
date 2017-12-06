@@ -11,7 +11,7 @@ const timeouts = require('../config/timeouts');
 const router = express.Router();
 
 const createSessionMiddleware = (req, res) => {
-  app.session.createSession(req.body.username, req.connection.remoteAddress, req.role, req.key)
+  app.session.createSession(req.username, req.connection.remoteAddress, req.role, req.key)
   .then((sessionJson) => {
     logger.info('Successful login');
     res.send(JSON.stringify({
@@ -28,7 +28,6 @@ const createSessionMiddleware = (req, res) => {
 };
 
 const loginMiddleware = (req, res, next) => {
-  logger.error('+++++++++++++ LOGGING IN...');
   const username = req.body.username;
   const basicAuth = req.get('Authorization');
 
@@ -68,6 +67,7 @@ const loginMiddleware = (req, res, next) => {
     req.role = gatewayJson.role;
     req.key = gatewayJson.key;
     req.accessToken = accessToken;
+    req.username = username;
 
     logger.info('Successful login');
     next();
@@ -119,102 +119,3 @@ router.post('/auth/checkToken', [checkTokenMiddleware]);
 router.post('/auth/logout', [logoutMiddleware]);
 
 module.exports = router;
-
-
-// app.post('/login', (req, res) => {
-//   logger.info('Logging user in');
-//   // Get the username from the body of the POST
-//   const username = req.body.username;
-
-//   const basicAuth = req.get('Authorization');
-//   let options = {
-//     method: 'POST',
-//     uri: urls.AUTH_URL,
-//     timeout: timeouts.API_GW,
-//     headers: {
-//       'Content-Type': 'application/json',
-//       'Authorization': `${basicAuth}`
-//     },
-//     json: true,
-//     body: { username }
-//   };
-//   if (ENV === 'prod') {
-//     options = {
-//       method: 'POST',
-//       uri: urls.AUTH_URL,
-//       timeout: timeouts.API_GW,
-//       headers: {
-//         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-//         'Authorization': `${basicAuth}`
-//       },
-//       json: true
-//     };
-//   }
-
-  // rp(options)
-  //   .then((gatewayJson) => {
-  //     // Create user session
-  //     const accessToken = uuidv4();
-  //     // We get the showConfetti env var on every login, as it can dynamically change in CF
-  //     const showConfetti = (process.env.SHOW_CONFETTI === 'true');
-  //     sessions[accessToken] = {
-  //       key: gatewayJson.key,
-  //       role: gatewayJson.role,
-  //       username
-  //     };
-
-  //     logger.info('Successful login');
-  //     res.setHeader('Content-Type', 'application/json');
-  //     return res.send(JSON.stringify({
-  //       username,
-  //       accessToken,
-  //       role: gatewayJson.role,
-  //       showConfetti
-  //     }));
-  //   })
-  //   .catch((err) => {
-  //     logger.error('Unable to login, timeout or server error');
-  //     if (err.statusCode) return res.sendStatus(err.statusCode);
-  //     return res.sendStatus(504); // Timeout
-  //   });
-// });
-
-// app.post('/checkToken', (req, res) => {
-//   logger.info('Checking token');
-//   const accessToken = req.body.accessToken;
-
-//   if (sessions[accessToken]) {
-//     logger.info('Valid token');
-//     res.setHeader('Content-Type', 'application/json');
-//     res.send(JSON.stringify({
-//       username: sessions[accessToken].username,
-//       accessToken,
-//       role: sessions[accessToken].role
-//     }));
-//   } else {
-//     logger.info('Invalid token');
-//     res.sendStatus(401);
-//   }
-// });
-
-// app.post('/logout', (req, res) => {
-//   const token = req.body.token;
-//   // Remove user from storage
-//   delete sessions[token];
-//   logger.info('Logging user out');
-//   res.sendStatus(200);
-// });
-
-// app.post('/logout', (req, res) => {
-//   logger.info('Logging user out');
-//   const token = req.body.token;
-//   try {
-//     // Remove user from storage
-//     delete sessions[token];
-//     logger.info('Successful logout');
-//     res.sendStatus(200);
-//   } catch (e) {
-//     logger.error(`Unable to log user out: ${e}`);
-//     res.sendStatus(500);
-//   }
-// });

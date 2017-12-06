@@ -31,7 +31,7 @@ const authMiddleware = function (req, res, next) {
   });
 };
 
-router.get('/info', authMiddleware, (req, res) => {
+router.get('/api/info', authMiddleware, (req, res) => {
   logger.info('Returning /info');
   res.send(JSON.stringify({
     version,

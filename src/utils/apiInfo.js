@@ -14,10 +14,11 @@ const apiInfo = {
    * @param  {Function} callback Called with returned data.
    */
   getUiInfo(callback: (success: boolean, data: {}) => void) {
-    fetch(`${AUTH_URL}/info`, {
+    fetch(`${AUTH_URL}/api/info`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': sessionStorage.accessToken,
       },
     }).then((response) => {
       if (response.status === 200) {
