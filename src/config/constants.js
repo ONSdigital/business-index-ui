@@ -1,5 +1,5 @@
 const constants = {
-  ENV: 'Local',
+  ENV: process.env.REACT_APP_ENV,
   SHOW_CONFETTI_TIME: 10,
 };
 

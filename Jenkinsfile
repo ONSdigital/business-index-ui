@@ -2,22 +2,35 @@
 @Library('jenkins-pipeline-shared@develop') _
  
 /*
- * bi-ui Jenkins Pipeline
- * 
- * We use the 'GMU' build slave because it has the correct certificates for CF.
- */
+* bi-ui Jenkins Pipeline
+*/
 pipeline {
   agent none
-  options {
-    skipDefaultCheckout()
-    buildDiscarder(logRotator(numToKeepStr: '30', artifactNumToKeepStr: '30'))
-    timeout(time: 60, unit: 'MINUTES')
-  }
   environment {
+    API_GW_URL = ""
+
+    BRANCH_DEV = "develop"
+    BRANCH_TEST = "release"
+    BRANCH_PROD = "master"
+
+    DEPLOY_DEV = "dev"
+    DEPLOY_TEST = "test"
+    DEPLOY_PROD = "prod"
+
+    ORGANIZATION = "ons"
+    TEAM = "bi"
+    MODULE_NAME = "bi-ui"
+
     BI_UI_TEST_ADMIN_USERNAME="admin"
     BI_UI_TEST_ADMIN_PASSWORD="admin"
     BI_UI_TEST_USER_USERNAME="test"
     BI_UI_TEST_USER_PASSWORD="test"
+  }
+  options {
+    skipDefaultCheckout()
+    buildDiscarder(logRotator(numToKeepStr: '30', artifactNumToKeepStr: '30'))
+    timeout(time: 60, unit: 'MINUTES')
+    timestamps()
   }
   stages {
     stage('Checkout') {
@@ -31,26 +44,48 @@ pipeline {
           git(url: "$GITLAB_URL/BusinessIndex/bi-ui.git", credentialsId: 'bi-gitlab-id', branch: 'feature/manifests')
         }
         stash name: 'app'
+        script {
+          version = '1.0.' + env.BUILD_NUMBER
+          currentBuild.displayName = version
+          env.NODE_STAGE = "Checkout"
+        }
       }
     }
-    stage('Install Dependancies & Build') {
+    stage('Install Dependancies') {
       agent { label 'GMU' }
       steps {
-        colourText("info","Running 'npm install' and 'npm build'...")
+        colourText("info","Running 'npm install'")
         deleteDir()
         sh 'node --version'
         sh 'npm --version'
         unstash 'app'
         sh 'npm install'
- 
-        // Install the node_modules for just the server
-        dir('server') {
-          sh 'npm install'
+        script {
+          if (BRANCH_NAME == BRANCH_DEV) {
+            env.DEPLOY_NAME = DEPLOY_DEV
+          } else if  (BRANCH_NAME == BRANCH_TEST) {
+            env.DEPLOY_NAME = DEPLOY_TEST
+          } else if (BRANCH_NAME == BRANCH_PROD) {
+            env.DEPLOY_NAME = DEPLOY_PROD
+          }
+        }
+      }
+      post {
+        always {
+          script {
+            env.NODE_STAGE = "Install Dependancies"
+          }
+        }
+        success {
+          colourText("info","Successful install of dependancies.")
+        }
+        failure {
+          colourText("warn","Unable to install dependancies.")
         }
       }
     }
-    stage('Test - Unit, Component, Server, Coverage + Stress') {
-      agent { label 'build' }
+    stage('Test - Unit, Server & Stress') {
+      agent { label 'GMU' }
       steps {
         parallel (
           "Unit" :  {
@@ -66,45 +101,83 @@ pipeline {
           "Server" : {
             colourText("info","Running server tests...")
             sh "npm run-script test-server"
-          },
+          }
+        )
+      }
+      post {
+        always {
+          script {
+            env.NODE_STAGE = "Test"
+          }
+        }
+        success {
+          colourText("info","Test stage complete")
+        }
+        failure {
+          colourText("warn","Test stage failed.")
+        }
+      }
+    }
+    stage('Static Analysis - Coverage & Style') {
+      agent { label 'GMU' }
+      steps {
+        parallel (
           "Coverage Report" : {
             colourText("info","Generating coverage report...")
             sh "npm run-script cover"
-            step([$class: 'CoberturaPublisher', coberturaReportFile: '**/coverage/cobertura-coverage.xml'])
           },
           "Style Report" : {
             colourText("info","Generating style report...")
             sh 'npm run-script lint-report-xml'
-            // step([$class: 'CheckStylePublisher', pattern: 'coverage/eslint-report-checkstyle.xml'])
-            // checkstyle canComputeNew: false, canRunOnFailed: true, defaultEncoding: '', healthy: '', pattern: 'coverage/eslint-report-checkstyle.xml', unHealthy: ''
           }
         )
+      }
+      post {
+        always {
+          script {
+            env.NODE_STAGE = "Static Analysis"
+          }
+        }
+        success {
+          colourText("info","Static analysis complete, publishing reports...")
+          // Publish coverage report
+          step([$class: 'CoberturaPublisher', coberturaReportFile: '**/coverage/cobertura-coverage.xml'])
+          // Publish style report
+          // step([$class: 'CheckStylePublisher', pattern: 'coverage/eslint-report-checkstyle.xml'])
+          // checkstyle canComputeNew: false, canRunOnFailed: true, defaultEncoding: '', healthy: '', pattern: 'coverage/eslint-report-checkstyle.xml', unHealthy: ''
+        }
+        failure {
+          colourText("warn","Failed to publish static analysis reports.")
+        }
       }
     }
     stage('Zip Project') {
       agent { label 'GMU' }
       when {
         anyOf {
-          branch "develop"
-          branch "release"
-          branch "master"
+          branch DEPLOY_DEV
+          branch DEPLOY_TEST
+          branch DEPLOY_PROD
         }
       }
       steps {
         script {
           colourText("info","Zipping project...")
-          colourText("info","Host is: ${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}")
-          sh "sed -i -e 's|Local|dev|g' src/config/constants.js"
-          sh "sed -i -e 's|http://localhost:3002/auth|${api_gw/auth}|g' server/config/urls.js"
-          sh "sed -i -e 's|http://localhost:3001|${api_gw/bi/route}|g' server/config/urls.js"
-          sh "sed -i -e 's|http://localhost:3001|https://dev-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}|g' src/config/api-urls.js"
-          sh 'npm run build'
+
+          // Install the node_modules for just the server - already have the ui ones
+          dir('server') {
+            sh 'npm install'
+          }
+
+          // Run npm run build
+          sh "REACT_APP_ENV=${env.DEPLOY_NAME} REACT_APP_AUTH_URL=https://${env.DEPLOY_NAME}-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX} REACT_APP_API_URL=https://${env.DEPLOY_NAME}-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}/api npm run build"
+          
           // For deployment, only need the node_modules/package.json for the server
           sh 'rm -rf node_modules'
           sh 'cp -r server/node_modules .'
           sh 'rm -rf package.json'
           sh 'cp server/package.json .'
-          sh 'rm -rf manifest.yml'
+ 
           // Get the proper manifest from Gitlab
           sh 'cp conf/dev/manifest.yml .'
           sh 'zip -r bi-ui.zip build node_modules favicon.ico package.json server manifest.yml'
@@ -112,18 +185,19 @@ pipeline {
         }
       }
     }
-    stage('Deploy - DEV') {
+    stage('Deploy - DEV & TEST') {
       agent { label 'GMU' }
       when {
         anyOf {
-          branch "develop"
+          branch DEPLOY_DEV
+          branch DEPLOY_TEST
         }
       }
       steps {
         script {
-          colourText("info","Deploying to DEV...")
+          colourText("info","Deploying to ${env.DEPLOY_NAME}")
           unstash 'zip'
-          deployToCloudFoundry('cloud-foundry-bi-dev-user','bi','dev','dev-bi-ui','bi-ui.zip','manifest.yml')
+          deployToCloudFoundry("cloud-foundry-bi-${env.DEPLOY_NAME}-user","bi","${env.DEPLOY_NAME}","${env.DEPLOY_NAME}-bi-ui","bi-ui.zip","manifest.yml")
         }
       }
     }
@@ -131,8 +205,8 @@ pipeline {
       agent { label 'GMU' }
       when {
         anyOf {
-          branch "release"
-          branch "master"
+          branch DEPLOY_DEV
+          branch DEPLOY_TEST
         }
       }
       steps {
@@ -141,26 +215,11 @@ pipeline {
         }
       }
     }
-    stage('Deploy - TEST') {
-      agent { label 'GMU' }
-      when {
-        anyOf {
-          branch "release"
-        }
-      }
-      steps {
-        script {
-          colourText("info","Deploying to TEST...")
-          unstash 'zip'
-          deployToCloudFoundry('cloud-foundry-bi-test-user','bi','test','test-bi-ui','bi-ui.zip','manifest.yml')
-        }
-      }
-    }
     stage('Promote to BETA?') {
       agent { label 'GMU' }
       when {
         anyOf {
-          branch "master"
+          branch DEPLOY_PROD
         }
       }
       steps {
