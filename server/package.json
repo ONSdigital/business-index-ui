@@ -26,6 +26,6 @@
     "npm": "3.8.3"
   },
   "scripts": {
-    "start": "SERVE_HTML=true ENV=local node index.js"
+    "start": "NODE_ENV=development SERVER_AUTH_URL=http://localhost:3002/auth SERVER_API_GW_URL=http://localhost:3002 node index.js"
   }
 }
