@@ -57,18 +57,19 @@ class UBRNLookup extends React.Component {
       });
     }
   }
-  clearQuery() {
-    this.props.dispatch(setQuery(SET_UBRN_QUERY, ''));
-    this.props.dispatch(setResults(SET_UBRN_RESULTS, { results: [] }));
+  focusAndScroll() {
     // Scroll to the top of the page and focus on the first input
     document.getElementsByClassName('wrapper')[0].scrollIntoView(false);
     this.child.childTextInput.myInput.focus();
   }
+  clearQuery() {
+    this.props.dispatch(setQuery(SET_UBRN_QUERY, ''));
+    this.props.dispatch(setResults(SET_UBRN_RESULTS, { results: [] }));
+    this.focusAndScroll();
+  }
   closeModal() {
     this.setState({ show: false, errorMessage: '' });
-    // Scroll to the top of the page and focus on the first input
-    document.getElementsByClassName('wrapper')[0].scrollIntoView(false);
-    this.child.childTextInput.myInput.focus();
+    this.focusAndScroll();
   }
   changeQuery(evt) {
     // Store the query in Redux store, so we can access it again if a user
