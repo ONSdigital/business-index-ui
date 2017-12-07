@@ -24,6 +24,7 @@ class Login extends React.Component {
   }
   closeModal() {
     this.setState({ show: false, errorMessage: '' });
+    this.usernameInput.focus();
   }
   render() {
     return (
@@ -36,7 +37,7 @@ class Login extends React.Component {
               <input type="text" placeholder="username" ref={(ref) => (this.usernameInput = ref)} />
               <input type="password" placeholder="password" ref={(ref) => (this.passwordInput = ref)} />
               <Button id="loginButton" size="wide" text="Login" onClick={!this.props.data.currentlySending ? this.onSubmit : null} ariaLabel="Login Button" type="submit" loading={this.props.data.currentlySending} />
-              <ErrorModal show={this.state.show && this.props.data.errorMessage !== ''} message={this.props.data.errorMessage} close={this.closeModal} />
+              <ErrorModal show={this.state.show && this.props.data.errorMessage !== ''} message={this.props.data.errorMessage} close={() => this.closeModal} />
             </form>
           </div>
         </div>
