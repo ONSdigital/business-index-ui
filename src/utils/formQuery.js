@@ -16,7 +16,7 @@ export function formRangeQuery(query) {
   const queryArr = Object.keys(query).map(param => {
     if (param === 'IndustryCode') {
       // ES format: IndustryCode:[${min} TO ${max}]
-      return `${param}${SEPERATOR}%5B1${query[param][0]} TO ${query[param][1]}%5D`;
+      return `${param}${SEPERATOR}%5B${query[param][0]} TO ${query[param][1]}%5D`;
     } else if (param === 'PostCode') {
       // ES format: PostCode:(${postCode})
       return `${param}${SEPERATOR}(${query[param]})`;
