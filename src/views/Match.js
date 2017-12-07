@@ -80,6 +80,9 @@ class Match extends React.Component {
   }
   closeModal() {
     this.setState({ show: false, errorMessage: '' });
+    // Scroll to the top of the page and focus on the first input
+    document.getElementsByClassName('wrapper')[0].scrollIntoView(false);
+    this.child.childTextInput.myInput.focus();
   }
   clearQuery() {
     this.props.dispatch(setQuery(SET_MATCH_QUERY, {}));
@@ -144,7 +147,7 @@ class Match extends React.Component {
             <ErrorModal
               show={this.state.show}
               message={this.state.errorMessage}
-              close={this.closeModal}
+              close={() => this.closeModal}
             />
             <br />
             {this.props.data.results.length !== 0 &&

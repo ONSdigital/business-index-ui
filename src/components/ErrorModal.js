@@ -10,11 +10,11 @@ class ErrorModal extends React.Component {
     window.removeEventListener('keydown', this.props.close);
   }
   render() {
-    const modal = (this.props.show) ? (<ModalContainer onClose={this.props.close}>
-      <ModalDialog style={{ width: '80%' }} onClose={this.props.close}>
+    const modal = (this.props.show) ? (<ModalContainer onClose={this.props.close()}>
+      <ModalDialog style={{ width: '80%' }} onClose={this.props.close()}>
         <h1 style={{ margin: '10px' }}>{this.props.message}</h1>
         <br />
-        <button className="btn btn--primary" autoFocus onClick={() => this.props.close()}>Close</button>
+        <button className="btn btn--primary" autoFocus onClick={this.props.close()}>Close</button>
       </ModalDialog>
     </ModalContainer>) : <div></div>;
     return (
