@@ -21,12 +21,17 @@ export function matchSearch(query) {
     apiSearch.match(formattedQuery, (success, data) => {
       dispatch(sendingRequest(SENDING_MATCH_REQUEST, false));
       if (success) {
-        dispatch(setResults(SET_MATCH_RESULTS, {
-          results: data.results,
-        }));
-        dispatch(setHeaders(SET_MATCH_HEADERS, {
-          headers: data.response,
-        }));
+        // This is a workaround for the API returning 200 {} for no results, should be 404
+        if (Object.keys(data.results).length === 0 && data.results.constructor === Object) {
+          dispatch(setErrorMessage(SET_MATCH_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000)));
+        } else {
+          dispatch(setResults(SET_MATCH_RESULTS, {
+            results: data.results,
+          }));
+          dispatch(setHeaders(SET_MATCH_HEADERS, {
+            headers: data.response,
+          }));
+        }
       } else {
         dispatch(setErrorMessage(SET_MATCH_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000)));
       }
@@ -52,12 +57,17 @@ export function rangeSearch(query) {
     apiSearch.match(formattedQuery, (success, data) => {
       dispatch(sendingRequest(SENDING_RANGE_REQUEST, false));
       if (success) {
-        dispatch(setResults(SET_RANGE_RESULTS, {
-          results: data.results,
-        }));
-        dispatch(setHeaders(SET_RANGE_HEADERS, {
-          headers: data.response,
-        }));
+        // This is a workaround for the API returning 200 {} for no results, should be 404
+        if (Object.keys(data.results).length === 0 && data.results.constructor === Object) {
+          dispatch(setErrorMessage(SET_RANGE_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000)));
+        } else {
+          dispatch(setResults(SET_RANGE_RESULTS, {
+            results: data.results,
+          }));
+          dispatch(setHeaders(SET_RANGE_HEADERS, {
+            headers: data.response,
+          }));
+        }
       } else {
         dispatch(setErrorMessage(SET_RANGE_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000)));
       }
@@ -81,12 +91,17 @@ export function ubrnSearch(id) {
     apiSearch.ubrn(id, (success, data) => {
       dispatch(sendingRequest(SENDING_UBRN_REQUEST, false));
       if (success) {
-        dispatch(setResults(SET_UBRN_RESULTS, {
-          results: data.results,
-        }));
-        dispatch(setHeaders(SET_UBRN_HEADERS, {
-          headers: data.response,
-        }));
+        // This is a workaround for the API returning 200 {} for no results, should be 404
+        if (Object.keys(data.results).length === 0 && data.results.constructor === Object) {
+          dispatch(setErrorMessage(SET_UBRN_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000)));
+        } else {
+          dispatch(setResults(SET_UBRN_RESULTS, {
+            results: data.results,
+          }));
+          dispatch(setHeaders(SET_UBRN_HEADERS, {
+            headers: data.response,
+          }));
+        }
       } else {
         dispatch(setErrorMessage(SET_UBRN_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000)));
       }

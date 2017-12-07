@@ -84,13 +84,16 @@ class RangeQuery extends React.Component {
       });
     }
   }
+  focusAndScroll() {
+    // Scroll to the top of the page and focus on the first input
+    document.getElementsByClassName('wrapper')[0].scrollIntoView(false);
+    this.child.childTextInput.myInput.focus();
+  }
   clearQuery() {
     this.props.dispatch(setQuery(SET_RANGE_QUERY, {}));
     this.props.dispatch(setResults(SET_RANGE_RESULTS, { results: [] }));
     this.setState({ formValues: {}, showFilter: false });
-    // Scroll to the top of the page and focus on the first input
-    document.getElementsByClassName('wrapper')[0].scrollIntoView(false);
-    this.child.childTextInput.myInput.focus();
+    this.focusAndScroll();
   }
   changeFilter() {
     this.setState({ showFilter: !this.state.showFilter });
@@ -100,6 +103,7 @@ class RangeQuery extends React.Component {
   }
   closeModal() {
     this.setState({ show: false, errorMessage: '' });
+    this.focusAndScroll();
   }
   changeQuery(evt) {
     // if setting to empty, delete
@@ -145,7 +149,7 @@ class RangeQuery extends React.Component {
             <ErrorModal
               show={this.state.show}
               message={this.state.errorMessage}
-              close={this.closeModal}
+              close={() => this.closeModal}
             />
             <br />
             {this.props.data.results.length !== 0 &&
