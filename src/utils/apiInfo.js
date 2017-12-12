@@ -2,7 +2,7 @@
 
 import config from '../config/api-urls';
 
-const { AUTH_URL, REROUTE_URL, API_VERSION } = config;
+const { AUTH_URL, REROUTE_URL } = config;
 
 /**
  * API lib for getting info (version/last updated etc.)
