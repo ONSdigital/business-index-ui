@@ -70,10 +70,6 @@ Running `npm test` will run all the tests described below.
 
 All code in /utils will have associated unit tests in [/test/utils-spec](./test/utils-spec). Jasmine uses a [config file](./test/utils-unit-tests.js) which is necessary to get the tests working with ES6.
 
-### Component
-
-Jasmine, Enzyme and redux-mock-store are used for the component tests, which can be found in [/test/component-tests](./test/component-tests).
-
 ### Integration
 
 The Selenium integration tests can be found in [/test/integration-test.js](./test/integration-test.js).
