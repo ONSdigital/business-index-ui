@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'registers-react-library';
 import TextInput from './TextInput';
+import CheckBoxInput from './CheckBoxInput';
 
 class UBRNForm extends React.Component {
   render() {
@@ -12,10 +13,23 @@ class UBRNForm extends React.Component {
         &nbsp;
         <Button id="clearButton" size="wide" text="Clear" onClick={this.props.onClear} ariaLabel="Clear Button" type="reset" />
         <br /><br />
+        {this.props.showFilters &&
+          <div className="sdc-isolation field">
+            <div className="grid grid--tight" style={{ margin: '0', padding: '0' }}>
+              <div className="grid__col col-3@m">
+                <CheckBoxInput value={this.props.convertBands} label="Convert Bands" id="ConvertBandsCheckbox" onChangeFilter={this.props.onChangeBands} />
+              </div>
+            </div>
+          </div>
+        }
       </form>
     );
   }
 }
+
+UBRNForm.defaultProps = {
+  convertBands: true,
+};
 
 UBRNForm.propTypes = {
   currentlySending: PropTypes.bool.isRequired,
@@ -23,6 +37,8 @@ UBRNForm.propTypes = {
   onChange: PropTypes.func.isRequired,
   onClear: PropTypes.func.isRequired,
   initialValues: PropTypes.object.isRequired,
+  showFilters: PropTypes.bool.isRequired,
+  convertBands: PropTypes.bool,
 };
 
 export default UBRNForm;
