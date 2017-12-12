@@ -20,6 +20,9 @@ import MatchForm from './components/MatchForm';
 import RangeForm from './components/RangeForm';
 import { matchSearch, ubrnSearch, rangeSearch, setQuery, setResults } from './actions/ApiActions';
 import { SET_MATCH_QUERY, SET_MATCH_RESULTS, SET_UBRN_QUERY, SET_UBRN_RESULTS, SET_RANGE_QUERY, SET_RANGE_RESULTS } from './constants/ApiConstants';
+import config from './config/search';
+
+const { MATCH, RANGE, UBRN } = config;
 
 // import config from './config/constants';
 // const a11y = require('react-a11y');
@@ -56,41 +59,17 @@ function checkLogin() {
   }
 }
 
-const ubrnSettings = {
-  title: 'UBRN Lookup',
-  description: 'Search the Business Index for a Unique Business Reference Number.',
-  storeName: 'ubrn',
-  showPagination: false,
-  showFilter: false,
-  defaultPageSize: 1,
-};
 const ubrnActions = { search: ubrnSearch, setQuery, setResults };
 const ubrnConsts = { SET_QUERY: SET_UBRN_QUERY, SET_RESULTS: SET_UBRN_RESULTS };
-const UBRNLookup = withSearch(UBRNForm, ubrnSettings, ubrnActions, ubrnConsts);
+const UBRNLookup = withSearch(UBRNForm, UBRN, ubrnActions, ubrnConsts);
 
-const matchSettings = {
-  title: 'Match Search',
-  description: 'Search the Business Index.',
-  storeName: 'match',
-  showPagination: true,
-  showFilter: true,
-  defaultPageSize: 10,
-};
 const matchActions = { search: matchSearch, setQuery, setResults };
 const matchConsts = { SET_QUERY: SET_MATCH_QUERY, SET_RESULTS: SET_MATCH_RESULTS };
-const Match = withSearch(MatchForm, matchSettings, matchActions, matchConsts);
+const Match = withSearch(MatchForm, MATCH, matchActions, matchConsts);
 
-const rangeSettings = {
-  title: 'Range Search',
-  description: 'Search the Business Index on a range of fields.',
-  storeName: 'range',
-  showPagination: true,
-  showFilter: true,
-  defaultPageSize: 10,
-};
 const rangeActions = { search: rangeSearch, setQuery, setResults };
 const rangeConsts = { SET_QUERY: SET_RANGE_QUERY, SET_RESULTS: SET_RANGE_RESULTS };
-const RangeQuery = withSearch(RangeForm, rangeSettings, rangeActions, rangeConsts);
+const RangeQuery = withSearch(RangeForm, RANGE, rangeActions, rangeConsts);
 
 /* eslint arrow-body-style: "off" */
 const Routes = () => (
