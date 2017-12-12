@@ -4,7 +4,7 @@ const app = require('../index');
 const express = require('express');
 const rp = require('request-promise');
 const uuidv4 = require('uuid/v4');
-const logger = require('../logger')(module);
+const logger = require('../utilities/logger')(module);
 const urls = require('../config/urls');
 const timeouts = require('../config/timeouts');
 

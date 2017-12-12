@@ -2,12 +2,13 @@
 
 const express = require('express');
 const fork = require('child_process').fork;
-const logger = require('./logger')(module);
+const logger = require('./utilities/logger')(module);
 const compression = require('compression');
 const morgan = require('morgan');
 const myParser = require('body-parser');
 const path = require('path');
 const JsonSession = require('./sessions/JsonSession');
+const RedisSession = require('./sessions/RedisSession');
 
 // Environment Variables
 const SERVE_HTML = (process.env.SERVE_HTML === 'true'); // To server the React /build
@@ -30,6 +31,9 @@ const session = ((db) => {
     case 'json':
       logger.debug('Creating new JsonSession');
       return new JsonSession();
+    case 'redis':
+      logger.debug('Creating new RedisSession');
+      return new RedisSession();
     default:
       logger.debug('Creating new JsonSession');
       return new JsonSession();
@@ -41,7 +45,7 @@ logger.info(`Using session type: ${session.name}`);
 const app = module.exports = express();
 
 // Attach the cache function to the app
-app.cache = require('./helpers/cache');
+app.cache = require('./utilities/cache');
 
 // Gzip all responses
 app.use(compression());

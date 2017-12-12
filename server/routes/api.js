@@ -2,8 +2,8 @@
 
 const app = require('../index');
 const express = require('express');
-const logger = require('../logger')(module);
-const formatDate = require('../helpers/formatDate');
+const logger = require('../utilities/logger')(module);
+const formatDate = require('../utilities/formatDate');
 const version = require('../package.json').version;
 const urls = require('../config/urls');
 const timeouts = require('../config/timeouts');
