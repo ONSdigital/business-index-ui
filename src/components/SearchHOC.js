@@ -19,7 +19,7 @@ export default function withSearch(Form, settings, actions, constants) {
         show: false,
         errorMessage: '',
         formValues: {},
-        showFilter: settings.showFilter,
+        showFilter: false,
         convertBands: true,
         scroll: false,
       };
