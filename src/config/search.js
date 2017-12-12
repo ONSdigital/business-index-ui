@@ -20,7 +20,7 @@ const search = {
     description: 'Search the Business Index for a Unique Business Reference Number.',
     storeName: 'ubrn',
     showPagination: false,
-    showFilter: true,
+    showFilter: false,
     defaultPageSize: 1,
   },
 };

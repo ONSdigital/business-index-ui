@@ -38,6 +38,7 @@ UBRNForm.propTypes = {
   onClear: PropTypes.func.isRequired,
   initialValues: PropTypes.object.isRequired,
   showFilters: PropTypes.bool.isRequired,
+  onChangeBands: PropTypes.func.isRequired,
   convertBands: PropTypes.bool,
 };
 
