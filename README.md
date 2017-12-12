@@ -2,7 +2,7 @@
 
 [![phase](https://img.shields.io/badge/phase-BETA-orange.svg)](https://img.shields.io/badge/phase-BETA-orange.svg) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](./LICENSE)
 
-The `bi-ui` allows a user to query the [business-index-api](https://github.com/ONSdigital/business-index-api).
+The `bi-ui` allows a user to query the [business-index-api](https://github.com/ONSdigital/business-index-api). This project uses React.js and Redux on the frontend and Node.js for serving the static React.js files and for managing user sessions.
 
 The following tutorials were used to help with the deployment using Node.js, the login with redux and the isolation of `sdc-global-design-patterns` styles: [Node](https://medium.com/@patriciolpezjuri/using-create-react-app-with-react-router-express-js-8fa658bf892d#.mt6bbdd8m
 ), [Login](https://github.com/mxstbr/login-flow) and [Bootstrap Isolation](https://formden.com/blog/isolate-bootstrap).
