@@ -37,11 +37,6 @@ class UBRNLookup extends React.Component {
       this.setState({ results: nextProps.data.results });
     }
   }
-  // componentWillUpdate() {
-  //   if (!this.state.show) {
-  //     this.child.myInput.focus();
-  //   }
-  // }
   onSubmit(e) {
     e.preventDefault();
     const query = this.props.data.query;
