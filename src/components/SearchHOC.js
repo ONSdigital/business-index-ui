@@ -5,6 +5,11 @@ import { TitleAndDescription, BreadCrumb } from 'registers-react-library';
 import ErrorModal from './ErrorModal';
 import ResultsTable from './ResultsTable';
 
+// The logic for the Match/Range/UBRN features are almost identical, so we
+// use a higher order component to create the pages, including the common
+// methods and state. Anything that isn't common can be passed in using
+// the settings or actions/constants parameters.
+
 // https://reactjs.org/docs/higher-order-components.html
 export default function withSearch(Form, settings, actions, constants) {
   class SearchHOC extends React.Component {
