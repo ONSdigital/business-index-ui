@@ -9,7 +9,7 @@ const SelectInput = ({ id, label, bands, onChange, value }) => {
     <div className="sdc-isolation field field--select">
       <label className="label" htmlFor="select">{label}
       </label>
-      <select id={id} value={value} className="input input--select" name="select" onInput={onChange} style={{ padding: '0.3rem', fontSize: '1rem' }}>
+      <select id={id} value={value} className="input input--select" name="select" onInput={onChange} style={{ padding: '0.3rem', fontSize: '1rem', width: '100%' }}>
         <option value="">Select an option</option>
         { Object.keys(bands).map(band => (<option key={band} value={band}>{band} [{bands[band]}]</option>))}
       </select>

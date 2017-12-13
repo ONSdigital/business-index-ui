@@ -11,16 +11,46 @@ class MatchForm extends React.Component {
   render() {
     return (
       <form>
-        <TextInput ref={ip => (this.childTextInput = ip)} value={this.props.initialValues.BusinessName} label="Business Name" id="BusinessName" autoFocus onChange={this.props.onChange} /><br />
-        <TextInput value={this.props.initialValues.VatRefs} label="VAT Number" id="VatRefs" onChange={this.props.onChange} /><br />
-        <TextInput value={this.props.initialValues.PayeRefs} label="PAYE Number" id="PayeRefs" onChange={this.props.onChange} /><br />
-        <TextInput value={this.props.initialValues.CompanyNo} label="Company Number" id="CompanyNo" onChange={this.props.onChange} /><br />
-        <TextInput value={this.props.initialValues.IndustryCode} label="Industry Code" id="IndustryCode" onChange={this.props.onChange} /><br />
-        <SelectInput value={this.props.initialValues.EmploymentBands} label="Employment Bands" id="EmploymentBands" onChange={this.props.onChange} bands={employmentBands} /><br />
-        <SelectInput value={this.props.initialValues.LegalStatus} label="Legal Status" id="LegalStatus" onChange={this.props.onChange} bands={legalStatusBands} /><br />
-        <SelectInput value={this.props.initialValues.Turnover} label="Turnover" id="Turnover" onChange={this.props.onChange} bands={turnoverBands} /><br />
-        <SelectInput value={this.props.initialValues.TradingStatus} label="Trading Status" id="TradingStatus" onChange={this.props.onChange} bands={tradingStatusBands} /><br />
-        <TextInput value={this.props.initialValues.PostCode} label="Post Code" id="PostCode" onChange={this.props.onChange} /><br />
+        <div className="sdc-isolation field">
+          <div className="grid grid--tight">
+            <div className="grid__col col-6@m">
+              <TextInput ref={ip => (this.childTextInput = ip)} value={this.props.initialValues.BusinessName} label="Business Name" id="BusinessName" autoFocus onChange={this.props.onChange} /><br />
+            </div>
+          </div>
+          <div className="grid grid--tight">
+            <div className="grid__col col-4@m">
+              <TextInput value={this.props.initialValues.VatRefs} label="VAT Number" id="VatRefs" onChange={this.props.onChange} /><br />
+            </div>
+            <div className="grid__col col-4@m">
+              <TextInput value={this.props.initialValues.PayeRefs} label="PAYE Number" id="PayeRefs" onChange={this.props.onChange} /><br />
+            </div>
+            <div className="grid__col col-4@m">
+              <TextInput value={this.props.initialValues.CompanyNo} label="Company Number" id="CompanyNo" onChange={this.props.onChange} /><br />
+            </div>
+          </div>
+          <div className="grid grid--tight">
+            <div className="grid__col col-6@m">
+              <TextInput value={this.props.initialValues.IndustryCode} label="Industry Code" id="IndustryCode" onChange={this.props.onChange} /><br />
+            </div>
+            <div className="grid__col col-6@m">
+              <TextInput value={this.props.initialValues.PostCode} label="Post Code" id="PostCode" onChange={this.props.onChange} /><br />
+            </div>
+          </div>
+          <div className="grid grid--tight">
+            <div className="grid__col col-3@m">
+              <SelectInput value={this.props.initialValues.EmploymentBands} label="Employment Bands" id="EmploymentBands" onChange={this.props.onChange} bands={employmentBands} /><br />
+            </div>
+            <div className="grid__col col-3@m">
+              <SelectInput value={this.props.initialValues.LegalStatus} label="Legal Status" id="LegalStatus" onChange={this.props.onChange} bands={legalStatusBands} /><br />
+            </div>
+            <div className="grid__col col-3@m">
+              <SelectInput value={this.props.initialValues.Turnover} label="Turnover" id="Turnover" onChange={this.props.onChange} bands={turnoverBands} /><br />
+            </div>
+            <div className="grid__col col-3@m">
+              <SelectInput value={this.props.initialValues.TradingStatus} label="Trading Status" id="TradingStatus" onChange={this.props.onChange} bands={tradingStatusBands} /><br />
+            </div>
+          </div>
+        </div>
         <Button id="loginButton" size="wide" text="Search" onClick={!this.props.currentlySending ? this.props.onSubmit : null} ariaLabel="Login Button" type="submit" loading={this.props.currentlySending} />
         &nbsp;
         <Button id="clearButton" size="wide" text="Clear" onClick={this.props.onClear} ariaLabel="Clear Button" type="reset" />
