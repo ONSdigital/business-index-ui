@@ -30,7 +30,7 @@ const initialState = {
   ubrn: {
     results: [],
     headers: [],
-    query: '',
+    query: {},
     currentlySending: false,
     errorMessage: '',
     timeStamp: '',

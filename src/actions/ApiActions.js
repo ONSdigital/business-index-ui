@@ -78,7 +78,7 @@ export function rangeSearch(query) {
 /**
  * Do a UBRN search
  */
-export function ubrnSearch(id) {
+export function ubrnSearch(query) {
   return (dispatch) => {
     // Reset the period, so that the period toggle shows the
     // correct default value on the data results page
@@ -87,16 +87,18 @@ export function ubrnSearch(id) {
     dispatch(setErrorMessage(SET_UBRN_ERROR_MESSAGE, '', ''));
     dispatch(sendingRequest(SENDING_UBRN_REQUEST, true));
     dispatch(setResults(SET_UBRN_RESULTS, { results: [] }));
-    dispatch(setQuery(SET_UBRN_QUERY, id));
-    apiSearch.ubrn(id, (success, data) => {
+    dispatch(setQuery(SET_UBRN_QUERY, query));
+    const formattedQuery = query.id;
+    apiSearch.ubrn(formattedQuery, (success, data) => {
       dispatch(sendingRequest(SENDING_UBRN_REQUEST, false));
       if (success) {
         // This is a workaround for the API returning 200 {} for no results, should be 404
         if (Object.keys(data.results).length === 0 && data.results.constructor === Object) {
           dispatch(setErrorMessage(SET_UBRN_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000)));
         } else {
+          // Wrap the results in an array as we only get {} from the API
           dispatch(setResults(SET_UBRN_RESULTS, {
-            results: data.results,
+            results: [data.results],
           }));
           dispatch(setHeaders(SET_UBRN_HEADERS, {
             headers: data.response,

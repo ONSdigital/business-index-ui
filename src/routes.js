@@ -10,13 +10,19 @@ import Login from './views/Login';
 import ContactUs from './views/ContactUs';
 import WhatIsBi from './views/WhatIsBi';
 import Accessibility from './views/Accessibility';
-import Match from './views/Match';
-import RangeQuery from './views/RangeQuery';
-import UBRNLookup from './views/UBRNLookup';
 import UserDetails from './views/UserDetails';
 import TechnicalInformation from './views/TechnicalInformation';
 import reducer from './reducers/index';
 import { checkAuth } from './actions/LoginActions';
+import withSearch from './components/SearchHOC';
+import UBRNForm from './components/UBRNForm';
+import MatchForm from './components/MatchForm';
+import RangeForm from './components/RangeForm';
+import { matchSearch, ubrnSearch, rangeSearch, setQuery, setResults } from './actions/ApiActions';
+import { SET_MATCH_QUERY, SET_MATCH_RESULTS, SET_UBRN_QUERY, SET_UBRN_RESULTS, SET_RANGE_QUERY, SET_RANGE_RESULTS } from './constants/ApiConstants';
+import config from './config/search';
+
+const { MATCH, RANGE, UBRN } = config;
 
 // import config from './config/constants';
 // const a11y = require('react-a11y');
@@ -52,6 +58,18 @@ function checkLogin() {
     store.dispatch(checkAuth(sessionStorage.username, sessionStorage.accessToken));
   }
 }
+
+const ubrnActions = { search: ubrnSearch, setQuery, setResults };
+const ubrnConsts = { SET_QUERY: SET_UBRN_QUERY, SET_RESULTS: SET_UBRN_RESULTS };
+const UBRNLookup = withSearch(UBRNForm, UBRN, ubrnActions, ubrnConsts);
+
+const matchActions = { search: matchSearch, setQuery, setResults };
+const matchConsts = { SET_QUERY: SET_MATCH_QUERY, SET_RESULTS: SET_MATCH_RESULTS };
+const Match = withSearch(MatchForm, MATCH, matchActions, matchConsts);
+
+const rangeActions = { search: rangeSearch, setQuery, setResults };
+const rangeConsts = { SET_QUERY: SET_RANGE_QUERY, SET_RESULTS: SET_RANGE_RESULTS };
+const RangeQuery = withSearch(RangeForm, RANGE, rangeActions, rangeConsts);
 
 /* eslint arrow-body-style: "off" */
 const Routes = () => (
