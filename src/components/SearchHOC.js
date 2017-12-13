@@ -33,7 +33,10 @@ export default function withSearch(Form, settings, actions, constants) {
     }
     componentDidMount() {
       // Reload the data from the store
-      this.setState({ formValues: this.props.data.query });
+      this.setState({
+        formValues: this.props.data.query,
+        businessName: this.props.data.query.BusinessName,
+      });
     }
     componentWillReceiveProps(nextProps) {
       // The Redux action for the api request will set the errorMessage in the
