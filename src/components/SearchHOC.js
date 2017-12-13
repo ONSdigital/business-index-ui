@@ -150,6 +150,7 @@ export default function withSearch(Form, settings, actions, constants) {
               <br />
               {this.props.data.results.length !== 0 &&
                 <ResultsTable
+                  businessName={this.props.data.query.BusinessName}
                   convertBands={this.state.convertBands}
                   results={this.props.data.results}
                   showFilter={this.state.showFilter}

@@ -7,7 +7,13 @@ import ChildRefTable from '../components/ChildRefTable';
 import { employmentBands, legalStatusBands, tradingStatusBands, turnoverBands } from '../utils/convertBands';
 import { downloadCSV, downloadJSON } from '../utils/export';
 
-const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize, convertBands }) => {
+const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize, convertBands, businessName }) => {
+  // https://stackoverflow.com/questions/29652862/highlight-text-using-reactjs
+  function getHighlightedText(text, higlight) {
+    // Split text on higlight term, include term itself into parts, ignore case
+    const parts = text.split(new RegExp(`(${higlight})`, 'gi'));
+    return (<span key={text}>{parts.map(part => part.toLowerCase() === higlight.toLowerCase() ? <span style={{ backgroundColor: '#FFFF00' }}>{part}</span> : part)}</span>);
+  }
   return (
     <div id="react-table">
       <ReactTable
@@ -24,6 +30,9 @@ const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize, co
             Header: 'Business Name',
             id: 'businessName',
             accessor: d => d.businessName,
+            Cell: row => (
+              (businessName !== '') ? getHighlightedText(row.value, businessName) : row.value
+            ),
           },
           {
             Header: 'PostCode',
@@ -88,12 +97,14 @@ const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize, co
 ResultsTable.defaultProps = {
   defaultPageSize: 10,
   convertBands: true,
+  businessName: '',
 };
 
 ResultsTable.propTypes = {
   results: PropTypes.array.isRequired,
   showFilter: PropTypes.bool.isRequired,
   showPagination: PropTypes.bool.isRequired,
+  businessName: PropTypes.string,
   defaultPageSize: PropTypes.number,
   convertBands: PropTypes.bool,
 };
