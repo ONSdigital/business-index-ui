@@ -22,6 +22,7 @@ export default function withSearch(Form, settings, actions, constants) {
         showFilter: false,
         convertBands: true,
         scroll: false,
+        businessName: '',
       };
       this.changeQuery = this.changeQuery.bind(this);
       this.onSubmit = this.onSubmit.bind(this);
@@ -32,7 +33,10 @@ export default function withSearch(Form, settings, actions, constants) {
     }
     componentDidMount() {
       // Reload the data from the store
-      this.setState({ formValues: this.props.data.query });
+      this.setState({
+        formValues: this.props.data.query,
+        businessName: this.props.data.query.BusinessName,
+      });
     }
     componentWillReceiveProps(nextProps) {
       // The Redux action for the api request will set the errorMessage in the
@@ -63,7 +67,7 @@ export default function withSearch(Form, settings, actions, constants) {
     onSubmit(e) {
       e.preventDefault();
       if (this.state.formValues !== {}) {
-        this.setState({ showFilter: false });
+        this.setState({ showFilter: false, businessName: this.state.formValues.BusinessName });
         this.props.dispatch(actions.search(this.state.formValues));
       } else {
         // Possibly swap this action with a redux way of doing it?
@@ -150,6 +154,7 @@ export default function withSearch(Form, settings, actions, constants) {
               <br />
               {this.props.data.results.length !== 0 &&
                 <ResultsTable
+                  businessName={this.state.businessName}
                   convertBands={this.state.convertBands}
                   results={this.props.data.results}
                   showFilter={this.state.showFilter}
