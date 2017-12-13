@@ -13,7 +13,7 @@ const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize, co
     // Split text on higlight term, include term itself into parts, ignore case
     try {
       const parts = text.split(new RegExp(`(${higlight})`, 'gi'));
-      return (<span key={text}>{parts.map(part => part.toLowerCase() === higlight.toLowerCase() ? <span style={{ backgroundColor: '#FFFF00' }}>{part}</span> : part)}</span>);
+      return (<span key={text}>{parts.map(part => part.toLowerCase() === higlight.toLowerCase() ? <span key={`${text}-span`} style={{ backgroundColor: '#FFFF00' }}>{part}</span> : part)}</span>);
     } catch (e) {
       // Catch the invalid regular expressions
       return (<span>{text}</span>);
