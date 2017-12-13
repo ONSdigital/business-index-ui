@@ -54,12 +54,12 @@ class SelectMultipleInput extends React.Component {
   }
   render() {
     return (
-      <div id={this.props.id}>
+      <div id={this.props.id} style={{ width: '' }}>
         <div className="sdc-isolation">
           <label className="label" htmlFor="select">{this.props.label}</label>
         </div>
         <Select
-          style={{ width: '400px' }}
+          style={{ width: '100%' }}
           closeOnSelect={false}
           disabled={false}
           multi

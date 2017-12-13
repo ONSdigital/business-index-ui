@@ -12,12 +12,44 @@ class RangeForm extends React.Component {
   render() {
     return (
       <form>
-        <TextInputInline autoFocus ref={ip => (this.childTextInput = ip)} placeholderMin="Industry Code Min" placeholderMax="Industry Code Max" value={this.props.initialValues.IndustryCode} label="Industry Code" id="IndustryCode" onChange={this.props.onChange} /><br />
-        <TextInput value={this.props.initialValues.PostCode} label="Post Code" id="PostCode" onChange={this.props.onChange} /><br />
-        <SelectMultipleInput value={this.props.initialValues.EmploymentBands} id="EmploymentBands" onChange={this.props.onChange} label="Employment Bands" bands={employmentBands} /><br />
-        <SelectMultipleInput value={this.props.initialValues.LegalStatus} id="LegalStatus" onChange={this.props.onChange} label="Legal Status Bands" bands={legalStatusBands} /><br />
-        <SelectMultipleInput value={this.props.initialValues.Turnover} id="Turnover" onChange={this.props.onChange} label="Turnover Bands" bands={turnoverBands} /><br />
-        <SelectMultipleInput value={this.props.initialValues.TradingStatus} id="TradingStatus" onChange={this.props.onChange} label="Trading Status Bands" bands={tradingStatusBands} /><br />
+        <div className="sdc-isolation field">
+          <div className="grid grid--tight">
+            <div className="grid__col col-6@m">
+              <div className="grid__helper" style={{ backgroundColor: '#EAEAEA', margin: '0', padding: '0' }}>
+                <TextInputInline autoFocus ref={ip => (this.childTextInput = ip)} placeholderMin="Industry Code Min" placeholderMax="Industry Code Max" value={this.props.initialValues.IndustryCode} label="Industry Code" id="IndustryCode" onChange={this.props.onChange} /><br />
+              </div>
+            </div>
+            <div className="grid__col col-3@m">
+              <div className="grid__helper" style={{ backgroundColor: '#EAEAEA', margin: '0', padding: '0' }}>
+                <TextInput value={this.props.initialValues.PostCode} label="Post Code" id="PostCode" onChange={this.props.onChange} /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="sdc-isolation field">
+          <div className="grid grid--tight">
+            <div className="grid__col col-3@m">
+              <div className="grid__helper" style={{ backgroundColor: '#EAEAEA', margin: '0', padding: '0' }}>
+                <SelectMultipleInput value={this.props.initialValues.Turnover} id="Turnover" onChange={this.props.onChange} label="Turnover Bands" bands={turnoverBands} /><br />
+              </div>
+            </div>
+            <div className="grid__col col-3@m">
+              <div className="grid__helper" style={{ backgroundColor: '#EAEAEA', margin: '0', padding: '0' }}>
+                <SelectMultipleInput value={this.props.initialValues.TradingStatus} id="TradingStatus" onChange={this.props.onChange} label="Trading Status Bands" bands={tradingStatusBands} /><br />
+              </div>
+            </div>
+            <div className="grid__col col-3@m">
+              <div className="grid__helper" style={{ backgroundColor: '#EAEAEA', margin: '0', padding: '0' }}>
+                <SelectMultipleInput value={this.props.initialValues.LegalStatus} id="LegalStatus" onChange={this.props.onChange} label="Legal Status Bands" bands={legalStatusBands} /><br />
+              </div>
+            </div>
+            <div className="grid__col col-3@m">
+              <div className="grid__helper" style={{ backgroundColor: '#EAEAEA', margin: '0', padding: '0' }}>
+                <SelectMultipleInput value={this.props.initialValues.EmploymentBands} id="EmploymentBands" onChange={this.props.onChange} label="Employment Bands" bands={employmentBands} /><br />
+              </div>
+            </div>
+          </div>
+        </div>
         <br />
         <Button id="loginButton" size="wide" text="Search" onClick={!this.props.currentlySending ? this.props.onSubmit : null} ariaLabel="Login Button" type="submit" loading={this.props.currentlySending} />
         &nbsp;

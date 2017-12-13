@@ -44,13 +44,13 @@ class TextInputInline extends React.Component {
       <div className="sdc-isolation field">
         <label className="label" htmlFor="text-input">{this.props.label}
         </label>
-        <div className="grid grid--tight" style={{ margin: '0', padding: '0' }}>
-          <div className="grid__col col-3@m" style={{ margin: '0', padding: '0' }}>
+        <div className="grid grid--spaced" style={{ margin: '0', padding: '0', border: '' }}>
+          <div className="grid__col col-6@l col-6@m col-6@s" style={{ margin: '0', padding: '0' }}>
             <div className="grid__helper" style={{ backgroundColor: '#EAEAEA', margin: '0', padding: '0' }}>
               <input style={{ width: '100%' }} placeholder={this.props.placeholderMin} ref={ip => (this.myInput = ip)} value={this.state.value[0]} autoFocus={this.props.autoFocus} className="input input--text" onChange={this.onChange} type="text" id={`${this.props.id}-min`} />
             </div>
           </div>
-          <div className="grid__col col-3@m">
+          <div className="grid__col col-6@l col-6@m col-6@s">
             <div className="grid__helper" style={{ backgroundColor: '#EAEAEA', margin: '0', padding: '0' }}>
               <input style={{ width: '100%' }} placeholder={this.props.placeholderMax} value={this.state.value[1]} className="input input--text" onChange={this.onChange} type="text" id={`${this.props.id}-max`} />
             </div>

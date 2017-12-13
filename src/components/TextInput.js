@@ -13,7 +13,7 @@ class TextInput extends React.Component {
       <div className="sdc-isolation field">
         <label className="label" htmlFor="text-input">{this.props.label}
         </label>
-        <input ref={ip => (this.myInput = ip)} value={value} autoFocus={this.props.autoFocus} className="input input--text" onChange={this.props.onChange} type="text" id={this.props.id} />
+        <input style={{ width: '100%' }} ref={ip => (this.myInput = ip)} value={value} autoFocus={this.props.autoFocus} className="input input--text" onChange={this.props.onChange} type="text" id={this.props.id} />
       </div>
     );
   }
