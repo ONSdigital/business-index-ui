@@ -11,9 +11,7 @@ class UBRNForm extends React.Component {
         <div className="sdc-isolation field">
           <div className="grid grid--tight">
             <div className="grid__col col-6@m">
-              <div className="grid__helper" style={{ backgroundColor: '#EAEAEA', margin: '0', padding: '0' }}>
-                <TextInput ref={ip => (this.childTextInput = ip)} value={this.props.initialValues.id} label="UBRN" id="id" autoFocus onChange={this.props.onChange} /><br />
-              </div>
+              <TextInput ref={ip => (this.childTextInput = ip)} value={this.props.initialValues.id} label="UBRN" id="id" autoFocus onChange={this.props.onChange} /><br />
             </div>
           </div>
         </div>
