@@ -11,8 +11,13 @@ const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize, co
   // https://stackoverflow.com/questions/29652862/highlight-text-using-reactjs
   function getHighlightedText(text, higlight) {
     // Split text on higlight term, include term itself into parts, ignore case
-    const parts = text.split(new RegExp(`(${higlight})`, 'gi'));
-    return (<span key={text}>{parts.map(part => part.toLowerCase() === higlight.toLowerCase() ? <span style={{ backgroundColor: '#FFFF00' }}>{part}</span> : part)}</span>);
+    try {
+      const parts = text.split(new RegExp(`(${higlight})`, 'gi'));
+      return (<span key={text}>{parts.map(part => part.toLowerCase() === higlight.toLowerCase() ? <span style={{ backgroundColor: '#FFFF00' }}>{part}</span> : part)}</span>);
+    } catch (e) {
+      // Catch the invalid regular expressions
+      return (<span>{text}</span>);
+    }
   }
   return (
     <div id="react-table">
