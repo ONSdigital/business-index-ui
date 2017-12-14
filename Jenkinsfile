@@ -198,6 +198,7 @@ pipeline {
           colourText("info","Deploying to ${env.DEPLOY_NAME}")
           unstash 'zip'
           deployToCloudFoundry("cloud-foundry-bi-${env.DEPLOY_NAME}-user","bi","${env.DEPLOY_NAME}","${env.DEPLOY_NAME}-bi-ui","bi-ui.zip","manifest.yml")
+          env.APP_URL = "https://${env.DEPLOY_NAME}-${env.MODULE_NAME}.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}"
         }
       }
     }
@@ -243,6 +244,24 @@ pipeline {
           colourText("info","Deploying to BETA...")
           unstash 'zip'
           deployToCloudFoundry('cloud-foundry-bi-prod-user','bi','beta','prod-bi-ui','bi-ui.zip','manifest.yml')
+          env.APP_URL = "https://${env.DEPLOY_NAME}-${env.MODULE_NAME}.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}"
+        }
+      }
+    }
+    stage('Deployed App Health') {
+      agent any
+      when {
+        anyOf {
+          branch BRANCH_DEV
+          branch BRANCH_TEST
+          branch BRANCH_PROD
+        }
+      }
+      steps {
+        script {
+          colourText("info","Checking deployed app health...")
+          colourText("info","Pinging ${env.APP_URL}...")
+          sh "curl ${env.APP_URL}"
         }
       }
     }
