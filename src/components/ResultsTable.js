@@ -9,14 +9,21 @@ import { downloadCSV, downloadJSON } from '../utils/export';
 
 const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize, convertBands, businessName }) => {
   // https://stackoverflow.com/questions/29652862/highlight-text-using-reactjs
-  function getHighlightedText(text, higlight) {
+  function getHighlightedText(row, higlight) {
     // Split text on higlight term, include term itself into parts, ignore case
     try {
-      const parts = text.split(new RegExp(`(${higlight})`, 'gi'));
-      return (<span key={text}>{parts.map(part => part.toLowerCase() === higlight.toLowerCase() ? <span key={`${text}-span`} style={{ backgroundColor: '#FFFF00' }}>{part}</span> : part)}</span>);
+      const parts = row.value.split(new RegExp(`(${higlight})`, 'gi'));
+      return (
+        <span key={row.original.id}>
+          {parts.map(part => part.toLowerCase() === higlight.toLowerCase() ?
+            <span key={`${row.original.id}-inner`} style={{ backgroundColor: '#FFFF00' }}>
+              {part}
+            </span>
+          : part)}
+        </span>);
     } catch (e) {
       // Catch the invalid regular expressions
-      return (<span>{text}</span>);
+      return (<span key={row.original.id}>{row.value}</span>);
     }
   }
   return (
@@ -36,7 +43,7 @@ const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize, co
             id: 'businessName',
             accessor: d => d.businessName,
             Cell: row => (
-              (businessName !== '') ? getHighlightedText(row.value, businessName) : row.value
+              (businessName !== '') ? getHighlightedText(row, businessName) : row.value
             ),
           },
           {
