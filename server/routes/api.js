@@ -39,6 +39,15 @@ router.get('/api/info', authMiddleware, (req, res) => {
   }));
 });
 
+// We don't need any authorisation for the /api/health route as we
+// need to hit it from Jenkins
+router.get('/api/health', (req, res) => {
+  logger.info('Returning /health');
+  res.send(JSON.stringify({
+    status: 'OK',
+  }));
+});
+
 router.post('/api', authMiddleware, (req, res) => {
   // re route api requests with API key
   const method = req.body.method;

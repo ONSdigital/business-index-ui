@@ -198,6 +198,7 @@ pipeline {
           colourText("info","Deploying to ${env.DEPLOY_NAME}")
           unstash 'zip'
           deployToCloudFoundry("cloud-foundry-bi-${env.DEPLOY_NAME}-user","bi","${env.DEPLOY_NAME}","${env.DEPLOY_NAME}-bi-ui","bi-ui.zip","manifest.yml")
+          env.APP_URL = "https://${env.DEPLOY_NAME}-${env.MODULE_NAME}.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}"
         }
       }
     }
@@ -243,6 +244,32 @@ pipeline {
           colourText("info","Deploying to BETA...")
           unstash 'zip'
           deployToCloudFoundry('cloud-foundry-bi-prod-user','bi','beta','prod-bi-ui','bi-ui.zip','manifest.yml')
+          env.APP_URL = "https://${env.DEPLOY_NAME}-${env.MODULE_NAME}.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}"
+        }
+      }
+    }
+    stage('Checking App Health') {
+      agent any
+      when {
+        anyOf {
+          branch BRANCH_DEV
+          branch BRANCH_TEST
+          branch BRANCH_PROD
+        }
+      }
+      steps {
+        script {
+          colourText("info","Checking deployed app health...")
+          colourText("info","Pinging ${env.APP_URL}/api/health...")
+          APP_STATUS = sh (
+            script: "curl -sL -w '%{http_code}' '${env.APP_URL}/api/health' -o /dev/null",
+            returnStdout: true
+          ).trim()
+          colourText("info", "APP_STATUS: ${APP_STATUS}")
+          if (APP_STATUS != "200") {
+            colourText("error", "Error: deployed app repsoned to GET with ${APP_STATUS}")
+            error("Error: deployed app repsoned to GET with ${APP_STATUS}")
+          }
         }
       }
     }
