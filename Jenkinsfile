@@ -248,7 +248,7 @@ pipeline {
         }
       }
     }
-    stage('Deployed App Health') {
+    stage('Checking App Health') {
       agent any
       when {
         anyOf {
@@ -260,12 +260,16 @@ pipeline {
       steps {
         script {
           colourText("info","Checking deployed app health...")
-          colourText("info","Pinging ${env.APP_URL}...")
+          colourText("info","Pinging ${env.APP_URL}/api/health...")
           APP_STATUS = sh (
             script: "curl -sL -w '%{http_code}' '${env.APP_URL}/api/health' -o /dev/null",
             returnStdout: true
           ).trim()
           colourText("info", "APP_STATUS: ${APP_STATUS}")
+          if (APP_STATUS != "200") {
+            colourText("error", "Error: deployed app repsoned to GET with ${APP_STATUS}")
+            error("Error: deployed app repsoned to GET with ${APP_STATUS}")
+          }
         }
       }
     }
