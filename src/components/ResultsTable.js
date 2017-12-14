@@ -13,13 +13,18 @@ const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize, co
     // Split text on higlight term, include term itself into parts, ignore case
     try {
       const parts = row.value.split(new RegExp(`(${higlight})`, 'gi'));
+      // We can use the array index as a key as we already use the UBRN as part of the key
+      /* eslint react/no-array-index-key: "off" */
       return (
         <span key={row.original.id}>
-          {parts.map(part => part.toLowerCase() === higlight.toLowerCase() ?
-            <span key={`${row.original.id}-inner`} style={{ backgroundColor: '#FFFF00' }}>
-              {part}
-            </span>
-          : part)}
+          {parts.map((part, i) => (
+              part.toLowerCase() === higlight.toLowerCase() ?
+                (<span key={`${row.original.id}-${i}`} style={{ backgroundColor: '#FFFF00' }}>
+                  {part}
+                </span>)
+              : part),
+            )
+          }
         </span>);
     } catch (e) {
       // Catch the invalid regular expressions
