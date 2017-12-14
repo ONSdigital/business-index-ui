@@ -1,6 +1,3 @@
-// General
-export const SET_PERIOD = 'SET_PERIOD';
-
 // Error
 export const ADD_MOST_RECENT_ERROR = 'ADD_MOST_RECENT_ERROR';
 export const REMOVE_LAST_ERROR = 'REMOVE_LAST_ERROR';

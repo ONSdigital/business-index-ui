@@ -1,5 +1,4 @@
-import { SET_PERIOD, REMOVE_LAST_ERROR, ADD_MOST_RECENT_ERROR, SET_MATCH_RESULTS, SET_MATCH_HEADERS, SENDING_MATCH_REQUEST, SET_MATCH_QUERY, SET_MATCH_ERROR_MESSAGE, SET_RANGE_RESULTS, SET_RANGE_HEADERS, SENDING_RANGE_REQUEST, SET_RANGE_QUERY, SET_RANGE_ERROR_MESSAGE, SET_UBRN_RESULTS, SET_UBRN_HEADERS, SENDING_UBRN_REQUEST, SET_UBRN_QUERY, SET_UBRN_ERROR_MESSAGE } from '../constants/ApiConstants';
-import periods from '../config/periods';
+import { REMOVE_LAST_ERROR, ADD_MOST_RECENT_ERROR, SET_MATCH_RESULTS, SET_MATCH_HEADERS, SENDING_MATCH_REQUEST, SET_MATCH_QUERY, SET_MATCH_ERROR_MESSAGE, SET_RANGE_RESULTS, SET_RANGE_HEADERS, SENDING_RANGE_REQUEST, SET_RANGE_QUERY, SET_RANGE_ERROR_MESSAGE, SET_UBRN_RESULTS, SET_UBRN_HEADERS, SENDING_UBRN_REQUEST, SET_UBRN_QUERY, SET_UBRN_ERROR_MESSAGE } from '../constants/ApiConstants';
 
 // Object.assign is not yet fully supported in all browsers, so we fallback to
 // a polyfill
@@ -7,7 +6,6 @@ const assign = Object.assign || require('object.assign');
 
 // The initial application state
 const initialState = {
-  period: periods.DEFAULT_PERIOD,
   errorArray: [],
   match: {
     results: [],
@@ -77,11 +75,6 @@ function refReducer(state = initialState, action) {
           ...state.ubrn,
           results: action.newState.results,
         },
-      });
-    case SET_PERIOD:
-      return assign({}, state, {
-        ...state,
-        period: action.period,
       });
     case SET_MATCH_HEADERS:
       return assign({}, state, {

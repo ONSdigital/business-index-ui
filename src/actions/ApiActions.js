@@ -1,17 +1,12 @@
-import { SET_MATCH_FORMATTED_QUERY, SET_RANGE_FORMATTED_QUERY, ADD_MOST_RECENT_ERROR, REMOVE_LAST_ERROR, SET_UBRN_ERROR_MESSAGE, SENDING_UBRN_REQUEST, SET_UBRN_RESULTS, SET_UBRN_QUERY, SET_UBRN_HEADERS, SET_RANGE_HEADERS, SET_RANGE_ERROR_MESSAGE, SENDING_RANGE_REQUEST, SET_RANGE_RESULTS, SET_RANGE_QUERY, SET_PERIOD, SET_MATCH_RESULTS, SET_MATCH_HEADERS, SENDING_MATCH_REQUEST, SET_MATCH_QUERY, SET_MATCH_ERROR_MESSAGE } from '../constants/ApiConstants';
+import { SET_MATCH_FORMATTED_QUERY, SET_RANGE_FORMATTED_QUERY, ADD_MOST_RECENT_ERROR, REMOVE_LAST_ERROR, SET_UBRN_ERROR_MESSAGE, SENDING_UBRN_REQUEST, SET_UBRN_RESULTS, SET_UBRN_QUERY, SET_UBRN_HEADERS, SET_RANGE_HEADERS, SET_RANGE_ERROR_MESSAGE, SENDING_RANGE_REQUEST, SET_RANGE_RESULTS, SET_RANGE_QUERY, SET_MATCH_RESULTS, SET_MATCH_HEADERS, SENDING_MATCH_REQUEST, SET_MATCH_QUERY, SET_MATCH_ERROR_MESSAGE } from '../constants/ApiConstants';
 import apiSearch from '../utils/apiSearch';
 import { formMatchQuery, formRangeQuery } from '../utils/formQuery';
-import periods from '../config/periods';
 
 /**
  * Do a match search
  */
 export function matchSearch(query) {
   return (dispatch) => {
-    // Reset the period, so that the period toggle shows the
-    // correct default value on the data results page
-    dispatch(setPeriod(SET_PERIOD, periods.DEFAULT_PERIOD));
-
     dispatch(setErrorMessage(SET_MATCH_ERROR_MESSAGE, '', ''));
     dispatch(sendingRequest(SENDING_MATCH_REQUEST, true));
     dispatch(setResults(SET_MATCH_RESULTS, { results: [] }));
@@ -44,10 +39,6 @@ export function matchSearch(query) {
  */
 export function rangeSearch(query) {
   return (dispatch) => {
-    // Reset the period, so that the period toggle shows the
-    // correct default value on the data results page
-    dispatch(setPeriod(SET_PERIOD, periods.DEFAULT_PERIOD));
-
     dispatch(setErrorMessage(SET_RANGE_ERROR_MESSAGE, '', ''));
     dispatch(sendingRequest(SENDING_RANGE_REQUEST, true));
     dispatch(setResults(SET_RANGE_RESULTS, { results: [] }));
@@ -80,10 +71,6 @@ export function rangeSearch(query) {
  */
 export function ubrnSearch(query) {
   return (dispatch) => {
-    // Reset the period, so that the period toggle shows the
-    // correct default value on the data results page
-    dispatch(setPeriod(SET_PERIOD, periods.DEFAULT_PERIOD));
-
     dispatch(setErrorMessage(SET_UBRN_ERROR_MESSAGE, '', ''));
     dispatch(sendingRequest(SENDING_UBRN_REQUEST, true));
     dispatch(setResults(SET_UBRN_RESULTS, { results: [] }));
@@ -121,10 +108,6 @@ export function removeLastError() {
 
 export function setResults(type, newState) {
   return { type, newState };
-}
-
-export function setPeriod(type, period) {
-  return { type, period };
 }
 
 export function setQuery(type, query) {
