@@ -2,6 +2,14 @@ import { SET_MATCH_FORMATTED_QUERY, SET_RANGE_FORMATTED_QUERY, ADD_MOST_RECENT_E
 import apiSearch from '../utils/apiSearch';
 import { formMatchQuery, formRangeQuery } from '../utils/formQuery';
 
+// 1. reset error message
+// 2. reset results
+// 3. set sending = true
+// 4. set query
+// 5. format query
+// 6. set formatted query
+// 7. do api search
+
 /**
  * Do a match search
  */
@@ -9,7 +17,7 @@ export function matchSearch(query) {
   return (dispatch) => {
     dispatch(setErrorMessage(SET_MATCH_ERROR_MESSAGE, '', ''));
     dispatch(sendingRequest(SENDING_MATCH_REQUEST, true));
-    dispatch(setResults(SET_MATCH_RESULTS, { results: [] }));
+    dispatch(setResults(SET_MATCH_RESULTS, []));
     dispatch(setQuery(SET_MATCH_QUERY, query));
     const formattedQuery = formMatchQuery(query);
     dispatch(setFormattedQuery(SET_MATCH_FORMATTED_QUERY, formattedQuery));
@@ -20,12 +28,8 @@ export function matchSearch(query) {
         if (Object.keys(data.results).length === 0 && data.results.constructor === Object) {
           dispatch(setErrorMessage(SET_MATCH_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000)));
         } else {
-          dispatch(setResults(SET_MATCH_RESULTS, {
-            results: data.results,
-          }));
-          dispatch(setHeaders(SET_MATCH_HEADERS, {
-            headers: data.response,
-          }));
+          dispatch(setResults(SET_MATCH_RESULTS, data.results));
+          dispatch(setHeaders(SET_MATCH_HEADERS, data.response));
         }
       } else {
         dispatch(setErrorMessage(SET_MATCH_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000)));
@@ -41,7 +45,7 @@ export function rangeSearch(query) {
   return (dispatch) => {
     dispatch(setErrorMessage(SET_RANGE_ERROR_MESSAGE, '', ''));
     dispatch(sendingRequest(SENDING_RANGE_REQUEST, true));
-    dispatch(setResults(SET_RANGE_RESULTS, { results: [] }));
+    dispatch(setResults(SET_RANGE_RESULTS, []));
     dispatch(setQuery(SET_RANGE_QUERY, query));
     const formattedQuery = formRangeQuery(query);
     dispatch(setFormattedQuery(SET_RANGE_FORMATTED_QUERY, formattedQuery));
@@ -52,12 +56,8 @@ export function rangeSearch(query) {
         if (Object.keys(data.results).length === 0 && data.results.constructor === Object) {
           dispatch(setErrorMessage(SET_RANGE_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000)));
         } else {
-          dispatch(setResults(SET_RANGE_RESULTS, {
-            results: data.results,
-          }));
-          dispatch(setHeaders(SET_RANGE_HEADERS, {
-            headers: data.response,
-          }));
+          dispatch(setResults(SET_RANGE_RESULTS, data.results));
+          dispatch(setHeaders(SET_RANGE_HEADERS, data.response));
         }
       } else {
         dispatch(setErrorMessage(SET_RANGE_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000)));
@@ -73,7 +73,7 @@ export function ubrnSearch(query) {
   return (dispatch) => {
     dispatch(setErrorMessage(SET_UBRN_ERROR_MESSAGE, '', ''));
     dispatch(sendingRequest(SENDING_UBRN_REQUEST, true));
-    dispatch(setResults(SET_UBRN_RESULTS, { results: [] }));
+    dispatch(setResults(SET_UBRN_RESULTS, []));
     dispatch(setQuery(SET_UBRN_QUERY, query));
     const formattedQuery = query.id;
     apiSearch.ubrn(formattedQuery, (success, data) => {
@@ -84,12 +84,8 @@ export function ubrnSearch(query) {
           dispatch(setErrorMessage(SET_UBRN_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000)));
         } else {
           // Wrap the results in an array as we only get {} from the API
-          dispatch(setResults(SET_UBRN_RESULTS, {
-            results: [data.results],
-          }));
-          dispatch(setHeaders(SET_UBRN_HEADERS, {
-            headers: data.response,
-          }));
+          dispatch(setResults(SET_UBRN_RESULTS, [data.results]));
+          dispatch(setHeaders(SET_UBRN_HEADERS, data.response));
         }
       } else {
         dispatch(setErrorMessage(SET_UBRN_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000)));
@@ -97,6 +93,8 @@ export function ubrnSearch(query) {
     });
   };
 }
+
+// TODO: don't need to export many of the below
 
 export function addMostRecentError(unitType, errorMessage, timeStamp) {
   return { type: ADD_MOST_RECENT_ERROR, unitType, errorMessage, timeStamp };
@@ -106,8 +104,8 @@ export function removeLastError() {
   return { type: REMOVE_LAST_ERROR };
 }
 
-export function setResults(type, newState) {
-  return { type, newState };
+export function setResults(type, results) {
+  return { type, results };
 }
 
 export function setQuery(type, query) {
@@ -118,8 +116,8 @@ export function setFormattedQuery(type, query) {
   return { type, query };
 }
 
-export function setHeaders(type, newState) {
-  return { type, newState };
+export function setHeaders(type, headers) {
+  return { type, headers };
 }
 
 export function sendingRequest(type, sending) {

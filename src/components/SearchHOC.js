@@ -90,7 +90,7 @@ export default function withSearch(Form, settings, actions, constants) {
     }
     clearQuery() {
       this.props.dispatch(actions.setQuery(constants.SET_QUERY, {}));
-      this.props.dispatch(actions.setResults(constants.SET_RESULTS, { results: [] }));
+      this.props.dispatch(actions.setResults(constants.SET_RESULTS, []));
       this.setState({ formValues: {}, showFilter: false });
       this.focusAndScroll();
     }

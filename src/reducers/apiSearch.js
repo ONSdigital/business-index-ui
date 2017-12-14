@@ -57,7 +57,7 @@ function refReducer(state = initialState, action) {
         ...state,
         match: {
           ...state.match,
-          results: action.newState.results,
+          results: action.results,
         },
       });
     case SET_RANGE_RESULTS:
@@ -65,7 +65,7 @@ function refReducer(state = initialState, action) {
         ...state,
         range: {
           ...state.range,
-          results: action.newState.results,
+          results: action.results,
         },
       });
     case SET_UBRN_RESULTS:
@@ -73,7 +73,7 @@ function refReducer(state = initialState, action) {
         ...state,
         ubrn: {
           ...state.ubrn,
-          results: action.newState.results,
+          results: action.results,
         },
       });
     case SET_MATCH_HEADERS:
@@ -81,7 +81,7 @@ function refReducer(state = initialState, action) {
         ...state,
         match: {
           ...state.match,
-          headers: action.newState.headers,
+          headers: action.headers,
         },
       });
     case SET_RANGE_HEADERS:
@@ -89,7 +89,7 @@ function refReducer(state = initialState, action) {
         ...state,
         range: {
           ...state.range,
-          headers: action.newState.headers,
+          headers: action.headers,
         },
       });
     case SET_UBRN_HEADERS:
@@ -97,7 +97,7 @@ function refReducer(state = initialState, action) {
         ...state,
         ubrn: {
           ...state.ubrn,
-          headers: action.newState.headers,
+          headers: action.headers,
         },
       });
     case SENDING_MATCH_REQUEST:
