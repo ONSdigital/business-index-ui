@@ -261,7 +261,11 @@ pipeline {
         script {
           colourText("info","Checking deployed app health...")
           colourText("info","Pinging ${env.APP_URL}...")
-          sh "curl ${env.APP_URL}"
+          APP_STATUS = sh (
+            script: "curl -sL -w '%{http_code}' '${env.APP_URL}/api/health' -o /dev/null",
+            returnStdout: true
+          ).trim()
+          colourText("info", "APP_STATUS: ${APP_STATUS}")
         }
       }
     }
