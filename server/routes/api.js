@@ -43,7 +43,9 @@ router.get('/api/info', authMiddleware, (req, res) => {
 // need to hit it from Jenkins
 router.get('/api/health', (req, res) => {
   logger.info('Returning /health');
-  res.send('OK');
+  res.send(JSON.stringify({
+    status: 'OK',
+  }));
 });
 
 router.post('/api', authMiddleware, (req, res) => {
