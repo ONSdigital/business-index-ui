@@ -1,4 +1,4 @@
-import { REMOVE_LAST_ERROR, ADD_MOST_RECENT_ERROR, SET_MATCH_RESULTS, SET_MATCH_HEADERS, SENDING_MATCH_REQUEST, SET_MATCH_QUERY, SET_MATCH_ERROR_MESSAGE, SET_RANGE_RESULTS, SET_RANGE_HEADERS, SENDING_RANGE_REQUEST, SET_RANGE_QUERY, SET_RANGE_ERROR_MESSAGE, SET_UBRN_RESULTS, SET_UBRN_HEADERS, SENDING_UBRN_REQUEST, SET_UBRN_QUERY, SET_UBRN_ERROR_MESSAGE } from '../constants/ApiConstants';
+import { SET_HEADERS, SET_FORMATTED_QUERY, SET_RESULTS, SET_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST, REMOVE_LAST_ERROR, ADD_MOST_RECENT_ERROR } from '../constants/ApiConstants';
 
 // Object.assign is not yet fully supported in all browsers, so we fallback to
 // a polyfill
@@ -52,125 +52,51 @@ function refReducer(state = initialState, action) {
           errorMessage: action.errorMessage,
         }],
       });
-    case SET_MATCH_RESULTS:
+    case SET_RESULTS:
       return assign({}, state, {
         ...state,
-        match: {
-          ...state.match,
+        [action.jsonKey]: {
+          ...state[action.jsonKey],
           results: action.results,
         },
       });
-    case SET_RANGE_RESULTS:
+    case SET_HEADERS:
       return assign({}, state, {
         ...state,
-        range: {
-          ...state.range,
-          results: action.results,
-        },
-      });
-    case SET_UBRN_RESULTS:
-      return assign({}, state, {
-        ...state,
-        ubrn: {
-          ...state.ubrn,
-          results: action.results,
-        },
-      });
-    case SET_MATCH_HEADERS:
-      return assign({}, state, {
-        ...state,
-        match: {
-          ...state.match,
+        [action.jsonKey]: {
+          ...state[action.jsonKey],
           headers: action.headers,
         },
       });
-    case SET_RANGE_HEADERS:
+    case SENDING_SEARCH_REQUEST:
       return assign({}, state, {
         ...state,
-        range: {
-          ...state.range,
-          headers: action.headers,
-        },
-      });
-    case SET_UBRN_HEADERS:
-      return assign({}, state, {
-        ...state,
-        ubrn: {
-          ...state.ubrn,
-          headers: action.headers,
-        },
-      });
-    case SENDING_MATCH_REQUEST:
-      return assign({}, state, {
-        ...state,
-        match: {
-          ...state.match,
+        [action.jsonKey]: {
+          ...state[action.jsonKey],
           currentlySending: action.sending,
         },
       });
-    case SENDING_RANGE_REQUEST:
+    case SET_QUERY:
       return assign({}, state, {
         ...state,
-        range: {
-          ...state.range,
-          currentlySending: action.sending,
-        },
-      });
-    case SENDING_UBRN_REQUEST:
-      return assign({}, state, {
-        ...state,
-        ubrn: {
-          ...state.ubrn,
-          currentlySending: action.sending,
-        },
-      });
-    case SET_MATCH_QUERY:
-      return assign({}, state, {
-        ...state,
-        match: {
-          ...state.match,
+        [action.jsonKey]: {
+          ...state[action.jsonKey],
           query: action.query,
         },
       });
-    case SET_RANGE_QUERY:
+    case SET_FORMATTED_QUERY:
       return assign({}, state, {
         ...state,
-        range: {
-          ...state.range,
-          query: action.query,
+        [action.jsonKey]: {
+          ...state[action.jsonKey],
+          formattedQuery: action.query,
         },
       });
-    case SET_UBRN_QUERY:
+    case SET_SEARCH_ERROR_MESSAGE:
       return assign({}, state, {
         ...state,
-        ubrn: {
-          ...state.ubrn,
-          query: action.query,
-        },
-      });
-    case SET_MATCH_ERROR_MESSAGE:
-      return assign({}, state, {
-        ...state,
-        match: {
-          ...state.match,
-          errorMessage: action.message,
-          timeStamp: action.timeStamp,
-        },
-      });
-    case SET_RANGE_ERROR_MESSAGE:
-      return assign({}, state, {
-        ...state,
-        range: {
-          ...state.range,
-          errorMessage: action.message,
-          timeStamp: action.timeStamp,
-        },
-      });
-    case SET_UBRN_ERROR_MESSAGE:
-      return assign({}, state, {
-        ...state,
-        ubrn: {
-          ...state.ubrn,
+        [action.jsonKey]: {
+          ...state[action.jsonKey],
           errorMessage: action.message,
           timeStamp: action.timeStamp,
         },

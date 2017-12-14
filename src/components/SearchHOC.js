@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { TitleAndDescription, BreadCrumb } from 'registers-react-library';
 import ErrorModal from './ErrorModal';
 import ResultsTable from './ResultsTable';
+import { SET_QUERY, SET_RESULTS } from '../constants/ApiConstants';
 
 // The logic for the Match/Range/UBRN features are almost identical, so we
 // use a higher order component to create the pages, including the common
@@ -11,7 +12,7 @@ import ResultsTable from './ResultsTable';
 // the settings or actions/constants parameters.
 
 // https://reactjs.org/docs/higher-order-components.html
-export default function withSearch(Form, settings, actions, constants) {
+export default function withSearch(Form, settings, actions) {
   class SearchHOC extends React.Component {
     constructor(props) {
       super(props);
@@ -89,8 +90,8 @@ export default function withSearch(Form, settings, actions, constants) {
       this.focusAndScroll();
     }
     clearQuery() {
-      this.props.dispatch(actions.setQuery(constants.SET_QUERY, {}));
-      this.props.dispatch(actions.setResults(constants.SET_RESULTS, []));
+      this.props.dispatch(actions.setQuery(SET_QUERY, {}, settings.jsonKey));
+      this.props.dispatch(actions.setResults(SET_RESULTS, [], settings.jsonKey));
       this.setState({ formValues: {}, showFilter: false });
       this.focusAndScroll();
     }
@@ -115,7 +116,7 @@ export default function withSearch(Form, settings, actions, constants) {
       this.setState({ formValues });
       // Store the query in Redux store, so we can access it again if a user
       // presses 'back to search' on the Enterprise View page.
-      this.props.dispatch(actions.setQuery(constants.SET_QUERY, formValues));
+      this.props.dispatch(actions.setQuery(SET_QUERY, formValues, settings.jsonKey));
     }
     render() {
       const items = [

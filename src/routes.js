@@ -19,7 +19,6 @@ import UBRNForm from './components/UBRNForm';
 import MatchForm from './components/MatchForm';
 import RangeForm from './components/RangeForm';
 import { matchSearch, ubrnSearch, rangeSearch, setQuery, setResults } from './actions/ApiActions';
-import { SET_MATCH_QUERY, SET_MATCH_RESULTS, SET_UBRN_QUERY, SET_UBRN_RESULTS, SET_RANGE_QUERY, SET_RANGE_RESULTS } from './constants/ApiConstants';
 import config from './config/search';
 
 const { MATCH, RANGE, UBRN } = config;
@@ -60,16 +59,13 @@ function checkLogin() {
 }
 
 const ubrnActions = { search: ubrnSearch, setQuery, setResults };
-const ubrnConsts = { SET_QUERY: SET_UBRN_QUERY, SET_RESULTS: SET_UBRN_RESULTS };
-const UBRNLookup = withSearch(UBRNForm, UBRN, ubrnActions, ubrnConsts);
+const UBRNLookup = withSearch(UBRNForm, UBRN, ubrnActions);
 
 const matchActions = { search: matchSearch, setQuery, setResults };
-const matchConsts = { SET_QUERY: SET_MATCH_QUERY, SET_RESULTS: SET_MATCH_RESULTS };
-const Match = withSearch(MatchForm, MATCH, matchActions, matchConsts);
+const Match = withSearch(MatchForm, MATCH, matchActions);
 
 const rangeActions = { search: rangeSearch, setQuery, setResults };
-const rangeConsts = { SET_QUERY: SET_RANGE_QUERY, SET_RESULTS: SET_RANGE_RESULTS };
-const RangeQuery = withSearch(RangeForm, RANGE, rangeActions, rangeConsts);
+const RangeQuery = withSearch(RangeForm, RANGE, rangeActions);
 
 /* eslint arrow-body-style: "off" */
 const Routes = () => (

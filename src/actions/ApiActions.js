@@ -1,38 +1,30 @@
-import { SET_MATCH_FORMATTED_QUERY, SET_RANGE_FORMATTED_QUERY, ADD_MOST_RECENT_ERROR, REMOVE_LAST_ERROR, SET_UBRN_ERROR_MESSAGE, SENDING_UBRN_REQUEST, SET_UBRN_RESULTS, SET_UBRN_QUERY, SET_UBRN_HEADERS, SET_RANGE_HEADERS, SET_RANGE_ERROR_MESSAGE, SENDING_RANGE_REQUEST, SET_RANGE_RESULTS, SET_RANGE_QUERY, SET_MATCH_RESULTS, SET_MATCH_HEADERS, SENDING_MATCH_REQUEST, SET_MATCH_QUERY, SET_MATCH_ERROR_MESSAGE } from '../constants/ApiConstants';
+import { ADD_MOST_RECENT_ERROR, REMOVE_LAST_ERROR, SET_RESULTS, SET_FORMATTED_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST, SET_QUERY, SET_HEADERS } from '../constants/ApiConstants';
 import apiSearch from '../utils/apiSearch';
 import { formMatchQuery, formRangeQuery } from '../utils/formQuery';
-
-// 1. reset error message
-// 2. reset results
-// 3. set sending = true
-// 4. set query
-// 5. format query
-// 6. set formatted query
-// 7. do api search
 
 /**
  * Do a match search
  */
 export function matchSearch(query) {
   return (dispatch) => {
-    dispatch(setErrorMessage(SET_MATCH_ERROR_MESSAGE, '', ''));
-    dispatch(sendingRequest(SENDING_MATCH_REQUEST, true));
-    dispatch(setResults(SET_MATCH_RESULTS, []));
-    dispatch(setQuery(SET_MATCH_QUERY, query));
+    dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, '', '', 'match'));
+    dispatch(sendingRequest(SENDING_SEARCH_REQUEST, true, 'match'));
+    dispatch(setResults(SET_RESULTS, [], 'match'));
+    dispatch(setQuery(SET_QUERY, query, 'match'));
     const formattedQuery = formMatchQuery(query);
-    dispatch(setFormattedQuery(SET_MATCH_FORMATTED_QUERY, formattedQuery));
+    dispatch(setFormattedQuery(SET_FORMATTED_QUERY, formattedQuery, 'match'));
     apiSearch.match(formattedQuery, (success, data) => {
-      dispatch(sendingRequest(SENDING_MATCH_REQUEST, false));
+      dispatch(sendingRequest(SENDING_SEARCH_REQUEST, false, 'match'));
       if (success) {
         // This is a workaround for the API returning 200 {} for no results, should be 404
         if (Object.keys(data.results).length === 0 && data.results.constructor === Object) {
-          dispatch(setErrorMessage(SET_MATCH_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000)));
+          dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000), 'match'));
         } else {
-          dispatch(setResults(SET_MATCH_RESULTS, data.results));
-          dispatch(setHeaders(SET_MATCH_HEADERS, data.response));
+          dispatch(setResults(SET_RESULTS, data.results, 'match'));
+          dispatch(setHeaders(SET_HEADERS, data.response, 'match'));
         }
       } else {
-        dispatch(setErrorMessage(SET_MATCH_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000)));
+        dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000), 'match'));
       }
     });
   };
@@ -43,24 +35,24 @@ export function matchSearch(query) {
  */
 export function rangeSearch(query) {
   return (dispatch) => {
-    dispatch(setErrorMessage(SET_RANGE_ERROR_MESSAGE, '', ''));
-    dispatch(sendingRequest(SENDING_RANGE_REQUEST, true));
-    dispatch(setResults(SET_RANGE_RESULTS, []));
-    dispatch(setQuery(SET_RANGE_QUERY, query));
+    dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, '', '', 'range'));
+    dispatch(sendingRequest(SENDING_SEARCH_REQUEST, true, 'range'));
+    dispatch(setResults(SET_RESULTS, [], 'range', 'range'));
+    dispatch(setQuery(SET_QUERY, query, 'range'));
     const formattedQuery = formRangeQuery(query);
-    dispatch(setFormattedQuery(SET_RANGE_FORMATTED_QUERY, formattedQuery));
+    dispatch(setFormattedQuery(SET_FORMATTED_QUERY, formattedQuery, 'range'));
     apiSearch.match(formattedQuery, (success, data) => {
-      dispatch(sendingRequest(SENDING_RANGE_REQUEST, false));
+      dispatch(sendingRequest(SENDING_SEARCH_REQUEST, false, 'range'));
       if (success) {
         // This is a workaround for the API returning 200 {} for no results, should be 404
         if (Object.keys(data.results).length === 0 && data.results.constructor === Object) {
-          dispatch(setErrorMessage(SET_RANGE_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000)));
+          dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000), 'range'));
         } else {
-          dispatch(setResults(SET_RANGE_RESULTS, data.results));
-          dispatch(setHeaders(SET_RANGE_HEADERS, data.response));
+          dispatch(setResults(SET_RESULTS, data.results, 'range'));
+          dispatch(setHeaders(SET_HEADERS, data.response, 'range'));
         }
       } else {
-        dispatch(setErrorMessage(SET_RANGE_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000)));
+        dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000), 'range'));
       }
     });
   };
@@ -71,31 +63,30 @@ export function rangeSearch(query) {
  */
 export function ubrnSearch(query) {
   return (dispatch) => {
-    dispatch(setErrorMessage(SET_UBRN_ERROR_MESSAGE, '', ''));
-    dispatch(sendingRequest(SENDING_UBRN_REQUEST, true));
-    dispatch(setResults(SET_UBRN_RESULTS, []));
-    dispatch(setQuery(SET_UBRN_QUERY, query));
+    dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, '', '', 'ubrn'));
+    dispatch(sendingRequest(SENDING_SEARCH_REQUEST, true, 'ubrn'));
+    dispatch(setResults(SET_RESULTS, [], 'ubrn'));
+    dispatch(setQuery(SET_QUERY, query, 'ubrn'));
     const formattedQuery = query.id;
     apiSearch.ubrn(formattedQuery, (success, data) => {
-      dispatch(sendingRequest(SENDING_UBRN_REQUEST, false));
+      dispatch(sendingRequest(SENDING_SEARCH_REQUEST, false, 'ubrn'));
       if (success) {
         // This is a workaround for the API returning 200 {} for no results, should be 404
         if (Object.keys(data.results).length === 0 && data.results.constructor === Object) {
-          dispatch(setErrorMessage(SET_UBRN_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000)));
+          dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000), 'ubrn'));
         } else {
           // Wrap the results in an array as we only get {} from the API
-          dispatch(setResults(SET_UBRN_RESULTS, [data.results]));
-          dispatch(setHeaders(SET_UBRN_HEADERS, data.response));
+          dispatch(setResults(SET_RESULTS, [data.results], 'ubrn'));
+          dispatch(setHeaders(SET_HEADERS, data.response, 'ubrn'));
         }
       } else {
-        dispatch(setErrorMessage(SET_UBRN_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000)));
+        dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000), 'ubrn'));
       }
     });
   };
 }
 
 // TODO: don't need to export many of the below
-
 export function addMostRecentError(unitType, errorMessage, timeStamp) {
   return { type: ADD_MOST_RECENT_ERROR, unitType, errorMessage, timeStamp };
 }
@@ -104,26 +95,26 @@ export function removeLastError() {
   return { type: REMOVE_LAST_ERROR };
 }
 
-export function setResults(type, results) {
-  return { type, results };
+export function setResults(type, results, jsonKey) {
+  return { type, results, jsonKey };
 }
 
-export function setQuery(type, query) {
-  return { type, query };
+export function setQuery(type, query, jsonKey) {
+  return { type, query, jsonKey };
 }
 
-export function setFormattedQuery(type, query) {
-  return { type, query };
+export function setFormattedQuery(type, query, jsonKey) {
+  return { type, query, jsonKey };
 }
 
-export function setHeaders(type, headers) {
-  return { type, headers };
+export function setHeaders(type, headers, jsonKey) {
+  return { type, headers, jsonKey };
 }
 
-export function sendingRequest(type, sending) {
-  return { type, sending };
+export function sendingRequest(type, sending, jsonKey) {
+  return { type, sending, jsonKey };
 }
 
-function setErrorMessage(type, message, timeStamp) {
-  return { type, message, timeStamp };
+function setErrorMessage(type, message, timeStamp, jsonKey) {
+  return { type, message, timeStamp, jsonKey };
 }

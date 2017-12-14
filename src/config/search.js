@@ -6,6 +6,7 @@ const search = {
     showPagination: true,
     showFilter: true,
     defaultPageSize: 10,
+    jsonKey: 'match',
   },
   RANGE: {
     title: 'Range Search',
@@ -14,6 +15,7 @@ const search = {
     showPagination: true,
     showFilter: true,
     defaultPageSize: 10,
+    jsonKey: 'range',
   },
   UBRN: {
     title: 'UBRN Lookup',
@@ -22,6 +24,7 @@ const search = {
     showPagination: false,
     showFilter: false,
     defaultPageSize: 1,
+    jsonKey: 'ubrn',
   },
 };
 
