@@ -1,10 +1,8 @@
 import { SET_HEADERS, SET_FORMATTED_QUERY, SET_RESULTS, SET_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST, REMOVE_LAST_ERROR, ADD_MOST_RECENT_ERROR } from '../constants/ApiConstants';
 
-// Object.assign is not yet fully supported in all browsers, so we fallback to
-// a polyfill
+// Object.assign is not yet fully supported in all browsers, so fallback to a polyfill
 const assign = Object.assign || require('object.assign');
 
-// The initial application state
 const initialState = {
   errorArray: [],
   match: {
@@ -35,7 +33,6 @@ const initialState = {
   },
 };
 
-// Takes care of changing the application state
 function refReducer(state = initialState, action) {
   switch (action.type) {
     case REMOVE_LAST_ERROR:

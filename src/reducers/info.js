@@ -1,10 +1,8 @@
 import { SET_UI_INFO, SET_API_INFO, SENDING_UI_REQUEST, SENDING_API_REQUEST, SET_UI_ERROR_MESSAGE, SET_API_ERROR_MESSAGE } from '../constants/InfoConstants';
 
-// Object.assign is not yet fully supported in all browsers, so we fallback to
-// a polyfill
+// Object.assign is not yet fully supported in all browsers, so fallback to a polyfill
 const assign = Object.assign || require('object.assign');
 
-// The initial application state
 const initialState = {
   ui: {
     version: '',
@@ -21,7 +19,6 @@ const initialState = {
   },
 };
 
-// Takes care of changing the application state
 function infoReducer(state = initialState, action) {
   switch (action.type) {
     case SET_UI_INFO:

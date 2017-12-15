@@ -1,22 +1,8 @@
-/*
- * The reducer takes care of our data
- * Using actions, we can change our application state
- * To add a new action, add it to the switch statement in the homeReducer function
- *
- * Example:
- * case YOUR_ACTION_CONSTANT:
- *   return assign({}, state, {
- *       stateVariable: action.var
- *   });
- */
-
 import { CHECK_AUTH, SET_CONFETTI, SET_AUTH, SENDING_REQUEST, SET_ERROR_MESSAGE, SET_USER_DETAILS } from '../constants/LoginConstants';
 
-// Object.assign is not yet fully supported in all browsers, so we fallback to
-// a polyfill
+// Object.assign is not yet fully supported in all browsers, so fallback to a polyfill
 const assign = Object.assign || require('object.assign');
 
-// The initial application state
 const initialState = {
   username: '',
   role: '',
@@ -27,7 +13,6 @@ const initialState = {
   showConfetti: false,
 };
 
-// Takes care of changing the application state
 function loginReducer(state = initialState, action) {
   switch (action.type) {
     case SET_USER_DETAILS:
