@@ -11,7 +11,6 @@ const initialState = {
     formattedQuery: '',
     currentlySending: false,
     errorMessage: '',
-    timeStamp: '',
   },
   range: {
     results: [],
@@ -20,7 +19,6 @@ const initialState = {
     formattedQuery: '',
     currentlySending: false,
     errorMessage: '',
-    timeStamp: '',
   },
   ubrn: {
     results: [],
@@ -28,7 +26,6 @@ const initialState = {
     query: {},
     currentlySending: false,
     errorMessage: '',
-    timeStamp: '',
   },
 };
 
@@ -80,7 +77,6 @@ function refReducer(state = initialState, action) {
         [action.jsonKey]: {
           ...state[action.jsonKey],
           errorMessage: action.message,
-          timeStamp: action.timeStamp,
         },
       });
     default:

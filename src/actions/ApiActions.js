@@ -18,13 +18,13 @@ export function matchSearch(query) {
       if (success) {
         // This is a workaround for the API returning 200 {} for no results, should be 404
         if (Object.keys(data.results).length === 0 && data.results.constructor === Object) {
-          dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000), 'match'));
+          dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, '404: No results found.', 'match'));
         } else {
           dispatch(setResults(SET_RESULTS, data.results, 'match'));
           dispatch(setHeaders(SET_HEADERS, data.response, 'match'));
         }
       } else {
-        dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000), 'match'));
+        dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, data.message, 'match'));
       }
     });
   };
@@ -46,13 +46,13 @@ export function rangeSearch(query) {
       if (success) {
         // This is a workaround for the API returning 200 {} for no results, should be 404
         if (Object.keys(data.results).length === 0 && data.results.constructor === Object) {
-          dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000), 'range'));
+          dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, '404: No results found.', 'range'));
         } else {
           dispatch(setResults(SET_RESULTS, data.results, 'range'));
           dispatch(setHeaders(SET_HEADERS, data.response, 'range'));
         }
       } else {
-        dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000), 'range'));
+        dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, data.message, 'range'));
       }
     });
   };
@@ -73,14 +73,14 @@ export function ubrnSearch(query) {
       if (success) {
         // This is a workaround for the API returning 200 {} for no results, should be 404
         if (Object.keys(data.results).length === 0 && data.results.constructor === Object) {
-          dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, '404: No results found.', Math.floor(new Date() / 1000), 'ubrn'));
+          dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, '404: No results found.', 'ubrn'));
         } else {
           // Wrap the results in an array as we only get {} from the API
           dispatch(setResults(SET_RESULTS, [data.results], 'ubrn'));
           dispatch(setHeaders(SET_HEADERS, data.response, 'ubrn'));
         }
       } else {
-        dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, data.message, Math.floor(new Date() / 1000), 'ubrn'));
+        dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, data.message, 'ubrn'));
       }
     });
   };
@@ -106,6 +106,6 @@ function sendingRequest(type, sending, jsonKey) {
   return { type, sending, jsonKey };
 }
 
-function setErrorMessage(type, message, timeStamp, jsonKey) {
-  return { type, message, timeStamp, jsonKey };
+function setErrorMessage(type, message, jsonKey) {
+  return { type, message, jsonKey };
 }
