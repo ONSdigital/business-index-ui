@@ -42,27 +42,6 @@ export function getChildValues(json: {}, compareString: string) {
   return arr;
 }
 
-export function getLegalStatusDescription(status: string) {
-  switch (status) {
-    case '1':
-      return 'Company';
-    case '2':
-      return 'Sole Proprietor';
-    case '3':
-      return 'Partnership';
-    case '4':
-      return 'Public Corporation';
-    case '5':
-      return 'Central Government';
-    case '6':
-      return 'Local Authority';
-    case '7':
-      return 'Non-Profit Body';
-    default:
-      return 'Not Allocated';
-  }
-}
-
 export function maxSize(...args) {
   return args.reduce((a, b) => (b.length > a ? b.length : a), 0);
 }
