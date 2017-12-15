@@ -1,4 +1,4 @@
-import { ADD_MOST_RECENT_ERROR, REMOVE_LAST_ERROR, SET_RESULTS, SET_FORMATTED_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST, SET_QUERY, SET_HEADERS } from '../constants/ApiConstants';
+import { SET_RESULTS, SET_FORMATTED_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST, SET_QUERY, SET_HEADERS } from '../constants/ApiConstants';
 import apiSearch from '../utils/apiSearch';
 import { formMatchQuery, formRangeQuery } from '../utils/formQuery';
 
@@ -86,15 +86,6 @@ export function ubrnSearch(query) {
   };
 }
 
-// TODO: don't need to export many of the below
-export function addMostRecentError(unitType, errorMessage, timeStamp) {
-  return { type: ADD_MOST_RECENT_ERROR, unitType, errorMessage, timeStamp };
-}
-
-export function removeLastError() {
-  return { type: REMOVE_LAST_ERROR };
-}
-
 export function setResults(type, results, jsonKey) {
   return { type, results, jsonKey };
 }
@@ -103,15 +94,15 @@ export function setQuery(type, query, jsonKey) {
   return { type, query, jsonKey };
 }
 
-export function setFormattedQuery(type, query, jsonKey) {
+function setFormattedQuery(type, query, jsonKey) {
   return { type, query, jsonKey };
 }
 
-export function setHeaders(type, headers, jsonKey) {
+function setHeaders(type, headers, jsonKey) {
   return { type, headers, jsonKey };
 }
 
-export function sendingRequest(type, sending, jsonKey) {
+function sendingRequest(type, sending, jsonKey) {
   return { type, sending, jsonKey };
 }
 

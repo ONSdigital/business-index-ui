@@ -1,10 +1,9 @@
-import { SET_HEADERS, SET_FORMATTED_QUERY, SET_RESULTS, SET_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST, REMOVE_LAST_ERROR, ADD_MOST_RECENT_ERROR } from '../constants/ApiConstants';
+import { SET_HEADERS, SET_FORMATTED_QUERY, SET_RESULTS, SET_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST } from '../constants/ApiConstants';
 
 // Object.assign is not yet fully supported in all browsers, so fallback to a polyfill
 const assign = Object.assign || require('object.assign');
 
 const initialState = {
-  errorArray: [],
   match: {
     results: [],
     headers: [],
@@ -35,20 +34,6 @@ const initialState = {
 
 function refReducer(state = initialState, action) {
   switch (action.type) {
-    case REMOVE_LAST_ERROR:
-      return assign({}, state, {
-        ...state,
-        errorArray: state.errorArray.slice(0, state.errorArray.length - 1),
-      });
-    case ADD_MOST_RECENT_ERROR:
-      return assign({}, state, {
-        ...state,
-        errorArray: [...state.errorArray, {
-          unitType: action.unitType,
-          timeStamp: action.timeStamp,
-          errorMessage: action.errorMessage,
-        }],
-      });
     case SET_RESULTS:
       return assign({}, state, {
         ...state,
