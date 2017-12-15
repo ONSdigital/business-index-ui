@@ -1,5 +1,3 @@
-// @flow
-
 import config from '../config/api-urls';
 
 const { AUTH_URL, REROUTE_URL } = config;
@@ -13,7 +11,7 @@ const apiInfo = {
    * Gets version/lastUpdate info from the UI.
    * @param  {Function} callback Called with returned data.
    */
-  getUiInfo(callback: (success: boolean, data: {}) => void) {
+  getUiInfo(callback) {
     fetch(`${AUTH_URL}/api/info`, {
       method: 'GET',
       headers: {
@@ -23,8 +21,8 @@ const apiInfo = {
     }).then((response) => {
       if (response.status === 200) {
         return response.json().then((json) => {
-          const version: string = json.version;
-          const lastUpdate: string = json.lastUpdate;
+          const version = json.version;
+          const lastUpdate = json.lastUpdate;
           callback(true, { version, lastUpdate });
         });
       }
@@ -37,7 +35,7 @@ const apiInfo = {
    * Gets version/lastUpdate info from the API.
    * @param  {Function} callback Called with returned data.
    */
-  getApiInfo(callback: (success: boolean, data: {}) => void) {
+  getApiInfo(callback) {
     fetch(`${REROUTE_URL}`, {
       method: 'POST',
       headers: {
@@ -51,9 +49,9 @@ const apiInfo = {
     }).then((response) => {
       if (response.status === 200) {
         return response.json().then((json) => {
-          const version: string = json.version;
-          const lastApiUpdate: string = json.builtAtString;
-          const lastDataUpdate: string = json.lastDataUpdate;
+          const version = json.version;
+          const lastApiUpdate = json.builtAtString;
+          const lastDataUpdate = json.lastDataUpdate;
           callback(true, { version, lastApiUpdate, lastDataUpdate });
         });
       }

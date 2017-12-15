@@ -1,5 +1,3 @@
-// @flow
-
 import config from '../config/api-urls';
 
 const { REROUTE_URL, API_VERSION } = config;
@@ -13,9 +11,7 @@ const apiSearch = {
    * Searches API for match
    * @param  {Function} callback Called with returned data.
    */
-  search(query: string, callback: (success: boolean, data: {}, response?: {}) => void) {
-    // fetch(`${REROUTE_URL}/${API_VERSION}/${SEARCH_ENDPOINT}${query}`, {
-    //   method: 'GET',
+  search(query, callback) {
     fetch(`${REROUTE_URL}`, {
       method: 'POST',
       headers: {
