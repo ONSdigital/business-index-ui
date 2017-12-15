@@ -12,7 +12,7 @@ import { SET_QUERY, SET_RESULTS } from '../constants/ApiConstants';
 // the settings or actions/constants parameters.
 
 // https://reactjs.org/docs/higher-order-components.html
-export default function withSearch(Form, settings, actions) {
+export default function withSearch(Form, settings, actions, formQuery) {
   class SearchHOC extends React.Component {
     constructor(props) {
       super(props);
@@ -69,7 +69,7 @@ export default function withSearch(Form, settings, actions) {
       e.preventDefault();
       if (this.state.formValues !== {}) {
         this.setState({ showFilter: false, businessName: this.state.formValues.BusinessName });
-        this.props.dispatch(actions.search(this.state.formValues));
+        this.props.dispatch(actions.search(this.state.formValues, formQuery, settings.jsonKey));
       } else {
         // Possibly swap this action with a redux way of doing it?
         this.props.data.results = 0;

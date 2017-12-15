@@ -18,7 +18,8 @@ import withSearch from './components/SearchHOC';
 import UBRNForm from './components/UBRNForm';
 import MatchForm from './components/MatchForm';
 import RangeForm from './components/RangeForm';
-import { matchSearch, ubrnSearch, rangeSearch, setQuery, setResults } from './actions/ApiActions';
+import { search, setQuery, setResults } from './actions/ApiActions';
+import { formMatchQuery, formRangeQuery, formUbrnQuery } from './utils/formQuery';
 import config from './config/search';
 
 const { MATCH, RANGE, UBRN } = config;
@@ -58,14 +59,14 @@ function checkLogin() {
   }
 }
 
-const ubrnActions = { search: ubrnSearch, setQuery, setResults };
-const UBRNLookup = withSearch(UBRNForm, UBRN, ubrnActions);
+const ubrnActions = { search, setQuery, setResults };
+const UBRNLookup = withSearch(UBRNForm, UBRN, ubrnActions, formUbrnQuery);
 
-const matchActions = { search: matchSearch, setQuery, setResults };
-const Match = withSearch(MatchForm, MATCH, matchActions);
+const matchActions = { search, setQuery, setResults };
+const Match = withSearch(MatchForm, MATCH, matchActions, formMatchQuery);
 
-const rangeActions = { search: rangeSearch, setQuery, setResults };
-const RangeQuery = withSearch(RangeForm, RANGE, rangeActions);
+const rangeActions = { search, setQuery, setResults };
+const RangeQuery = withSearch(RangeForm, RANGE, rangeActions, formRangeQuery);
 
 /* eslint arrow-body-style: "off" */
 const Routes = () => (
