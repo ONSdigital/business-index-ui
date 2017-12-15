@@ -1,5 +1,8 @@
 import config from '../config/form-query';
+import urls from '../config/api-urls';
+
 const { SEPERATOR, LIMIT, ES_CONCAT, END_SEPERATOR } = config;
+const { SEARCH_ENDPOINT } = urls;
 
 export function formMatchQuery(query) {
   const queryArr = Object.keys(query).map(param => {
@@ -8,7 +11,7 @@ export function formMatchQuery(query) {
     }
     return `${param}${SEPERATOR}${query[param]}`;
   });
-  const formattedQuery = `${queryArr.join(` ${ES_CONCAT} `)}${END_SEPERATOR}${LIMIT}`;
+  const formattedQuery = `${SEARCH_ENDPOINT}${queryArr.join(` ${ES_CONCAT} `)}${END_SEPERATOR}${LIMIT}`;
   return formattedQuery;
 }
 
@@ -24,8 +27,12 @@ export function formRangeQuery(query) {
     // ES format: Param:(A OR B OR C)
     return `${param}${SEPERATOR}(${query[param].join(' OR ')})`;
   });
-  const formattedQuery = `${queryArr.join(` ${ES_CONCAT} `)}${END_SEPERATOR}${LIMIT}`;
+  const formattedQuery = `${SEARCH_ENDPOINT}${queryArr.join(` ${ES_CONCAT} `)}${END_SEPERATOR}${LIMIT}`;
   return formattedQuery;
+}
+
+export function formUbrnQuery(query) {
+  return `business/${query.id}`;
 }
 
 // Encode special chars in businessName (e.g. £ etc.)
