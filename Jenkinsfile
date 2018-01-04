@@ -179,7 +179,7 @@ pipeline {
           sh 'cp server/package.json .'
  
           // Get the proper manifest from Gitlab
-          sh 'cp conf/dev/manifest.yml .'
+          sh "cp conf/${env.DEPLOY_NAME}/manifest.yml ."
           sh 'zip -r bi-ui.zip build node_modules favicon.ico package.json server manifest.yml'
           stash name: 'zip'
         }
