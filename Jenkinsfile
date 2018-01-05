@@ -15,7 +15,7 @@ pipeline {
 
     DEPLOY_DEV = "dev"
     DEPLOY_TEST = "test"
-    DEPLOY_PROD = "prod"
+    DEPLOY_PROD = "beta"
 
     ORGANIZATION = "ons"
     TEAM = "bi"
@@ -213,22 +213,7 @@ pipeline {
       steps {
         script {
           colourText("info","Running integration tests...")
-        }
-      }
-    }
-    stage('Promote to BETA?') {
-      agent { label 'GMU' }
-      when {
-        anyOf {
-          branch BRANCH_PROD
-        }
-      }
-      steps {
-        script {
-          colourText("info","Deploy to BETA?")
-          timeout(time: 10, unit: 'MINUTES') {
-            input 'Deploy to Beta?'
-          }
+          // We will run selenium integration tests here
         }
       }
     }
