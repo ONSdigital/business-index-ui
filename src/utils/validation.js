@@ -1,5 +1,3 @@
-// @flow
-
 import config from '../config/validation';
 
 const { UBRN } = config;
@@ -11,7 +9,7 @@ const { UBRN } = config;
  *
  * @return {string} Validation state string for bootstrap
  */
-export function validateUBRNSearch(query: string) {
+export function validateUBRNSearch(query) {
   if ((query.length >= UBRN.min && query.length <= UBRN.max) && !isNaN(query)) return 'success';
   return 'error';
 }
