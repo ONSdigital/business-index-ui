@@ -15,6 +15,10 @@ pipeline {
     DEPLOY_TEST = "test"
     DEPLOY_PROD = "beta"
 
+    GITLAB_DEV = "dev"
+    GITLAB_TEST = "test"
+    GITLAB_PROD = "prod"
+
     ORGANIZATION = "ons"
     TEAM = "bi"
     MODULE_NAME = "bi-ui"
@@ -63,10 +67,13 @@ pipeline {
         script {
           if (BRANCH_NAME == BRANCH_DEV) {
             env.DEPLOY_NAME = DEPLOY_DEV
+            env.GITLAB_DIR = GITLAB_DEV
           } else if  (BRANCH_NAME == BRANCH_TEST) {
             env.DEPLOY_NAME = DEPLOY_TEST
+            env.GITLAB_DIR = GITLAB_TEST
           } else if (BRANCH_NAME == BRANCH_PROD) {
             env.DEPLOY_NAME = DEPLOY_PROD
+            env.GITLAB_DIR = GITLAB_PROD
           }
         }
       }
@@ -148,7 +155,7 @@ pipeline {
           sh 'cp server/package.json .'
  
           // Get the proper manifest from Gitlab
-          sh "cp conf/${env.DEPLOY_NAME}/manifest.yml ."
+          sh "cp conf/${env.GITLAB_DIR}/manifest.yml ."
           sh 'zip -r bi-ui.zip build node_modules favicon.ico package.json server manifest.yml'
           stash name: 'zip'
         }
