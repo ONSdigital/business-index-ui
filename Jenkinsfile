@@ -7,8 +7,6 @@
 pipeline {
   agent none
   environment {
-    API_GW_URL = ""
-
     BRANCH_DEV = "develop"
     BRANCH_TEST = "release"
     BRANCH_PROD = "master"
