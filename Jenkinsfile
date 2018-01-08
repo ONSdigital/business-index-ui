@@ -1,5 +1,5 @@
 #!groovy
-@Library('jenkins-pipeline-shared@develop') _
+@Library('jenkins-pipeline-shared@feature/new-cf') _
  
 /*
 * bi-ui Jenkins Pipeline
@@ -7,19 +7,23 @@
 pipeline {
   agent none
   environment {
-    API_GW_URL = ""
-
     BRANCH_DEV = "develop"
     BRANCH_TEST = "release"
     BRANCH_PROD = "master"
 
     DEPLOY_DEV = "dev"
     DEPLOY_TEST = "test"
-    DEPLOY_PROD = "prod"
+    DEPLOY_PROD = "beta"
+
+    GITLAB_DEV = "dev"
+    GITLAB_TEST = "test"
+    GITLAB_PROD = "prod"
 
     ORGANIZATION = "ons"
     TEAM = "bi"
     MODULE_NAME = "bi-ui"
+    CF_PROJECT = "BI"
+    CLOUD_FOUNDRY_BASE_ROUTE = ""
 
     BI_UI_TEST_ADMIN_USERNAME="admin"
     BI_UI_TEST_ADMIN_PASSWORD="admin"
@@ -63,24 +67,14 @@ pipeline {
         script {
           if (BRANCH_NAME == BRANCH_DEV) {
             env.DEPLOY_NAME = DEPLOY_DEV
+            env.GITLAB_DIR = GITLAB_DEV
           } else if  (BRANCH_NAME == BRANCH_TEST) {
             env.DEPLOY_NAME = DEPLOY_TEST
+            env.GITLAB_DIR = GITLAB_TEST
           } else if (BRANCH_NAME == BRANCH_PROD) {
             env.DEPLOY_NAME = DEPLOY_PROD
+            env.GITLAB_DIR = GITLAB_PROD
           }
-        }
-      }
-      post {
-        always {
-          script {
-            env.NODE_STAGE = "Install Dependancies"
-          }
-        }
-        success {
-          colourText("info","Successful install of dependancies.")
-        }
-        failure {
-          colourText("warn","Unable to install dependancies.")
         }
       }
     }
@@ -104,19 +98,6 @@ pipeline {
           }
         )
       }
-      post {
-        always {
-          script {
-            env.NODE_STAGE = "Test"
-          }
-        }
-        success {
-          colourText("info","Test stage complete")
-        }
-        failure {
-          colourText("warn","Test stage failed.")
-        }
-      }
     }
     stage('Static Analysis - Coverage & Style') {
       agent { label 'GMU' }
@@ -133,11 +114,6 @@ pipeline {
         )
       }
       post {
-        always {
-          script {
-            env.NODE_STAGE = "Static Analysis"
-          }
-        }
         success {
           colourText("info","Static analysis complete, publishing reports...")
           // Publish coverage report
@@ -170,7 +146,7 @@ pipeline {
           }
 
           // Run npm run build
-          sh "REACT_APP_ENV=${env.DEPLOY_NAME} REACT_APP_AUTH_URL=https://${env.DEPLOY_NAME}-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX} REACT_APP_API_URL=https://${env.DEPLOY_NAME}-bi-ui.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}/api npm run build"
+          sh "REACT_APP_ENV=${env.DEPLOY_NAME} REACT_APP_AUTH_URL=https://${env.DEPLOY_NAME}-bi-ui.${CLOUD_FOUNDRY_BASE_ROUTE} REACT_APP_API_URL=https://${env.DEPLOY_NAME}-bi-ui.${CLOUD_FOUNDRY_BASE_ROUTE}/api npm run build"          
           
           // For deployment, only need the node_modules/package.json for the server
           sh 'rm -rf node_modules'
@@ -179,26 +155,29 @@ pipeline {
           sh 'cp server/package.json .'
  
           // Get the proper manifest from Gitlab
-          sh 'cp conf/dev/manifest.yml .'
+          sh "cp conf/${env.GITLAB_DIR}/manifest.yml ."
           sh 'zip -r bi-ui.zip build node_modules favicon.ico package.json server manifest.yml'
           stash name: 'zip'
         }
       }
     }
-    stage('Deploy - DEV & TEST') {
+    stage('Deploy') {
       agent { label 'GMU' }
       when {
         anyOf {
           branch BRANCH_DEV
           branch BRANCH_TEST
+          branch BRANCH_PROD
         }
       }
       steps {
         script {
           colourText("info","Deploying to ${env.DEPLOY_NAME}")
           unstash 'zip'
-          deployToCloudFoundry("cloud-foundry-bi-${env.DEPLOY_NAME}-user","bi","${env.DEPLOY_NAME}","${env.DEPLOY_NAME}-bi-ui","bi-ui.zip","manifest.yml")
-          env.APP_URL = "https://${env.DEPLOY_NAME}-${env.MODULE_NAME}.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}"
+
+          cf_env = "${env.DEPLOY_NAME}".capitalize()
+          deployToCloudFoundry("${TEAM}-${env.DEPLOY_NAME}-cf", "${CF_PROJECT}", "${cf_env}","${env.DEPLOY_NAME}-bi-ui","bi-ui.zip","manifest.yml")
+          env.APP_URL = "https://${env.DEPLOY_NAME}-${env.MODULE_NAME}.${env.CLOUD_FOUNDRY_BASE_ROUTE}"		            
         }
       }
     }
@@ -213,38 +192,7 @@ pipeline {
       steps {
         script {
           colourText("info","Running integration tests...")
-        }
-      }
-    }
-    stage('Promote to BETA?') {
-      agent { label 'GMU' }
-      when {
-        anyOf {
-          branch BRANCH_PROD
-        }
-      }
-      steps {
-        script {
-          colourText("info","Deploy to BETA?")
-          timeout(time: 10, unit: 'MINUTES') {
-            input 'Deploy to Beta?'
-          }
-        }
-      }
-    }
-    stage('Deploy - BETA') {
-      agent { label 'GMU' }
-      when {
-        anyOf {
-          branch BRANCH_PROD
-        }
-      }
-      steps {
-        script {
-          colourText("info","Deploying to BETA...")
-          unstash 'zip'
-          deployToCloudFoundry('cloud-foundry-bi-prod-user','bi','beta','prod-bi-ui','bi-ui.zip','manifest.yml')
-          env.APP_URL = "https://${env.DEPLOY_NAME}-${env.MODULE_NAME}.${env.CLOUD_FOUNDRY_ROUTE_SUFFIX}"
+          // We will run selenium integration tests here
         }
       }
     }

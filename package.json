@@ -64,8 +64,8 @@
     "winston": "^2.4.0"
   },
   "engines": {
-    "node": "5.10.1",
-    "npm": "3.8.3"
+    "node": "6.11.5",
+    "npm": "3.10.10"
   },
   "scripts": {
     "start": "REACT_APP_ENV=local REACT_APP_AUTH_URL=http://localhost:3001 REACT_APP_API_URL=http://localhost:3001/api npm run build; SERVE_HTML=true NODE_ENV=development SERVER_AUTH_URL=http://localhost:3002/auth SERVER_API_GW_URL=http://localhost:3002 node server",
