@@ -19,15 +19,9 @@ pipeline {
     GITLAB_TEST = "test"
     GITLAB_PROD = "prod"
 
-    ORGANIZATION = "ons"
     TEAM = "bi"
     MODULE_NAME = "bi-ui"
     CF_PROJECT = "BI"
-
-    BI_UI_TEST_ADMIN_USERNAME="admin"
-    BI_UI_TEST_ADMIN_PASSWORD="admin"
-    BI_UI_TEST_USER_USERNAME="test"
-    BI_UI_TEST_USER_PASSWORD="test"
   }
   options {
     skipDefaultCheckout()
