@@ -145,6 +145,13 @@ pipeline {
             sh 'npm install'
           }
 
+          // Get the CloudFoundry manifest from Gitlab
+          sh "cp conf/${env.GITLAB_DIR}/manifest.yml ."
+
+          // Replace the .env file with the Gitlab version
+          sh "rm -rf .env"
+          sh "cp conf/${env.GITLAB_DIR}/.env ."
+
           // Run npm run build
           sh "REACT_APP_ENV=${env.DEPLOY_NAME} REACT_APP_AUTH_URL=https://${env.DEPLOY_NAME}-bi-ui.${CLOUD_FOUNDRY_BASE_ROUTE} REACT_APP_API_URL=https://${env.DEPLOY_NAME}-bi-ui.${CLOUD_FOUNDRY_BASE_ROUTE}/api npm run build"          
           
@@ -153,10 +160,8 @@ pipeline {
           sh 'cp -r server/node_modules .'
           sh 'rm -rf package.json'
           sh 'cp server/package.json .'
- 
-          // Get the proper manifest from Gitlab
-          sh "cp conf/${env.GITLAB_DIR}/manifest.yml ."
-          sh 'zip -r bi-ui.zip build node_modules favicon.ico package.json server manifest.yml'
+
+          sh 'zip -r bi-ui.zip build node_modules favicon.ico package.json server manifest.yml .env'
           stash name: 'zip'
         }
       }
