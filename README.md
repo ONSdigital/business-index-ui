@@ -5,7 +5,7 @@
 The `bi-ui` allows a user to query the [business-index-api](https://github.com/ONSdigital/business-index-api). This project uses React.js and Redux on the frontend and Node.js for serving the static React.js files and for managing user sessions.
 
 The following tutorials were used to help with the deployment using Node.js, the login with redux and the isolation of `sdc-global-design-patterns` styles: [Node](https://medium.com/@patriciolpezjuri/using-create-react-app-with-react-router-express-js-8fa658bf892d#.mt6bbdd8m
-), [Login](https://github.com/mxstbr/login-flow) and [Bootstrap Isolation](https://formden.com/blog/isolate-bootstrap).
+), [Login](https://github.com/mxstbr/login-flow) and [SDC Styles Isolation](https://formden.com/blog/isolate-bootstrap).
 
 ### Table of Contents
 **[1. Environment Setup](#environment-setup-for-the-ui)**<br>
@@ -20,16 +20,7 @@ The following tutorials were used to help with the deployment using Node.js, the
 
 ## Environment Setup for the UI
 
-1. Install NPM, it is included with Node.js ([Download](https://nodejs.org/en/))
-
-2. For testing locally, set the following environment variables (use `vim ~/.profile`):
-
-```shell
-export BI_UI_TEST_ADMIN_USERNAME=admin
-export BI_UI_TEST_ADMIN_PASSWORD=admin
-export BI_UI_TEST_USER_USERNAME=test
-export BI_UI_TEST_USER_PASSWORD=test
-```
+Install NPM, it is included with Node.js ([Download](https://nodejs.org/en/))
 
 ## Running the UI:
 
