@@ -23,7 +23,6 @@ pipeline {
     TEAM = "bi"
     MODULE_NAME = "bi-ui"
     CF_PROJECT = "BI"
-    CLOUD_FOUNDRY_BASE_ROUTE = ""
 
     BI_UI_TEST_ADMIN_USERNAME="admin"
     BI_UI_TEST_ADMIN_PASSWORD="admin"
@@ -182,7 +181,7 @@ pipeline {
 
           cf_env = "${env.DEPLOY_NAME}".capitalize()
           deployToCloudFoundry("${TEAM}-${env.DEPLOY_NAME}-cf", "${CF_PROJECT}", "${cf_env}","${env.DEPLOY_NAME}-bi-ui","bi-ui.zip","manifest.yml")
-          env.APP_URL = "https://${env.DEPLOY_NAME}-${env.MODULE_NAME}.${env.CLOUD_FOUNDRY_BASE_ROUTE}"		            
+          env.APP_URL = "https://${env.DEPLOY_NAME}-${env.MODULE_NAME}.${env.OPEN_SOURCE_CLOUD_FOUNDRY_ROUTE_SUFFIX}"		            
         }
       }
     }
