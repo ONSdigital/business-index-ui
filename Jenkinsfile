@@ -153,7 +153,7 @@ pipeline {
           sh "cp conf/${env.GITLAB_DIR}/.env ."
 
           // Run npm run build
-          sh "REACT_APP_ENV=${env.DEPLOY_NAME} REACT_APP_AUTH_URL=https://${env.DEPLOY_NAME}-bi-ui.${CLOUD_FOUNDRY_BASE_ROUTE} REACT_APP_API_URL=https://${env.DEPLOY_NAME}-bi-ui.${CLOUD_FOUNDRY_BASE_ROUTE}/api npm run build"          
+          sh "npm run build"
           
           // For deployment, only need the node_modules/package.json for the server
           sh 'rm -rf node_modules'
