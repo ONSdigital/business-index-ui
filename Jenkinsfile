@@ -19,16 +19,9 @@ pipeline {
     GITLAB_TEST = "test"
     GITLAB_PROD = "prod"
 
-    ORGANIZATION = "ons"
     TEAM = "bi"
     MODULE_NAME = "bi-ui"
     CF_PROJECT = "BI"
-    CLOUD_FOUNDRY_BASE_ROUTE = ""
-
-    BI_UI_TEST_ADMIN_USERNAME="admin"
-    BI_UI_TEST_ADMIN_PASSWORD="admin"
-    BI_UI_TEST_USER_USERNAME="test"
-    BI_UI_TEST_USER_PASSWORD="test"
   }
   options {
     skipDefaultCheckout()
@@ -45,7 +38,7 @@ pipeline {
         deleteDir()
         checkout scm
         dir('conf') {
-          git(url: "$GITLAB_URL/BusinessIndex/bi-ui.git", credentialsId: 'bi-gitlab-id', branch: 'develop')
+          git(url: "$GITLAB_URL/BusinessIndex/bi-ui.git", credentialsId: 'bi-gitlab-id', branch: 'feature/dot-env')
         }
         stash name: 'app'
         script {
@@ -145,18 +138,23 @@ pipeline {
             sh 'npm install'
           }
 
+          // Get the CloudFoundry manifest from Gitlab
+          sh "cp conf/${env.GITLAB_DIR}/manifest.yml ."
+
+          // Replace the .env file with the Gitlab version
+          sh "rm -rf .env"
+          sh "cp conf/${env.GITLAB_DIR}/.env ."
+
           // Run npm run build
-          sh "REACT_APP_ENV=${env.DEPLOY_NAME} REACT_APP_AUTH_URL=https://${env.DEPLOY_NAME}-bi-ui.${CLOUD_FOUNDRY_BASE_ROUTE} REACT_APP_API_URL=https://${env.DEPLOY_NAME}-bi-ui.${CLOUD_FOUNDRY_BASE_ROUTE}/api npm run build"          
+          sh "npm run build"
           
           // For deployment, only need the node_modules/package.json for the server
           sh 'rm -rf node_modules'
           sh 'cp -r server/node_modules .'
           sh 'rm -rf package.json'
           sh 'cp server/package.json .'
- 
-          // Get the proper manifest from Gitlab
-          sh "cp conf/${env.GITLAB_DIR}/manifest.yml ."
-          sh 'zip -r bi-ui.zip build node_modules favicon.ico package.json server manifest.yml'
+
+          sh 'zip -r bi-ui.zip build node_modules favicon.ico package.json server manifest.yml .env'
           stash name: 'zip'
         }
       }
@@ -177,7 +175,7 @@ pipeline {
 
           cf_env = "${env.DEPLOY_NAME}".capitalize()
           deployToCloudFoundry("${TEAM}-${env.DEPLOY_NAME}-cf", "${CF_PROJECT}", "${cf_env}","${env.DEPLOY_NAME}-bi-ui","bi-ui.zip","manifest.yml")
-          env.APP_URL = "https://${env.DEPLOY_NAME}-${env.MODULE_NAME}.${env.CLOUD_FOUNDRY_BASE_ROUTE}"		            
+          env.APP_URL = "https://${env.DEPLOY_NAME}-${env.MODULE_NAME}.${env.OPEN_SOURCE_CLOUD_FOUNDRY_ROUTE_SUFFIX}"		            
         }
       }
     }

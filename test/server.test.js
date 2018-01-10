@@ -14,6 +14,9 @@ describe('builds application', function () {
 });
 
 process.env.SERVE_HTML = 'true';
+// We pass in NODE_ENV=test so that the server will not fork the apiGateway script, as it causes
+// problems in the tests as it's hard to shut down
+process.env.NODE_ENV = 'test';
 const app = require('../server/index');
 
 describe('static assets are served (react /build dir)', function () {

@@ -20,7 +20,8 @@
     "request": "^2.81.0",
     "redis-sessions": "^1.2.0",
     "request-promise": "^4.2.2",
-    "winston": "^2.4.0"
+    "winston": "^2.4.0",
+    "dotenv": "^4.0.0"
   },
   "engines": {
     "node": "6.11.5",

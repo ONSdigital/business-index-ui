@@ -7,8 +7,15 @@ const fork = require('child_process').fork;
 // Set some environment variables first:
 process.env.SERVER_AUTH_URL = 'http://localhost:3002/auth';
 process.env.SERVER_API_GW_URL = 'http://localhost:3002';
+process.env.BI_UI_TEST_ADMIN_USERNAME = "admin";
+process.env.BI_UI_TEST_ADMIN_PASSWORD = "admin";
+process.env.BI_UI_TEST_USER_USERNAME = "test";
+process.env.BI_UI_TEST_USER_PASSWORD = "test";
+process.env.NODE_ENV = 'test';
 
 // Run the gateway - remember to kill it afterwards
+// We need NODE_ENV to be 'test' which means that we have to fork the apiGateway script
+// ourselves, which means we can easily kill it after the test has run.
 const gateway = fork(require('../../server/apiGateway'));
 
 const app = require('../../server/index');

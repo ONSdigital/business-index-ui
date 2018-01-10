@@ -4,6 +4,8 @@
 /* eslint no-console: "off" */
 /* eslint comma-dangle: ["error", "never"] */
 
+require('dotenv').config(); // Get env vars from the .env file
+
 const express = require('express');
 const morgan = require('morgan');
 const myParser = require('body-parser');

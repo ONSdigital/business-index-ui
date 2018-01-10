@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config(); // Get env vars from the .env file
+
 const express = require('express');
 const fork = require('child_process').fork;
 const logger = require('./utilities/logger')(module);
