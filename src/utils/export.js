@@ -2,7 +2,16 @@ import config from '../config/export';
 
 const { NAME } = config;
 
+// service worker?
+
 export function exportCSV(header, results) {
+  const cols = ['id', 'businessName', 'postCode', 'industryCode', 'legalStatus', 'tradingStatus', 'turnover', 'employmentBands', 'companyNo'];
+  const getValue = value => ((value === undefined) ? '"",' : `"${value}",`); // Use empty string if no value present
+  const rows = results.map(leu => cols.map(col => getValue(leu[col])).join('').concat('\r\n')).join('');
+  return `${header}\r\n`.concat(rows);
+}
+
+export function exportCSVOld(header, results) {
   const columnNames = ['id', 'businessName', 'postCode', 'industryCode', 'legalStatus', 'tradingStatus', 'turnover', 'employmentBands', 'companyNo'];
   let CSV = '';
   CSV += `${header}\r\n`; // Firstly, insert the header
