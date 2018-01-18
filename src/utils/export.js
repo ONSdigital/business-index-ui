@@ -1,14 +1,15 @@
 import config from '../config/export';
 
-const { NAME } = config;
-
-// service worker?
+const { FILE_NAME } = config;
 
 export function exportCSV(header, results) {
   const cols = ['id', 'businessName', 'postCode', 'industryCode', 'legalStatus', 'tradingStatus', 'turnover', 'employmentBands', 'companyNo'];
-  const getValue = value => ((value === undefined) ? '"",' : `"${value}",`); // Use empty string if no value present
-  const rows = results.map(leu => cols.map(col => getValue(leu[col])).join('').concat('\r\n')).join('');
-  return `${header}\r\n`.concat(rows);
+  const rows = results.map(
+    leu => cols.map(
+      col => ((leu[col] === undefined) ? '"",' : `"${leu[col]}",`), // Use empty string if no value present
+    ).join('').concat('\r\n'), // Make into a string and add tab + newline at the end
+  );
+  return `${header}\r\n`.concat(rows.join(''));
 }
 
 export function exportCSVOld(header, results) {
@@ -33,11 +34,11 @@ export function exportCSVOld(header, results) {
 
 export function downloadCSV(results) {
   const header = 'UBRN,Business Name,PostCode,Industry Code,Legal Status,Trading Status,Turnover,Employment,Company Reference Number';
-  const csv = exportCSV(header, results, NAME);
+  const csv = exportCSV(header, results, FILE_NAME);
   const uri = `data:text/csv;charset=utf-8,${escape(csv)}`;
   const link = document.createElement('a');
   link.href = uri;
-  const filename = `${NAME}.csv`;
+  const filename = `${FILE_NAME}.csv`;
   link.download = filename;
   // Below append/remove child is to ensure the download button works on
   // Firefox, link.click()
@@ -51,6 +52,6 @@ export function downloadJSON(results) {
   const uri = `data:text/json;charset=utf-8,${escape(jsonStr)}`;
   const link = document.createElement('a');
   link.href = uri;
-  link.download = `${NAME}.json`;
+  link.download = `${FILE_NAME}.json`;
   link.click();
 }
