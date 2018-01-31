@@ -1,5 +1,8 @@
 import { SET_RESULTS, SET_FORMATTED_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST, SET_QUERY, SET_HEADERS } from '../constants/ApiConstants';
-import apiSearch from '../utils/apiSearch';
+import { accessAPI } from '../utils/accessAPI';
+import config from '../config/api-urls';
+
+const { REROUTE_URL, API_VERSION } = config;
 
 // The search action creator can be used for Match/Range/UBRN searches
 export function search(query, formQuery, jsonKey) {
@@ -10,7 +13,11 @@ export function search(query, formQuery, jsonKey) {
     dispatch(setQuery(SET_QUERY, query, jsonKey));
     const formattedQuery = formQuery(query);
     dispatch(setFormattedQuery(SET_FORMATTED_QUERY, formattedQuery, jsonKey));
-    apiSearch.search(formattedQuery, (success, data) => {
+
+    accessAPI(REROUTE_URL, 'POST', sessionStorage.getItem('accessToken'), JSON.stringify({
+      method: 'GET',
+      endpoint: `${API_VERSION}/${formattedQuery}`,
+    }), (success, data) => {
       dispatch(sendingRequest(SENDING_SEARCH_REQUEST, false, jsonKey));
       if (success) {
         // This is a workaround for the API returning 200 {} for no results, should be 404
