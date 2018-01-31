@@ -83,7 +83,6 @@ const auth = {
       callback(true);
     });
   },
-  onChange() {},
 };
 
 module.exports = auth;
