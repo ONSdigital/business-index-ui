@@ -3,7 +3,7 @@ import base64 from 'base-64';
 import { SET_AUTH, SET_CONFETTI, USER_LOGOUT, SENDING_REQUEST, SET_ERROR_MESSAGE, SET_USER_DETAILS } from '../constants/LoginConstants';
 import * as errorMessages from '../constants/MessageConstants';
 import { getUiInfo, getApiInfo } from '../actions/InfoActions';
-import { accessAPI } from '../utils/accessAPI';
+import accessAPI from '../utils/accessAPI';
 import config from '../config/api-urls';
 
 const { AUTH_URL } = config;

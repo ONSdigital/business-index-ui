@@ -1,5 +1,5 @@
 import { SET_UI_INFO, SET_API_INFO, SENDING_UI_REQUEST, SENDING_API_REQUEST, SET_UI_ERROR_MESSAGE, SET_API_ERROR_MESSAGE } from '../constants/InfoConstants';
-import { accessAPI } from '../utils/accessAPI';
+import accessAPI from '../utils/accessAPI';
 import config from '../config/api-urls';
 
 const { AUTH_URL, REROUTE_URL } = config;

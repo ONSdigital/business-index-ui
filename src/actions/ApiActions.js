@@ -1,5 +1,5 @@
 import { SET_RESULTS, SET_FORMATTED_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST, SET_QUERY, SET_HEADERS } from '../constants/ApiConstants';
-import { accessAPI } from '../utils/accessAPI';
+import accessAPI from '../utils/accessAPI';
 import config from '../config/api-urls';
 
 const { REROUTE_URL, API_VERSION } = config;

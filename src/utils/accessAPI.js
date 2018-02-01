@@ -11,7 +11,7 @@
  * @return {Function}
  *
  */
-export const accessAPI = (url, method, auth, body, callback) => {
+const accessAPI = (url, method, auth, body, callback) => {
   return fetch(url, {
     method,
     headers: {
@@ -28,3 +28,5 @@ export const accessAPI = (url, method, auth, body, callback) => {
     }
   }).catch((err) => callback(false, { message: `Server error: request timed out. ${err}` }));
 };
+
+export default accessAPI;
