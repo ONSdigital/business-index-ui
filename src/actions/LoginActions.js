@@ -4,6 +4,10 @@ import { SET_AUTH, SET_CONFETTI, USER_LOGOUT, SENDING_REQUEST, SET_ERROR_MESSAGE
 import * as errorMessages from '../constants/MessageConstants';
 import auth from '../utils/auth';
 import { getUiInfo, getApiInfo } from '../actions/InfoActions';
+import { accessAPI } from '../utils/accessAPI';
+import config from '../config/api-urls';
+
+const { AUTH_URL } = config;
 
 /**
  * Logs an user in
@@ -23,38 +27,28 @@ export function login(username, password) {
     }
 
     const basicAuth = base64.encode(`${username}:${password}`);
-    auth.login(username, basicAuth, (success, data) => {
+
+    accessAPI(`${AUTH_URL}/auth/login`, 'POST', `Basic ${basicAuth}`, JSON.stringify({
+      username,
+    }), (success, data) => {
       // When the request is finished, hide the loading indicator
       dispatch(sendingRequest(false));
       dispatch(setAuthState(success));
       if (success) {
-        dispatch(setConfetti(data.showConfetti));
+        dispatch(setConfetti(data.json.showConfetti));
         // If the login worked, forward the user to the dashboard and clear the form
         dispatch(setUserState({
           username,
-          role: data.role,
-          accessToken: data.accessToken,
+          role: data.json.role,
+          accessToken: data.json.accessToken,
         }));
-        sessionStorage.setItem('accessToken', data.accessToken);
+        sessionStorage.setItem('accessToken', data.json.accessToken);
         sessionStorage.setItem('username', username);
         dispatch(getUiInfo());
         dispatch(getApiInfo());
-        // We setQuery to {} as a hacky solution to the issue below:
-        // https://github.com/ONSdigital/bi-ui/issues/3
-        // dispatch(setQuery(SET_MATCH_QUERY, {}));
-        // dispatch(setQuery(SET_RANGE_QUERY, {}));
         forwardTo('/Home');
       } else {
-        switch (data.type) {
-          case 'user-doesnt-exist':
-            dispatch(setErrorMessage(errorMessages.USER_NOT_FOUND));
-            return;
-          case 'password-wrong':
-            dispatch(setErrorMessage(errorMessages.WRONG_PASSWORD));
-            return;
-          default:
-            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
-        }
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
       }
     });
   };
