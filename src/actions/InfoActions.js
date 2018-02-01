@@ -1,5 +1,8 @@
 import { SET_UI_INFO, SET_API_INFO, SENDING_UI_REQUEST, SENDING_API_REQUEST, SET_UI_ERROR_MESSAGE, SET_API_ERROR_MESSAGE } from '../constants/InfoConstants';
-import apiInfo from '../utils/apiInfo';
+import { accessAPI } from '../utils/accessAPI';
+import config from '../config/api-urls';
+
+const { AUTH_URL, REROUTE_URL } = config;
 
 /**
  * Get info (version/last updated) from the Node server
@@ -7,12 +10,13 @@ import apiInfo from '../utils/apiInfo';
 export function getUiInfo() {
   return (dispatch) => {
     dispatch(sendingRequest(SENDING_UI_REQUEST, true));
-    apiInfo.getUiInfo((success, data) => {
+
+    accessAPI(`${AUTH_URL}/api/info`, 'GET', sessionStorage.accessToken, {}, (success, data) => {
       dispatch(sendingRequest(SENDING_UI_REQUEST, false));
       if (success) {
         dispatch(setInfo(SET_UI_INFO, {
-          version: data.version,
-          lastUpdate: data.lastUpdate,
+          version: data.json.version,
+          lastUpdate: data.json.lastUpdate,
         }));
       } else {
         dispatch(setErrorMessage(SET_UI_ERROR_MESSAGE, data.message));
@@ -27,13 +31,17 @@ export function getUiInfo() {
 export function getApiInfo() {
   return (dispatch) => {
     dispatch(sendingRequest(SENDING_API_REQUEST, true));
-    apiInfo.getApiInfo((success, data) => {
+
+    accessAPI(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
+      method: 'GET',
+      endpoint: 'version',
+    }), (success, data) => {
       dispatch(sendingRequest(SENDING_API_REQUEST, false));
       if (success) {
         dispatch(setInfo(SET_API_INFO, {
-          version: data.version,
-          lastApiUpdate: data.lastApiUpdate,
-          lastDataUpdate: data.lastDataUpdate,
+          version: data.json.version,
+          lastApiUpdate: data.json.lastApiUpdate,
+          lastDataUpdate: data.json.lastDataUpdate,
         }));
       } else {
         dispatch(setErrorMessage(SET_API_ERROR_MESSAGE, data.message));

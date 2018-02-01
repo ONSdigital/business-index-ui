@@ -21,7 +21,7 @@ export const accessAPI = (url, method, auth, body, callback) => {
     body,
   }).then((response) => {
     switch (response.status) {
-      case 200: return response.json().then((json) => callback(true, { results: json }));
+      case 200: return response.json().then((json) => callback(true, { json }));
       case 401: return callback(false, { message: 'Unable to login.' });
       case 500: return callback(false, { message: 'Unable to login.' });
       default: return callback(false, { message: 'Unable to login.' });
