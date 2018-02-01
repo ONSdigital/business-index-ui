@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { TitleAndDescription, BreadCrumb } from 'registers-react-library';
 
-const TechnicalInformation = ({ username, role, uiVersion, apiVersion, uiLastUpdate, apiLastUpdate }) => {
+const TechnicalInformation = ({ uiVersion, apiVersion, uiLastUpdate, apiLastUpdate }) => {
   const items = [
     { name: 'Home', link: '/Home' },
     { name: 'Technical Information', link: '' },
@@ -52,8 +52,6 @@ const TechnicalInformation = ({ username, role, uiVersion, apiVersion, uiLastUpd
 };
 
 TechnicalInformation.propTypes = {
-  username: React.PropTypes.string.isRequired,
-  role: React.PropTypes.string.isRequired,
   uiVersion: React.PropTypes.string.isRequired,
   apiVersion: React.PropTypes.string.isRequired,
   uiLastUpdate: React.PropTypes.string.isRequired,
@@ -62,12 +60,10 @@ TechnicalInformation.propTypes = {
 
 function select(state) {
   return {
-    username: state.login.username,
-    role: state.login.role,
     uiVersion: state.info.ui.version,
     apiVersion: state.info.api.version,
     uiLastUpdate: state.info.ui.lastUpdate,
-    apiLastUpdate: state.info.ui.lastUpdate,
+    apiLastUpdate: state.info.api.lastApiUpdate,
   };
 }
 

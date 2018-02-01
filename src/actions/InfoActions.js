@@ -40,7 +40,7 @@ export function getApiInfo() {
       if (success) {
         dispatch(setInfo(SET_API_INFO, {
           version: data.json.version,
-          lastApiUpdate: data.json.lastApiUpdate,
+          lastApiUpdate: data.json.builtAtString,
           lastDataUpdate: data.json.lastDataUpdate,
         }));
       } else {
