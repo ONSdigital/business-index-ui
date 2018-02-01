@@ -57,9 +57,9 @@ export function login(username, password) {
 /**
  * Check the users token
  */
-export function checkAuth(username, token) {
+export function checkAuth() {
   return (dispatch) => {
-    auth.checkToken(token, (success, data) => {
+    accessAPI(`${AUTH_URL}/auth/checkToken`, 'POST', sessionStorage.accessToken, {}, (success, data) => {
       dispatch(setAuthState(success));
       if (!success) {
         sessionStorage.clear();
@@ -71,11 +71,11 @@ export function checkAuth(username, token) {
         dispatch(getUiInfo());
         dispatch(getApiInfo());
         dispatch(setUserState({
-          username: data.username,
-          accessToken: data.newAccessToken,
-          role: data.role,
+          username: data.json.username,
+          accessToken: data.json.accessToken,
+          role: data.json.role,
         }));
-        sessionStorage.setItem('accessToken', data.newAccessToken);
+        sessionStorage.setItem('accessToken', data.json.accessToken);
       }
     });
   };
