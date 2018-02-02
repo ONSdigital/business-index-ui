@@ -1,5 +1,5 @@
 import { SET_UI_INFO, SET_API_INFO, SENDING_UI_REQUEST, SENDING_API_REQUEST, SET_UI_ERROR_MESSAGE, SET_API_ERROR_MESSAGE } from '../constants/InfoConstants';
-import { accessAPINew } from '../utils/accessAPI';
+import accessAPI from '../utils/accessAPI';
 import config from '../config/api-urls';
 
 const { AUTH_URL, REROUTE_URL } = config;
@@ -11,7 +11,7 @@ export function getUiInfo() {
   return (dispatch) => {
     dispatch(sendingRequest(SENDING_UI_REQUEST, true));
 
-    accessAPINew(`${AUTH_URL}/api/info`, 'GET', sessionStorage.accessToken, {}).then(json => {
+    accessAPI(`${AUTH_URL}/api/info`, 'GET', sessionStorage.accessToken, {}).then(json => {
       dispatch(sendingRequest(SENDING_UI_REQUEST, false));
       dispatch(setInfo(SET_UI_INFO, {
         version: json.version,
@@ -31,7 +31,7 @@ export function getApiInfo() {
   return (dispatch) => {
     dispatch(sendingRequest(SENDING_API_REQUEST, true));
 
-    accessAPINew(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
+    accessAPI(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
       method: 'GET',
       endpoint: 'version',
     })).then(json => {

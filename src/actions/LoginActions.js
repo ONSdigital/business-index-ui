@@ -4,7 +4,6 @@ import { SET_AUTH, SET_CONFETTI, USER_LOGOUT, SENDING_REQUEST, SET_ERROR_MESSAGE
 import * as errorMessages from '../constants/MessageConstants';
 import { getUiInfo, getApiInfo } from '../actions/InfoActions';
 import accessAPI from '../utils/accessAPI';
-import { accessAPINew } from '../utils/accessAPI';
 import config from '../config/api-urls';
 
 const { AUTH_URL } = config;
@@ -28,7 +27,7 @@ export function login(username, password) {
 
     const basicAuth = base64.encode(`${username}:${password}`);
 
-    accessAPINew(`${AUTH_URL}/auth/login`, 'POST', `Basic ${basicAuth}`, JSON.stringify({
+    accessAPI(`${AUTH_URL}/auth/login`, 'POST', `Basic ${basicAuth}`, JSON.stringify({
       username,
     })).then(json => {
       dispatch(sendingRequest(false));
@@ -57,7 +56,7 @@ export function login(username, password) {
  */
 export function checkAuth() {
   return (dispatch) => {
-    accessAPINew(`${AUTH_URL}/auth/checkToken`, 'POST', sessionStorage.accessToken, {}).then(json => {
+    accessAPI(`${AUTH_URL}/auth/checkToken`, 'POST', sessionStorage.accessToken, {}).then(json => {
       dispatch(setAuthState(true));
       if (window.location.pathname === '/') forwardTo('/Home');
       dispatch(getUiInfo());
@@ -81,7 +80,7 @@ export function checkAuth() {
 export function logout() {
   return (dispatch) => {
     dispatch(sendingRequest(true));
-    accessAPINew(`${AUTH_URL}/auth/logout`, 'POST', sessionStorage.accessToken, {}).then(json => {
+    accessAPI(`${AUTH_URL}/auth/logout`, 'POST', sessionStorage.accessToken, {}).then(json => {
       dispatch(setAuthState(false));
       sessionStorage.clear();
       browserHistory.push('/');

@@ -1,5 +1,5 @@
 import { SET_RESULTS, SET_FORMATTED_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST, SET_QUERY } from '../constants/ApiConstants';
-import { accessAPINew } from '../utils/accessAPI';
+import accessAPI from '../utils/accessAPI';
 import config from '../config/api-urls';
 
 const { REROUTE_URL, API_VERSION } = config;
@@ -14,7 +14,7 @@ export function search(query, formQuery, jsonKey) {
     const formattedQuery = formQuery(query);
     dispatch(setFormattedQuery(SET_FORMATTED_QUERY, formattedQuery, jsonKey));
 
-    accessAPINew(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
+    accessAPI(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
       method: 'GET',
       endpoint: `${API_VERSION}/${formattedQuery}`,
     })).then(json => {

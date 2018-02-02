@@ -11,7 +11,7 @@
  * @return {Function}
  *
  */
-export const accessAPINew = (url, method, auth, body) => {
+const accessAPI = (url, method, auth, body) => {
   return new Promise((resolve, reject) => {
     fetch(url, {
       method,
@@ -32,24 +32,6 @@ export const accessAPINew = (url, method, auth, body) => {
       }
     }).catch((err) => reject(`Server error: request timed out. ${err}`));
   });
-};
-
-const accessAPI = (url, method, auth, body, callback) => {
-  return fetch(url, {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: auth,
-    },
-    body,
-  }).then((response) => {
-    switch (response.status) {
-      case 200: return response.json().then((json) => callback(true, { json }));
-      case 401: return callback(false, { message: 'Authentication problem. Please ensure you are logged in.' });
-      case 500: return callback(false, { message: 'Server error. Please contact your system administrator.' });
-      default: return callback(false, { message: `${response.status} error.` });
-    }
-  }).catch((err) => callback(false, { message: `Server error: request timed out. ${err}` }));
 };
 
 export default accessAPI;
