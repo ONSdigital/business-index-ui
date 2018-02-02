@@ -1,5 +1,5 @@
 import { SET_UI_INFO, SET_API_INFO, SENDING_UI_REQUEST, SENDING_API_REQUEST, SET_UI_ERROR_MESSAGE, SET_API_ERROR_MESSAGE } from '../constants/InfoConstants';
-import accessAPI from '../utils/accessAPI';
+import { accessAPINew } from '../utils/accessAPI';
 import config from '../config/api-urls';
 
 const { AUTH_URL, REROUTE_URL } = config;
@@ -11,16 +11,16 @@ export function getUiInfo() {
   return (dispatch) => {
     dispatch(sendingRequest(SENDING_UI_REQUEST, true));
 
-    accessAPI(`${AUTH_URL}/api/info`, 'GET', sessionStorage.accessToken, {}, (success, data) => {
+    accessAPINew(`${AUTH_URL}/api/info`, 'GET', sessionStorage.accessToken, {})
+    .then(json => {
       dispatch(sendingRequest(SENDING_UI_REQUEST, false));
-      if (success) {
-        dispatch(setInfo(SET_UI_INFO, {
-          version: data.json.version,
-          lastUpdate: data.json.lastUpdate,
-        }));
-      } else {
-        dispatch(setErrorMessage(SET_UI_ERROR_MESSAGE, data.message));
-      }
+      dispatch(setInfo(SET_UI_INFO, {
+        version: json.version,
+        lastUpdate: json.lastUpdate,
+      }));
+    }).catch(msg => {
+      dispatch(sendingRequest(SENDING_UI_REQUEST, false));
+      dispatch(setErrorMessage(SET_UI_ERROR_MESSAGE, msg));
     });
   };
 }
@@ -32,20 +32,19 @@ export function getApiInfo() {
   return (dispatch) => {
     dispatch(sendingRequest(SENDING_API_REQUEST, true));
 
-    accessAPI(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
+    accessAPINew(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
       method: 'GET',
       endpoint: 'version',
-    }), (success, data) => {
+    })).then(json => {
       dispatch(sendingRequest(SENDING_API_REQUEST, false));
-      if (success) {
-        dispatch(setInfo(SET_API_INFO, {
-          version: data.json.version,
-          lastApiUpdate: data.json.builtAtString,
-          lastDataUpdate: data.json.lastDataUpdate,
-        }));
-      } else {
-        dispatch(setErrorMessage(SET_API_ERROR_MESSAGE, data.message));
-      }
+      dispatch(setInfo(SET_API_INFO, {
+        version: json.version,
+        lastApiUpdate: json.builtAtString,
+        lastDataUpdate: json.lastDataUpdate,
+      }));
+    }).catch(msg => {
+      dispatch(sendingRequest(SENDING_API_REQUEST, false));
+      dispatch(setErrorMessage(SET_API_ERROR_MESSAGE, msg));
     });
   };
 }

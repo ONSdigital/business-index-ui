@@ -28,7 +28,10 @@ export function search(query, formQuery, jsonKey) {
       } else {
         dispatch(setResults(SET_RESULTS, json, jsonKey));
       }
-    }).catch(msg => dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, msg, jsonKey)));
+    }).catch(msg => {
+      dispatch(sendingRequest(SENDING_SEARCH_REQUEST, false, jsonKey));
+      dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, msg, jsonKey));
+    });
   };
 }
 
