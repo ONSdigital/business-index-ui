@@ -11,8 +11,7 @@ export function getUiInfo() {
   return (dispatch) => {
     dispatch(sendingRequest(SENDING_UI_REQUEST, true));
 
-    accessAPINew(`${AUTH_URL}/api/info`, 'GET', sessionStorage.accessToken, {})
-    .then(json => {
+    accessAPINew(`${AUTH_URL}/api/info`, 'GET', sessionStorage.accessToken, {}).then(json => {
       dispatch(sendingRequest(SENDING_UI_REQUEST, false));
       dispatch(setInfo(SET_UI_INFO, {
         version: json.version,

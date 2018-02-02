@@ -4,6 +4,7 @@ import { SET_AUTH, SET_CONFETTI, USER_LOGOUT, SENDING_REQUEST, SET_ERROR_MESSAGE
 import * as errorMessages from '../constants/MessageConstants';
 import { getUiInfo, getApiInfo } from '../actions/InfoActions';
 import accessAPI from '../utils/accessAPI';
+import { accessAPINew } from '../utils/accessAPI';
 import config from '../config/api-urls';
 
 const { AUTH_URL } = config;
@@ -27,28 +28,26 @@ export function login(username, password) {
 
     const basicAuth = base64.encode(`${username}:${password}`);
 
-    accessAPI(`${AUTH_URL}/auth/login`, 'POST', `Basic ${basicAuth}`, JSON.stringify({
+    accessAPINew(`${AUTH_URL}/auth/login`, 'POST', `Basic ${basicAuth}`, JSON.stringify({
       username,
-    }), (success, data) => {
-      // When the request is finished, hide the loading indicator
+    })).then(json => {
       dispatch(sendingRequest(false));
-      dispatch(setAuthState(success));
-      if (success) {
-        dispatch(setConfetti(data.json.showConfetti));
-        // If the login worked, forward the user to the dashboard and clear the form
-        dispatch(setUserState({
-          username,
-          role: data.json.role,
-          accessToken: data.json.accessToken,
-        }));
-        sessionStorage.setItem('accessToken', data.json.accessToken);
-        sessionStorage.setItem('username', username);
-        dispatch(getUiInfo());
-        dispatch(getApiInfo());
-        forwardTo('/Home');
-      } else {
-        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
-      }
+      dispatch(setAuthState(true));
+      dispatch(setConfetti(json.showConfetti));
+      // If the login worked, forward the user to the dashboard and clear the form
+      dispatch(setUserState({
+        username,
+        role: json.role,
+        accessToken: json.accessToken,
+      }));
+      sessionStorage.setItem('accessToken', json.accessToken);
+      sessionStorage.setItem('username', username);
+      dispatch(getUiInfo());
+      dispatch(getApiInfo());
+      forwardTo('/Home');
+    }).catch(() => {
+      dispatch(sendingRequest(false));
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
     });
   };
 }
@@ -58,24 +57,20 @@ export function login(username, password) {
  */
 export function checkAuth() {
   return (dispatch) => {
-    accessAPI(`${AUTH_URL}/auth/checkToken`, 'POST', sessionStorage.accessToken, {}, (success, data) => {
-      dispatch(setAuthState(success));
-      if (!success) {
-        sessionStorage.clear();
-        forwardTo('/');
-      } else if (success) {
-        if (window.location.pathname === '/') {
-          forwardTo('/Home');
-        }
-        dispatch(getUiInfo());
-        dispatch(getApiInfo());
-        dispatch(setUserState({
-          username: data.json.username,
-          accessToken: data.json.accessToken,
-          role: data.json.role,
-        }));
-        sessionStorage.setItem('accessToken', data.json.accessToken);
-      }
+    accessAPINew(`${AUTH_URL}/auth/checkToken`, 'POST', sessionStorage.accessToken, {}).then(json => {
+      dispatch(setAuthState(true));
+      if (window.location.pathname === '/') forwardTo('/Home');
+      dispatch(getUiInfo());
+      dispatch(getApiInfo());
+      dispatch(setUserState({
+        username: json.username,
+        accessToken: json.accessToken,
+        role: json.role,
+      }));
+      sessionStorage.setItem('accessToken', json.accessToken);
+    }).catch(() => {
+      sessionStorage.clear();
+      forwardTo('/');
     });
   };
 }
@@ -86,22 +81,20 @@ export function checkAuth() {
 export function logout() {
   return (dispatch) => {
     dispatch(sendingRequest(true));
-    accessAPI(`${AUTH_URL}/auth/logout`, 'POST', sessionStorage.accessToken, {}, (success, data) => {
-      dispatch(sendingRequest(false));
-      if (success) {
-        dispatch(setAuthState(false));
-        sessionStorage.clear();
-        browserHistory.push('/');
-        // This needs to go at the end, or else if we logout whilst on a page
-        // that uses the redux store, an error will occur before the user
-        // is redirected to '/'.
-        dispatch(resetState(undefined));
-      } else {
-        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
-        sessionStorage.clear();
-        browserHistory.push('/');
-        dispatch(resetState(undefined));
-      }
+    accessAPINew(`${AUTH_URL}/auth/logout`, 'POST', sessionStorage.accessToken, {}).then(json => {
+      dispatch(setAuthState(false));
+      sessionStorage.clear();
+      browserHistory.push('/');
+      // This needs to go at the end, or else if we logout whilst on a page
+      // that uses the redux store, an error will occur before the user
+      // is redirected to '/'.
+      dispatch(resetState(undefined));
+    }).catch(() => {
+      dispatch(setAuthState(false));
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
+      sessionStorage.clear();
+      browserHistory.push('/');
+      dispatch(resetState(undefined));
     });
   };
 }
