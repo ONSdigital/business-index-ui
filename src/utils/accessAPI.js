@@ -26,6 +26,7 @@ const accessAPI = (url, method, auth, body) => {
       switch (response.status) {
         case 200: return resolve(response.json());
         case 400: return reject('Malformed query. Please review your input parameters.');
+        case 404: return reject('Not found. Please review your input parameters.');
         case 401: return reject('Authentication problem. Please ensure you are logged in.');
         case 500: return reject('Server error. Please contact your system administrator.');
         default: return reject(`${response.status} error.`);

@@ -30,7 +30,7 @@ export function search(query, formQuery, jsonKey) {
       }
     }).catch(msg => {
       dispatch(sendingRequest(SENDING_SEARCH_REQUEST, false, jsonKey));
-      dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, msg, jsonKey));
+      dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, msg.toString(), jsonKey));
     });
   };
 }

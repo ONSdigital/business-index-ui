@@ -5,6 +5,7 @@ import ErrorModal from '../components/ErrorModal';
 import industryCodeDescription from '../utils/siccode';
 import config from '../config/api-urls';
 import { formatData } from '../utils/helperMethods';
+import accessAPI from '../utils/accessAPI';
 
 const { REROUTE_URL, API_VERSION, BUSINESS_ENDPOINT } = config;
 
@@ -20,33 +21,16 @@ class ChildRefTable extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.fetchData = this.fetchData.bind(this);
   }
-  componentDidMount() {
-    this.fetchData(this.props.row);
+  componentDidMount = () => this.fetchData(this.props.row);
+  fetchData = (row) => {
+    accessAPI(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
+      method: 'GET',
+      endpoint: `${API_VERSION}/${BUSINESS_ENDPOINT}/${row.original.id}`,
+    }))
+    .then(json => this.setState({ data: formatData(json), isLoading: false }))
+    .catch(() => this.setState({ errorMessage: 'Error: Unable to get child references.', error: true, isLoading: false }));
   }
-  fetchData(row) {
-    fetch(`${REROUTE_URL}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': sessionStorage.getItem('accessToken'),
-      },
-      body: JSON.stringify({
-        method: 'GET',
-        endpoint: `${API_VERSION}/${BUSINESS_ENDPOINT}/${row.original.id}`,
-      }),
-    })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error(`Error: ${response.status} ${response.statusText}`);
-    })
-    .then(data => this.setState({ data: formatData(data), isLoading: false }))
-    .catch(error => this.setState({ errorMessage: error.message, error: true, isLoading: false }));
-  }
-  closeModal() {
-    this.setState({ error: false, errorMessage: '' });
-  }
+  closeModal = () => this.setState({ error: false, errorMessage: '' });
   render() {
     const business = this.props.row.original;
     const description = (industryCodeDescription[business.industryCode] === undefined)
