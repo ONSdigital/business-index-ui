@@ -85,7 +85,7 @@ export default function withSearch(Form, settings, actions, formQuery) {
       document.getElementsByClassName('wrapper')[0].scrollIntoView(false);
       this.child.childTextInput.myInput.focus();
     }
-    closeModal() {
+    closeModal = () => {
       this.setState({ show: false, errorMessage: '' });
       this.focusAndScroll();
     }
@@ -150,7 +150,7 @@ export default function withSearch(Form, settings, actions, formQuery) {
               <ErrorModal
                 show={this.state.show}
                 message={this.state.errorMessage}
-                close={() => this.closeModal}
+                close={this.closeModal}
               />
               <br />
               {this.props.data.results.length !== 0 &&
