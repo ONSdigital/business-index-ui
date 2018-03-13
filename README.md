@@ -24,7 +24,7 @@ Install NPM, it is included with Node.js ([Download](https://nodejs.org/en/))
 
 ## Running the UI:
 
-1. Clone this repo and install dependencies
+Clone this repo and install dependencies
 
 ```shell
 git clone https://github.com/ONSdigital/bi-ui.git
@@ -32,17 +32,32 @@ cd bi-ui
 npm install
 ```
 
-2. Start the `Node.js` server
+### Development Setup
+
+1. Start the `React.js` development server (which uses hot reloading):
+
+```shell
+npm run start:react
+```
+
+2. Start the `Node.js` server:
 
 ```shell
 npm run start:server
 ```
 
-3. Start the `React.js` development server (with hot reloading)
+3. Go to [localhost:3000](http://localhost:3000) to see bi-ui.
+
+### Docker Setup
+
+1. Build and run the UI inside a Docker container.
 
 ```shell
-npm run start:react
+docker build -t bi-ui .
+docker run -p 3001:3001 bi-ui
 ```
+
+2. Go to [localhost:3001](http://localhost:3001) to see bi-ui.
 
 ## Running the API
 
