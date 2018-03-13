@@ -2,8 +2,11 @@ import { browserHistory } from 'react-router';
 import base64 from 'base-64';
 import { SET_AUTH, SET_CONFETTI, USER_LOGOUT, SENDING_REQUEST, SET_ERROR_MESSAGE, SET_USER_DETAILS } from '../constants/LoginConstants';
 import * as errorMessages from '../constants/MessageConstants';
-import auth from '../utils/auth';
 import { getUiInfo, getApiInfo } from '../actions/InfoActions';
+import accessAPI from '../utils/accessAPI';
+import config from '../config/api-urls';
+
+const { AUTH_URL } = config;
 
 /**
  * Logs an user in
@@ -23,38 +26,28 @@ export function login(username, password) {
     }
 
     const basicAuth = base64.encode(`${username}:${password}`);
-    auth.login(username, basicAuth, (success, data) => {
+
+    accessAPI(`${AUTH_URL}/auth/login`, 'POST', `Basic ${basicAuth}`, JSON.stringify({
+      username,
+    }), (success, data) => {
       // When the request is finished, hide the loading indicator
       dispatch(sendingRequest(false));
       dispatch(setAuthState(success));
       if (success) {
-        dispatch(setConfetti(data.showConfetti));
+        dispatch(setConfetti(data.json.showConfetti));
         // If the login worked, forward the user to the dashboard and clear the form
         dispatch(setUserState({
           username,
-          role: data.role,
-          accessToken: data.accessToken,
+          role: data.json.role,
+          accessToken: data.json.accessToken,
         }));
-        sessionStorage.setItem('accessToken', data.accessToken);
+        sessionStorage.setItem('accessToken', data.json.accessToken);
         sessionStorage.setItem('username', username);
         dispatch(getUiInfo());
         dispatch(getApiInfo());
-        // We setQuery to {} as a hacky solution to the issue below:
-        // https://github.com/ONSdigital/bi-ui/issues/3
-        // dispatch(setQuery(SET_MATCH_QUERY, {}));
-        // dispatch(setQuery(SET_RANGE_QUERY, {}));
         forwardTo('/Home');
       } else {
-        switch (data.type) {
-          case 'user-doesnt-exist':
-            dispatch(setErrorMessage(errorMessages.USER_NOT_FOUND));
-            return;
-          case 'password-wrong':
-            dispatch(setErrorMessage(errorMessages.WRONG_PASSWORD));
-            return;
-          default:
-            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
-        }
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
       }
     });
   };
@@ -63,9 +56,9 @@ export function login(username, password) {
 /**
  * Check the users token
  */
-export function checkAuth(username, token) {
+export function checkAuth() {
   return (dispatch) => {
-    auth.checkToken(token, (success, data) => {
+    accessAPI(`${AUTH_URL}/auth/checkToken`, 'POST', sessionStorage.accessToken, {}, (success, data) => {
       dispatch(setAuthState(success));
       if (!success) {
         sessionStorage.clear();
@@ -77,11 +70,11 @@ export function checkAuth(username, token) {
         dispatch(getUiInfo());
         dispatch(getApiInfo());
         dispatch(setUserState({
-          username: data.username,
-          accessToken: data.newAccessToken,
-          role: data.role,
+          username: data.json.username,
+          accessToken: data.json.accessToken,
+          role: data.json.role,
         }));
-        sessionStorage.setItem('accessToken', data.newAccessToken);
+        sessionStorage.setItem('accessToken', data.json.accessToken);
       }
     });
   };
@@ -93,7 +86,7 @@ export function checkAuth(username, token) {
 export function logout() {
   return (dispatch) => {
     dispatch(sendingRequest(true));
-    auth.logout(sessionStorage.accessToken, (success) => {
+    accessAPI(`${AUTH_URL}/auth/logout`, 'POST', sessionStorage.accessToken, {}, (success, data) => {
       dispatch(sendingRequest(false));
       if (success) {
         dispatch(setAuthState(false));

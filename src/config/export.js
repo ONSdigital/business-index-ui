@@ -1,5 +1,5 @@
 const exportCsv = {
-  NAME: 'BusinessIndexResults',
+  FILE_NAME: 'BusinessIndexResults',
 };
 
 export default exportCsv;
