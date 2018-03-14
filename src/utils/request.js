@@ -1,3 +1,5 @@
+import { formPromise, returnAuthJson, returnSearch, returnBusiness } from './requestUtils';
+
 /**
  * @const fakeFetch - Use a mock fetch if we are in a test environment
  *
@@ -10,50 +12,15 @@
 const fakeFetch = (url, options) => {
   const { requestType } = options;
 
-  // Mock a response from the API
-  const formPromise = (json) => new Promise((resolve) => resolve({ status: 200, json, headers: [] }));
-
+  // Depending on the type of request, return different JSON
   switch (requestType) {
-    case 'login': return formPromise(() => ({
-      accessToken: 'abc-123',
-      username: 'admin',
-      role: 'admin',
-      showConfetti: false,
-    }));
-    case 'checkAuth': return formPromise(() => ({
-      accessToken: 'abc-123',
-      username: 'admin',
-      role: 'admin',
-      showConfetti: false,
-    }));
-    case 'logout': return formPromise(() => ({}));
+    case 'login': return formPromise(() => returnAuthJson());
+    case 'checkAuth': return formPromise(() => returnAuthJson());
+    case 'logout': return formPromise(() => ({})); // We just need a 200 OK for logging out
     case 'apiInfo': return formPromise(() => ({ version: '0.0.1', lastUpdate: new Date().toDateString() }));
     case 'uiInfo': return formPromise(() => ({ version: '0.0.1', lastUpdate: new Date().toDateString() }));
-    case 'search': return formPromise(() => ([{
-      id: 12345,
-      businessName: 'abc',
-      uPRN: 'abc',
-      industryCode: '01280',
-      legalStatus: '1',
-      tradingStatus: 'A',
-      turnover: 'A',
-      employmentBands: 'A',
-      postCode: 'abc',
-    }]));
-    case 'business': return formPromise(() => ({
-      id: 12345,
-      businessName: 'abc',
-      uPRN: 'abc',
-      industryCode: '01280',
-      legalStatus: '1',
-      tradingStatus: 'A',
-      turnover: 'A',
-      employmentBands: 'A',
-      postCode: 'abc',
-      companyNo: 'AB123456',
-      vatRefs: [1, 2],
-      payeRefs: ['1'],
-    }));
+    case 'search': return formPromise(() => returnSearch());
+    case 'business': return formPromise(() => returnBusiness());
     default: return 'Error';
   }
 };
