@@ -10,15 +10,8 @@
 const fakeFetch = (url, options) => {
   const { requestType } = options;
 
-  const formPromise = (returnJson) => {
-    return new Promise((resolve, reject) => {
-      resolve({
-        status: 200,
-        json: returnJson,
-        headers: [1, 2, 3],
-      });
-    });
-  };
+  // Mock a response from the API
+  const formPromise = (json) => new Promise((resolve) => resolve({ status: 200, json, headers: [] }));
 
   switch (requestType) {
     case 'login': return formPromise(() => ({
