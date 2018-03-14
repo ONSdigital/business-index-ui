@@ -29,7 +29,7 @@ export function login(username, password) {
 
     accessAPI(`${AUTH_URL}/auth/login`, 'POST', `Basic ${basicAuth}`, JSON.stringify({
       username,
-    })).then(json => {
+    }), 'login').then(json => {
       dispatch(sendingRequest(false));
       dispatch(setAuthState(true));
       dispatch(setConfetti(json.showConfetti));
@@ -56,7 +56,7 @@ export function login(username, password) {
  */
 export function checkAuth() {
   return (dispatch) => {
-    accessAPI(`${AUTH_URL}/auth/checkToken`, 'POST', sessionStorage.accessToken, {}).then(json => {
+    accessAPI(`${AUTH_URL}/auth/checkToken`, 'POST', sessionStorage.accessToken, {}, 'checkAuth').then(json => {
       dispatch(setAuthState(true));
       if (window.location.pathname === '/') forwardTo('/Home');
       dispatch(getUiInfo());
@@ -80,7 +80,7 @@ export function checkAuth() {
 export function logout() {
   return (dispatch) => {
     dispatch(sendingRequest(true));
-    accessAPI(`${AUTH_URL}/auth/logout`, 'POST', sessionStorage.accessToken, {}).then(json => {
+    accessAPI(`${AUTH_URL}/auth/logout`, 'POST', sessionStorage.accessToken, {}, 'logout').then(json => {
       dispatch(setAuthState(false));
       sessionStorage.clear();
       browserHistory.push('/');

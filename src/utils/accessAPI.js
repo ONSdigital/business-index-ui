@@ -1,3 +1,5 @@
+import request from './request';
+
 /**
  *
  * @const accessAPI - This encapsulates common fetch parameters
@@ -6,14 +8,15 @@
  * @param {String} method - The HTTP method
  * @param {String} auth - Either basic authentication or the accessToken
  * @param {String} body - The request body (as a JSON string)
- * @param {Function} callback - The method to call with the fetch results
+ * @param {String} requestType - The request type (search/login/logout etc, used for mock requests)
  *
- * @return {Function}
+ * @return {Promise} - A fetch promise
  *
  */
-const accessAPI = (url, method, auth, body) => {
+const accessAPI = (url, method, auth, body, requestType) => {
   return new Promise((resolve, reject) => {
-    fetch(url, {
+    request(url, {
+      requestType, // This isn't used in fetch, but is used in the mock fetch
       method,
       headers: {
         'Content-Type': 'application/json',

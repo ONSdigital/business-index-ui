@@ -14,10 +14,11 @@ export function search(query, formQuery, jsonKey) {
     const formattedQuery = formQuery(query);
     dispatch(setFormattedQuery(SET_FORMATTED_QUERY, formattedQuery, jsonKey));
 
+    const requestType = (jsonKey === 'ubrn') ? 'business' : 'search';
     accessAPI(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
       method: 'GET',
       endpoint: `${API_VERSION}/${formattedQuery}`,
-    })).then(json => {
+    }), requestType).then(json => {
       dispatch(sendingRequest(SENDING_SEARCH_REQUEST, false, jsonKey));
       // This is a workaround for the API returning 200 {} for no results, should be 404
       if (Object.keys(json).length === 0 && json.constructor === Object) {
