@@ -10,7 +10,7 @@ export const formPromise = (json) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({ status: 200, json, headers: [] });
-    }, Math.floor(Math.random() * 800) + 100);
+    }, Math.floor(Math.random() * 500) + 100);
   });
 };
 
