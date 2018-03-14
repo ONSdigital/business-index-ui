@@ -11,7 +11,7 @@ export function getUiInfo() {
   return (dispatch) => {
     dispatch(sendingRequest(SENDING_UI_REQUEST, true));
 
-    accessAPI(`${AUTH_URL}/api/info`, 'GET', sessionStorage.accessToken, {}).then(json => {
+    accessAPI(`${AUTH_URL}/api/info`, 'GET', sessionStorage.accessToken, {}, 'uiInfo').then(json => {
       dispatch(sendingRequest(SENDING_UI_REQUEST, false));
       dispatch(setInfo(SET_UI_INFO, {
         version: json.version,
@@ -34,7 +34,7 @@ export function getApiInfo() {
     accessAPI(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
       method: 'GET',
       endpoint: 'version',
-    })).then(json => {
+    }), 'apiInfo').then(json => {
       dispatch(sendingRequest(SENDING_API_REQUEST, false));
       dispatch(setInfo(SET_API_INFO, {
         version: json.version,

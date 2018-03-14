@@ -26,7 +26,7 @@ class ChildRefTable extends React.Component {
     accessAPI(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
       method: 'GET',
       endpoint: `${API_VERSION}/${BUSINESS_ENDPOINT}/${row.original.id}`,
-    }))
+    }), 'business')
     .then(json => this.setState({ data: formatData(json), isLoading: false }))
     .catch(() => this.setState({ errorMessage: 'Error: Unable to get child references.', error: true, isLoading: false }));
   }
