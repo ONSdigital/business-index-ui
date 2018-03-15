@@ -1,19 +1,18 @@
-'use strict';
-
+const Session = require('./Session');
 const uuidv4 = require('uuid/v4');
 const logger = require('../utilities/logger')(module);
 const config = require('../config/sessions');
 
-class JsonSession {
-  constructor() {
-    this.name = 'json';
+class JsonSession extends Session {
+  constructor(name) {
+    super(name);
     this.sessionExpireHours = config.SESSION_EXPIRE_HOURS;
     this.session = {};
   }
 
   createSession(username, remoteAddress, role, apiKey) {
     logger.debug('Creating new JSON session');
-    
+
     return new Promise((resolve, reject) => {
       const accessToken = uuidv4();
       try {
@@ -37,7 +36,7 @@ class JsonSession {
 
   getSession(accessToken) {
     logger.debug('Getting JSON session');
-    
+
     return new Promise((resolve, reject) => {
       try {
         const userSession = this.session[accessToken];
@@ -62,7 +61,7 @@ class JsonSession {
 
   killSession(accessToken) {
     logger.debug('Killing JSON session');
-    
+
     return new Promise((resolve, reject) => {
       try {
         delete this.session[accessToken];

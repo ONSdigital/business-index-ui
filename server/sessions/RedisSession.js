@@ -1,12 +1,11 @@
-'use strict';
-
+const Session = require('./Session');
 const logger = require('../utilities/logger')(module);
 const RedisSessions = require('redis-sessions');
 const config = require('../config/sessions');
 
-class RedisSession {
-  constructor() {
-    this.name = 'redis';
+class RedisSession extends Session {
+  constructor(name) {
+    super(name);
     this.rs = new RedisSessions();
     this.rsapp = 'bi-ui-sessions';
     this.sessionExpire = config.SESSION_EXPIRE;

@@ -11,6 +11,7 @@ const myParser = require('body-parser');
 const path = require('path');
 const JsonSession = require('./sessions/JsonSession');
 const RedisSession = require('./sessions/RedisSession');
+const PsqlSession = require('./sessions/PsqlSession');
 
 // Environment Variables
 const SERVE_HTML = (process.env.SERVE_HTML === 'true'); // To server the React /build
@@ -32,13 +33,16 @@ const session = ((db) => {
   switch (db) {
     case 'json':
       logger.debug('Creating new JsonSession');
-      return new JsonSession();
+      return new JsonSession('json');
     case 'redis':
       logger.debug('Creating new RedisSession');
-      return new RedisSession();
+      return new RedisSession('redis');
+    case 'psql':
+      logger.debug('Creating new PsqlSession');
+      return new PsqlSession('psql');
     default:
       logger.debug('Creating new JsonSession');
-      return new JsonSession();
+      return new JsonSession('json');
   }
 })(SESSION_DB);
 logger.info(`Using session type: ${session.name}`);
