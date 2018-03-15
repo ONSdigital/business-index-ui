@@ -3,25 +3,25 @@ const logger = require('../utilities/logger')(module);
 const Pool = require('pg').Pool;
 const uuidv4 = require('uuid/v4');
 
-logger.info('Creating new PostgreSQL pool');
-const pool = new Pool();
-
 // Useful documentation:
 // https://gist.github.com/brianc/f906bacc17409203aee0
 // https://stackoverflow.com/questions/8484404/what-is-the-proper-way-to-use-the-node-js-postgresql-module
 // https://node-postgres.com/api/client
-
-// the pool will emit an error on behalf of any idle clients
-// it contains if a backend error or network partition happens
-pool.on('error', (err, client) => {
-  logger.error('Unexpected error on idle client', err);
-  process.exit(-1);
-});
-
 class PsqlSession extends Session {
   constructor(name) {
     super(name);
     this.tableName = 'sbr_sessions_dev';
+    this.pool = new Pool();
+    this.init();
+  }
+
+  init() {
+    // The pool will emit an error on behalf of any idle clients it
+    // contains if a backend error or network partition occurs
+    this.pool.on('error', (err, client) => {
+      logger.error('Unexpected error on idle client', err);
+      process.exit(-1);
+    });
   }
 
   createSession(username, remoteAddress, key, role) {
@@ -36,7 +36,7 @@ class PsqlSession extends Session {
         VALUES ('${accessToken}', '${username}', '${role}', '${remoteAddress}', '${key}');
       `;
 
-      pool.connect()
+      this.pool.connect()
       .then(client => {
         return client.query(query)
           .then(res => {
@@ -70,7 +70,7 @@ class PsqlSession extends Session {
         RETURNING subquery.username, subquery.apiKey
       `;
 
-      pool.connect()
+      this.pool.connect()
       .then(client => {
         return client.query(query)
           .then(res => {
@@ -104,7 +104,7 @@ class PsqlSession extends Session {
         RETURNING subquery.username
       `;
 
-      pool.connect()
+      this.pool.connect()
       .then(client => {
         return client.query(query)
           .then(res => {
@@ -135,7 +135,7 @@ class PsqlSession extends Session {
         WHERE accessToken='${accessToken}'
       `;
 
-      pool.connect()
+      this.pool.connect()
       .then(client => {
         return client.query(query)
           .then(res => {
