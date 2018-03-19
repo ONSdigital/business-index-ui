@@ -36,7 +36,7 @@ class SelectMultipleInput extends React.Component {
     this.props.onChange({
       target: {
         id: this.props.id,
-        value: values.split(','),
+        value: (values === '') ? [] : values.split(','),
       },
     });
   }

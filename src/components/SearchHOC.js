@@ -66,6 +66,9 @@ export default function withSearch(Content) {
         delete formValues[id];
       } else if (value === '') {
         delete formValues[id];
+      } else if (Array.isArray(value) && value.length === 0) {
+        // Multiple select input will return an empty array if nothing is selected
+        delete formValues[id];
       } else {
         // Do some last transformations on the form values before adding them to
         // our formValues state
@@ -76,6 +79,7 @@ export default function withSearch(Content) {
         }
       }
       this.setState({ formValues });
+      
       // Store the query in Redux store, so we can access it again if a user
       // presses 'back to search' on the Enterprise View page.
       this.props.dispatch(setQuery(SET_QUERY, formValues, 'match'));
