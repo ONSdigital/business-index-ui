@@ -2,7 +2,6 @@ import { browserHistory } from 'react-router';
 import base64 from 'base-64';
 import { SET_AUTH, SET_CONFETTI, USER_LOGOUT, SENDING_REQUEST, SET_ERROR_MESSAGE, SET_USER_DETAILS } from '../constants/LoginConstants';
 import * as errorMessages from '../constants/MessageConstants';
-import { getUiInfo, getApiInfo } from '../actions/InfoActions';
 import accessAPI from '../utils/accessAPI';
 import config from '../config/api-urls';
 
@@ -41,8 +40,6 @@ export function login(username, password) {
       }));
       sessionStorage.setItem('accessToken', json.accessToken);
       sessionStorage.setItem('username', username);
-      dispatch(getUiInfo());
-      dispatch(getApiInfo());
       forwardTo('/Home');
     }).catch(() => {
       dispatch(sendingRequest(false));
@@ -59,8 +56,6 @@ export function checkAuth() {
     accessAPI(`${AUTH_URL}/auth/checkToken`, 'POST', sessionStorage.accessToken, {}, 'checkAuth').then(json => {
       dispatch(setAuthState(true));
       if (window.location.pathname === '/') forwardTo('/Home');
-      dispatch(getUiInfo());
-      dispatch(getApiInfo());
       dispatch(setUserState({
         username: json.username,
         accessToken: json.accessToken,

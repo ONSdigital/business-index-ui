@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import SummaryTable from '../components/SummaryTable';
 import ChildRefTable from '../components/ChildRefTable';
 import { employmentBands, legalStatusBands, tradingStatusBands, turnoverBands } from '../utils/convertBands';
 import { downloadCSV, downloadJSON } from '../utils/export';
@@ -100,13 +99,6 @@ const ResultsTable = ({ results, showFilter, showPagination, defaultPageSize, co
         </div>
       </div>
       <br />
-      <SummaryTable
-        title="Useful Information"
-        items={[
-          { key: 'Number of results', value: results.length },
-          { key: 'Results capped at 10,000', value: (results.length === 10000) ? 'true' : 'false' },
-        ]}
-      />
     </div>
   );
 };
