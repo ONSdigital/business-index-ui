@@ -93,6 +93,10 @@ export function logout() {
   };
 }
 
+export function resetLoginErrorMsg() {
+  return { type: SET_ERROR_MESSAGE, message: '' };
+}
+
 /**
  * Sets the user details state of the application (username, role)
  * @param  {boolean} show              Whether or not to show the the confetti

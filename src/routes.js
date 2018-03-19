@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import reducer from './reducers/index';
 import { checkAuth } from './actions/LoginActions';
 import Home from './views/Home';
+import Results from './views/Results';
 import NotFound from './views/NotFound';
 import Template from './templates/Template';
 import Login from './views/Login';
@@ -38,7 +39,8 @@ const Routes = () => (
       <Route path="/" component={Template}>
         <IndexRoute component={Login} onEnter={checkLogin} />
         <Route onEnter={checkAuthentication}>
-          <Route path="/Home" component={Home} />
+          <Route path="/Home" component={withSearch(Home)} />
+          <Route path="/Results" component={withSearch(Results)} />
           <Route path="/*" component={NotFound} />
         </Route>
       </Route>
