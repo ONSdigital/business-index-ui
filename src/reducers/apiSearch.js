@@ -1,10 +1,11 @@
-import { SET_HEADERS, SET_FORMATTED_QUERY, SET_RESULTS, SET_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST } from '../constants/ApiConstants';
+import { SET_HEADERS, SET_TO_HIGHLIGHT, SET_FORMATTED_QUERY, SET_RESULTS, SET_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST } from '../constants/ApiConstants';
 
 // Object.assign is not yet fully supported in all browsers, so fallback to a polyfill
 const assign = Object.assign || require('object.assign');
 
 const initialState = {
   match: {
+    toHighlight: '',
     results: [],
     headers: [],
     query: {},
@@ -13,6 +14,7 @@ const initialState = {
     errorMessage: '',
   },
   range: {
+    toHighlight: '',
     results: [],
     headers: [],
     query: {},
@@ -21,6 +23,7 @@ const initialState = {
     errorMessage: '',
   },
   ubrn: {
+    toHighlight: '',
     results: [],
     headers: [],
     query: {},
@@ -37,6 +40,14 @@ function refReducer(state = initialState, action) {
         [action.jsonKey]: {
           ...state[action.jsonKey],
           results: action.results,
+        },
+      });
+    case SET_TO_HIGHLIGHT:
+      return assign({}, state, {
+        ...state,
+        [action.jsonKey]: {
+          ...state[action.jsonKey],
+          toHighlight: action.toHighlight,
         },
       });
     case SET_HEADERS:

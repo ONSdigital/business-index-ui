@@ -1,11 +1,12 @@
-import { SET_RESULTS, SET_FORMATTED_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST, SET_QUERY } from '../constants/ApiConstants';
+import { browserHistory } from 'react-router';
+import { SET_RESULTS, SET_TO_HIGHLIGHT, SET_FORMATTED_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST, SET_QUERY } from '../constants/ApiConstants';
 import accessAPI from '../utils/accessAPI';
 import config from '../config/api-urls';
 
 const { REROUTE_URL, API_VERSION } = config;
 
 // The search action creator can be used for Match/Range/UBRN searches
-export function search(query, formQuery, jsonKey) {
+export function search(query, formQuery, jsonKey, redirect) {
   return (dispatch) => {
     dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, '', jsonKey));
     dispatch(sendingRequest(SENDING_SEARCH_REQUEST, true, jsonKey));
@@ -28,12 +29,17 @@ export function search(query, formQuery, jsonKey) {
         dispatch(setResults(SET_RESULTS, [json], jsonKey));
       } else {
         dispatch(setResults(SET_RESULTS, json, jsonKey));
+        if (redirect) browserHistory.push('/Results');
       }
     }).catch(msg => {
       dispatch(sendingRequest(SENDING_SEARCH_REQUEST, false, jsonKey));
       dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, msg.toString(), jsonKey));
     });
   };
+}
+
+export function setToHighlight(toHighlight, jsonKey) {
+  return { type: SET_TO_HIGHLIGHT, toHighlight, jsonKey };
 }
 
 export function setResults(type, results, jsonKey) {

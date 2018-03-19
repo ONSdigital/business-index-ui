@@ -39,8 +39,8 @@ const Routes = () => (
       <Route path="/" component={Template}>
         <IndexRoute component={Login} onEnter={checkLogin} />
         <Route onEnter={checkAuthentication}>
-          <Route path="/Home" component={Home} />
-          <Route path="/Results" component={Results} />
+          <Route path="/Home" component={withSearch(Home)} />
+          <Route path="/Results" component={withSearch(Results)} />
           <Route path="/*" component={NotFound} />
         </Route>
       </Route>

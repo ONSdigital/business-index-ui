@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { TitleAndDescription, BreadCrumb } from 'registers-react-library';
-import ErrorModal from './ErrorModal';
-import ResultsTable from './ResultsTable';
-import { SET_QUERY, SET_RESULTS } from '../constants/ApiConstants';
+import { search, setQuery, resetResults, setToHighlight } from '../actions/ApiActions';
+import { SET_QUERY } from '../constants/ApiConstants';
+import { formMatchQuery } from '../utils/formQuery';
+import { everyKeyMatches } from '../utils/helperMethods';
 
 // The logic for the Match/Range/UBRN features are almost identical, so we
 // use a higher order component to create the pages, including the common
@@ -12,174 +12,113 @@ import { SET_QUERY, SET_RESULTS } from '../constants/ApiConstants';
 // the settings or actions/constants parameters.
 
 // https://reactjs.org/docs/higher-order-components.html
-export default function withSearch(Form, settings, actions, formQuery) {
+export default function withSearch(Content) {
   class SearchHOC extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        show: false,
+        showError: false,
         errorMessage: '',
         formValues: {},
-        showFilter: false,
-        convertBands: true,
-        scroll: false,
-        businessName: '',
       };
-      this.changeQuery = this.changeQuery.bind(this);
       this.onSubmit = this.onSubmit.bind(this);
-      this.clearQuery = this.clearQuery.bind(this);
-      this.closeModal = this.closeModal.bind(this);
-      this.changeFilter = this.changeFilter.bind(this);
-      this.changeBands = this.changeBands.bind(this);
+      this.onChange = this.onChange.bind(this);
+      this.onClear = this.onClear.bind(this);
     }
-    componentDidMount() {
+    componentDidMount = () => {
       // Reload the data from the store
-      this.setState({
-        formValues: this.props.data.query,
-        businessName: this.props.data.query.BusinessName,
-      });
+      this.setState({ formValues: this.props.query });
     }
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps = (nextProps) => {
       // The Redux action for the api request will set the errorMessage in the
       // store if the response is 4xx/5xx etc. Show this errorMessage in a modal,
       // props update on keypress so only show error if it has just appeared.
-      if (nextProps.data.errorMessage !== '' && nextProps.data.errorMessage !== this.props.data.errorMessage) {
+      if (nextProps.errorMessage !== '' && nextProps.errorMessage !== this.props.errorMessage) {
         this.setState({
-          show: true,
-          errorMessage: nextProps.data.errorMessage,
+          showError: true,
+          errorMessage: nextProps.errorMessage,
           results: [],
         });
       } else {
-        this.setState({ results: nextProps.data.results });
-      }
-      
-      // Set the scroll flag if the user has completed a search
-      if (JSON.stringify(nextProps.data.results) !== JSON.stringify(this.props.data.results)) {
-        this.setState({ scroll: true });
+        this.setState({ results: nextProps.results });
       }
     }
-    componentDidUpdate() {
-      // Scroll to the bottom of the page
-      if (this.state.scroll && this.props.data.results.length > 0) {
-        document.getElementById('react-table').scrollIntoView(false);
-        this.setState({ scroll: false });
+    onSubmit = (e) => {
+      if ('BusinessName' in this.state.formValues) {
+        this.props.dispatch(setToHighlight(this.state.formValues.BusinessName, 'match'));
       }
-    }
-    onSubmit(e) {
       e.preventDefault();
-      if (this.state.formValues !== {}) {
-        this.setState({ showFilter: false, businessName: this.state.formValues.BusinessName });
-        this.props.dispatch(actions.search(this.state.formValues, formQuery, settings.jsonKey));
+      const formValues = this.state.formValues;
+      // Check that there are some values in the form
+      if (Object.keys(formValues).length === 0 && formValues.constructor === Object) {
+        this.props.dispatch(resetResults([], 'match')); // this.props.results = 0;
+        this.setState({ showError: true, errorMessage: 'You cannot submit an empty query.' });
       } else {
-        // Possibly swap this action with a redux way of doing it?
-        this.props.data.results = 0;
-        this.setState({
-          showFilter: false,
-          show: true,
-          errorMessage: 'Please enter a valid query',
-        });
+        this.props.dispatch(search(this.state.formValues, formMatchQuery, 'match', true));
       }
     }
-    focusAndScroll() {
-      // Scroll to the top of the page and focus on the first input
-      document.getElementsByClassName('wrapper')[0].scrollIntoView(false);
-      this.child.childTextInput.myInput.focus();
-    }
-    closeModal = () => {
-      this.setState({ show: false, errorMessage: '' });
-      this.focusAndScroll();
-    }
-    clearQuery() {
-      this.props.dispatch(actions.setQuery(SET_QUERY, {}, settings.jsonKey));
-      this.props.dispatch(actions.setResults(SET_RESULTS, [], settings.jsonKey));
-      this.setState({ formValues: {}, showFilter: false });
-      this.focusAndScroll();
-    }
-    changeFilter() {
-      this.setState({ showFilter: !this.state.showFilter });
-    }
-    changeBands() {
-      this.setState({ convertBands: !this.state.convertBands });
-    }
-    changeQuery(evt) {
-      // if setting to empty, delete
+    onChange = (evt) => {
       const formValues = this.state.formValues;
-      if (evt.target.value === '' || evt.target.value[0] === '') {
-        delete formValues[evt.target.id];
+      const { value, id } = evt.target;
+  
+      // If setting to empty, delete
+      if (value.constructor === Object && everyKeyMatches(value, '')) {
+        delete formValues[id];
+      } else if (value === '') {
+        delete formValues[id];
       } else {
-        if (evt.target.id === 'BusinessName') {
-          formValues[evt.target.id] = evt.target.value.toUpperCase();
+        // Do some last transformations on the form values before adding them to
+        // our formValues state
+        if (id === 'BusinessName' || id === 'PostCode') {
+          formValues[id] = value.toUpperCase();
         } else {
-          formValues[evt.target.id] = evt.target.value;
+          formValues[id] = value;
         }
       }
       this.setState({ formValues });
       // Store the query in Redux store, so we can access it again if a user
       // presses 'back to search' on the Enterprise View page.
-      this.props.dispatch(actions.setQuery(SET_QUERY, formValues, settings.jsonKey));
+      this.props.dispatch(setQuery(SET_QUERY, formValues, 'match'));
     }
+    onClear = () => {
+      this.props.dispatch(setQuery(SET_QUERY, {}, 'match'));
+      this.setState({ formValues: {} });
+    }
+    closeModal = () => this.setState({ showError: false, errorMessage: '' });
     render() {
-      const items = [
-        { name: 'Home', link: '/Home' },
-        { name: settings.title, link: '' },
-      ];
       return (
-        <div>
-          <BreadCrumb breadCrumbItems={items} />
-          <TitleAndDescription
-            marginBottom="1"
-            title={`${settings.title}`}
-            description={settings.description}
-          />
-          <div className="page-intro background--gallery">
-            <div className="wrapper">
-              <Form
-                ref={(ch) => (this.child = ch)}
-                currentlySending={this.props.data.currentlySending}
-                initialValues={this.props.data.query}
-                onSubmit={this.onSubmit}
-                onChange={this.changeQuery}
-                onChangeFilter={this.changeFilter}
-                onChangeBands={this.changeBands}
-                filter={this.state.showFilter}
-                onClear={this.clearQuery}
-                showFilters={this.props.data.results.length !== 0}
-                value={this.props.data.query}
-                convertBands={this.state.convertBands}
-              />
-              <ErrorModal
-                show={this.state.show}
-                message={this.state.errorMessage}
-                close={this.closeModal}
-              />
-              <br />
-              {this.props.data.results.length !== 0 &&
-                <ResultsTable
-                  businessName={this.state.businessName}
-                  convertBands={this.state.convertBands}
-                  results={this.props.data.results}
-                  showFilter={this.state.showFilter}
-                  showPagination={settings.showPagination}
-                  defaultPageSize={settings.defaultPageSize}
-                />
-              }
-              <br />
-            </div>
-          </div>
-        </div>
+        <Content
+          showError={this.state.showError}
+          onChange={this.onChange}
+          onClear={this.onClear}
+          onSubmit={this.onSubmit}
+          closeModal={this.closeModal}
+          ref={(ch) => (this.child = ch)}
+          currentlySending={this.props.currentlySending}
+          query={this.props.query}
+          errorMessage={this.state.errorMessage}
+          results={this.props.results}
+          toHighlight={this.props.toHighlight}
+        />
       );
     }
   }
 
-  function select(state) {
-    return {
-      data: state.apiSearch[settings.storeName],
-    };
-  }
+  const select = (state) => ({
+    currentlySending: state.apiSearch.match.currentlySending,
+    query: state.apiSearch.match.query,
+    results: state.apiSearch.match.results,
+    errorMessage: state.apiSearch.match.errorMessage,
+    toHighlight: state.apiSearch.match.toHighlight,
+  });
 
   SearchHOC.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired,
+    currentlySending: PropTypes.bool.isRequired,
+    query: PropTypes.object.isRequired,
+    results: PropTypes.array.isRequired,
+    errorMessage: PropTypes.string.isRequired,
+    toHighlight: PropTypes.string.isRequired,
   };
 
   return connect(select)(SearchHOC);

@@ -6,7 +6,7 @@ const { FILE_NAME } = config;
  * @function exportCSV
  *
  * @param  {string} header - The header to use in the CSV
- * @param  {Array<JSON>} results - The results to save in a CSV file
+ * @param  {Array} results - The results to save in a CSV file
  *
  * @return {string} A string of all the results in CSV format
  */
@@ -23,8 +23,7 @@ export function exportCSV(header, results) {
 /**
  * @function downloadCSV
  *
- * @param  {Array<JSON>} results - The results to save in a CSV file
- *
+ * @param  {Array} results - The results to save in a CSV file
  */
 export function downloadCSV(results) {
   const header = 'UBRN,Business Name,PostCode,Industry Code,Legal Status,Trading Status,Turnover,Employment,Company Reference Number';
@@ -39,14 +38,14 @@ export function downloadCSV(results) {
 /**
  * @function downloadJSON
  *
- * @param  {Array<JSON>} results - The results to save in a JSON file
- *
+ * @param  {Array} results - The results to save in a JSON file
  */
 export function downloadJSON(results) {
-  const jsonStr = JSON.stringify(results, null, 2);
-  const uri = `data:text/json;charset=utf-8,${escape(jsonStr)}`;
-  const link = document.createElement('a');
-  link.href = uri;
-  link.download = `${FILE_NAME}.json`;
-  link.click();
+  const jsonStr = JSON.stringify(results.slice(0, 10), null, 2);
+  const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(jsonStr)}`;
+  const download = document.createElement('a');
+  download.setAttribute('href', dataStr);
+  download.setAttribute('download', `${FILE_NAME}.json`);
+  download.click();
+  download.remove();
 }
