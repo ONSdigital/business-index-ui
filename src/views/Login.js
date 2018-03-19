@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { login, resetLoginErrorMsg } from '../actions/LoginActions';
 import Button from '../patterns/Button';
 import LinkButton from '../patterns/LinkButton';
+import TextInput from '../patterns/TextInput';
 import ErrorModal from '../components/ErrorModal';
-import { focusAndSetState } from '../utils/helperMethods';
 
 /**
  * @class Login - The Login page and associated login logic
@@ -22,13 +22,10 @@ class Login extends React.Component {
       showForgotPass: false,
       errorMessage: '',
     };
-    this.closeErrorModal = this.closeErrorModal.bind(this);
-    this.closeForgotPassModal = this.closeForgotPassModal.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
   onSubmit = (evt) => {
     evt.preventDefault(); // Stop the page from refreshing
-    this.props.dispatch(login(this.usernameInput.value, this.passwordInput.value));
+    this.props.dispatch(login(this.usernameInput.textInput.value, this.passwordInput.textInput.value));
     // The error modal won't show unless there is also an error message that isn't an empty string
     this.setState({ showError: true });
   }
@@ -36,11 +33,12 @@ class Login extends React.Component {
     // We need to reset the error message as the error modal will show on a future
     // successful login if we don't reset it
     this.props.dispatch(resetLoginErrorMsg());
-    focusAndSetState(this, 'usernameInput', { showError: false, errorMessage: '' });
+    this.setState({ showError: false, errorMessage: '' });
+    this.usernameInput.textInput.focus();
   }
-  closeForgotPassModal = () => focusAndSetState(this, 'usernameInput', { showForgotPass: false });
+  closeForgotPassModal = () => this.setState({ showForgotPass: false });
   render() {
-    const forgotPassMsg = "If you have forgotten your password, please raise a Service Desk call to get it reset.";
+    const forgotPassMsg = 'If you have forgotten your password, please raise a Service Desk call to get it reset.';
     return (
       <div className="main-content">
         <div className="wrapper">
@@ -48,14 +46,8 @@ class Login extends React.Component {
             <div className="col-12">
               <form id="form-sign-in" className="form">
                 <h3 className="saturn">Sign in</h3>
-                <div className="field u-mb-s">
-                  <label className="label">Username</label>
-                  <input autoFocus className="input input--text input-type__input" ref={(ref) => (this.usernameInput = ref)} required type="username" aria-describedby="inputUsernameLabel" />
-                </div>
-                <div className="field">
-                  <label className="label " htmlFor="inputPassword" id="inputPasswordLabel">Password</label>
-                  <input id="inputPassword" type="password" className="input input--text" ref={(ref) => (this.passwordInput = ref)} required aria-describedby="inputPasswordLabel" />
-                </div>
+                <TextInput id="usernameInput" size="s" onChange={null} ref={(ref) => (this.usernameInput = ref)} autoFocus type="username" label="Username" />
+                <TextInput id="passwordInput" size="s" onChange={null} ref={(ref) => (this.passwordInput = ref)} type="password" label="Password" />
                 <p className="forgot-password">
                   <LinkButton id="forgotPasswordLink" text="Forgot password?" onClick={() => this.setState({ showForgotPass: true })} />
                 </p>
@@ -77,11 +69,9 @@ Login.propTypes = {
   errorMessage: PropTypes.string.isRequired,
 };
 
-function select(state) {
-  return {
-    currentlySending: state.login.currentlySending,
-    errorMessage: state.login.errorMessage,
-  };
-}
+const select = (state) => ({
+  currentlySending: state.login.currentlySending,
+  errorMessage: state.login.errorMessage,
+});
 
 export default connect(select)(Login);

@@ -13,16 +13,18 @@ import PropTypes from 'prop-types';
 class TextInput extends React.Component {
   render() {
     const width = (this.props.size === 'xs') ? { width: '100%' } : {};
+    const conditionalProps = (this.props.onChange === null)
+      ? {}
+      : { onChange: this.props.onChange, value: this.props.value };
     return (
       <div className={`field u-mb-${this.props.size}`}>
         <label className="label" htmlFor={this.props.id}>{this.props.label}</label>
         <input
           id={this.props.id}
           style={width}
-          onChange={this.props.onChange}
-          value={this.props.value}
+          {...conditionalProps}
           autoFocus={this.props.autoFocus}
-          ref={ip => (this.myInput = ip)}
+          ref={ip => (this.textInput = ip)}
           className={`input input--text input-type__input bi-${this.props.type}-input`}
           type="text"
         />
@@ -34,6 +36,7 @@ class TextInput extends React.Component {
 TextInput.defaultProps = {
   autoFocus: false,
   value: '',
+  onChange: null,
 };
 
 TextInput.propTypes = {
@@ -41,7 +44,7 @@ TextInput.propTypes = {
   type: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   size: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   value: PropTypes.string,
   autoFocus: PropTypes.bool,
 };
