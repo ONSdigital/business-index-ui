@@ -1,22 +1,26 @@
 import React from 'react';
-import { TitleAndDescription, BreadCrumb } from 'registers-react-library';
+import Panel from '../patterns/Panel';
 
-const NotFound = () => {
-  return (
-    <div>
-      <BreadCrumb
-        breadCrumbItems={[
-          { name: 'Home', link: '/Home' },
-          { name: 'Not Found', link: '' },
-        ]}
-      />
-      <TitleAndDescription
-        title="404 Not Found"
-        description="Please navigate to a valid URL."
-        marginBottom="1"
-      />
+/**
+ * @const NotFound - This is displayed whenever a user tries to
+ * go to an unkown route
+ */
+const NotFound = () => (
+  <section>
+    <div className="main-content">
+      <div className="wrapper">
+        <div className="group">
+          <div className="col-8">
+            <Panel
+              id="notFoundPanel"
+              text="404 Not Found"
+              level="error"
+            />
+          </div>
+        </div>
+      </div>
     </div>
-  );
-};
+  </section>
+);
 
 export default NotFound;
