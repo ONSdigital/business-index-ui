@@ -37,7 +37,7 @@ class Login extends React.Component {
     this.usernameInput.textInput.focus();
   }
   closeForgotPassModal = () => this.setState({ showForgotPass: false });
-  render() {
+  render = () => {
     const forgotPassMsg = 'If you have forgotten your password, please raise a Service Desk call to get it reset.';
     return (
       <div className="main-content">
