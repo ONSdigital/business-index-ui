@@ -117,3 +117,12 @@ export const getHighlightedText = (row, higlight) => {
  * @return {Boolean} - True if every key matches the given value
  */
 export const everyKeyMatches = (obj, value) => Object.keys(obj).map(key => (obj[key] === value)).reduce((a, b) => a && b);
+
+/**
+ * @const anyKeyEmpty - Check if any key within a given object is empty
+ *
+ * @param {Object} obj - The object to check
+ *
+ * @return {Boolean} - True if any key is empty
+ */
+export const anyKeyEmpty = (obj) => Object.keys(obj).map(key => (obj[key] === '')).reduce((a, b) => a || b);

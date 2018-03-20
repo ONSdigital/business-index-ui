@@ -29,24 +29,24 @@ export default function withSearch(Content) {
       e.preventDefault();
       const formValues = this.state.formValues;
       const businessName = ('BusinessName' in formValues) ? formValues.BusinessName : '';
-      this.props.dispatch(setToHighlight(businessName, 'match'));
+      this.props.dispatch(setToHighlight(businessName));
 
       // Check that there are some values in the form
       if (Object.keys(formValues).length === 0 && formValues.constructor === Object) {
-        this.props.dispatch(resetResults([], 'match'));
+        this.props.dispatch(resetResults());
         this.setState({ showError: true, errorMessage: 'You cannot submit an empty query.' });
       } else {
-        this.props.dispatch(search(formValues, formMatchQuery, 'match', true));
+        this.props.dispatch(search(formValues, formMatchQuery, true));
       }
     }
     onChange = (evt) => {
       const { value, id } = evt.target;
       const formValues = handleFormChange(this.state.formValues, id, value);
       this.setState({ formValues });
-      this.props.dispatch(setQuery(SET_QUERY, formValues, 'match'));
+      this.props.dispatch(setQuery(SET_QUERY, formValues));
     }
     onClear = () => {
-      this.props.dispatch(setQuery(SET_QUERY, {}, 'match'));
+      this.props.dispatch(setQuery(SET_QUERY, {}));
       this.setState({ formValues: {} });
     }
     closeModal = () => this.setState({ showError: false, errorMessage: '' });
@@ -68,11 +68,11 @@ export default function withSearch(Content) {
   }
 
   const select = (state) => ({
-    currentlySending: state.apiSearch.match.currentlySending,
-    query: state.apiSearch.match.query,
-    results: state.apiSearch.match.results,
-    errorMessage: state.apiSearch.match.errorMessage,
-    toHighlight: state.apiSearch.match.toHighlight,
+    currentlySending: state.apiSearch.currentlySending,
+    query: state.apiSearch.query,
+    results: state.apiSearch.results,
+    errorMessage: state.apiSearch.errorMessage,
+    toHighlight: state.apiSearch.toHighlight,
   });
 
   SearchHOC.propTypes = {

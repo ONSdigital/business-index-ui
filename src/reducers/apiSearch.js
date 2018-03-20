@@ -1,98 +1,57 @@
-import { SET_HEADERS, SET_TO_HIGHLIGHT, SET_FORMATTED_QUERY, SET_RESULTS, SET_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST } from '../constants/ApiConstants';
-
-// Object.assign is not yet fully supported in all browsers, so fallback to a polyfill
-const assign = Object.assign || require('object.assign');
+import { SET_TO_HIGHLIGHT, SET_FORMATTED_QUERY, SET_RESULTS, SET_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST } from '../constants/ApiConstants';
 
 const initialState = {
-  match: {
-    toHighlight: '',
-    results: [],
-    headers: [],
-    query: {},
-    formattedQuery: '',
-    currentlySending: false,
-    errorMessage: '',
-  },
-  range: {
-    toHighlight: '',
-    results: [],
-    headers: [],
-    query: {},
-    formattedQuery: '',
-    currentlySending: false,
-    errorMessage: '',
-  },
-  ubrn: {
-    toHighlight: '',
-    results: [],
-    headers: [],
-    query: {},
-    currentlySending: false,
-    errorMessage: '',
-  },
+  toHighlight: '',
+  results: [],
+  query: {},
+  formattedQuery: '',
+  currentlySending: false,
+  errorMessage: '',
 };
 
-function refReducer(state = initialState, action) {
+/**
+ * @const searchReducer - The reducer to handle API search data
+ *
+ * @param {Object} state - This current reducer state
+ * @param {Object} action - An action which holds the type and any data
+ *
+ * @return {Object} - The new state (after the action has been applied)
+ */
+const searchReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_RESULTS:
-      return assign({}, state, {
+      return Object.assign({}, state, {
         ...state,
-        [action.jsonKey]: {
-          ...state[action.jsonKey],
-          results: action.results,
-        },
+        results: action.results,
       });
     case SET_TO_HIGHLIGHT:
-      return assign({}, state, {
+      return Object.assign({}, state, {
         ...state,
-        [action.jsonKey]: {
-          ...state[action.jsonKey],
-          toHighlight: action.toHighlight,
-        },
-      });
-    case SET_HEADERS:
-      return assign({}, state, {
-        ...state,
-        [action.jsonKey]: {
-          ...state[action.jsonKey],
-          headers: action.headers,
-        },
+        toHighlight: action.toHighlight,
       });
     case SENDING_SEARCH_REQUEST:
-      return assign({}, state, {
+      return Object.assign({}, state, {
         ...state,
-        [action.jsonKey]: {
-          ...state[action.jsonKey],
-          currentlySending: action.sending,
-        },
+        currentlySending: action.sending,
       });
     case SET_QUERY:
-      return assign({}, state, {
+      return Object.assign({}, state, {
         ...state,
-        [action.jsonKey]: {
-          ...state[action.jsonKey],
-          query: action.query,
-        },
+        query: action.query,
       });
     case SET_FORMATTED_QUERY:
-      return assign({}, state, {
+      return Object.assign({}, state, {
         ...state,
-        [action.jsonKey]: {
-          ...state[action.jsonKey],
-          formattedQuery: action.query,
-        },
+        formattedQuery: action.query,
       });
     case SET_SEARCH_ERROR_MESSAGE:
-      return assign({}, state, {
+      return Object.assign({}, state, {
         ...state,
-        [action.jsonKey]: {
-          ...state[action.jsonKey],
-          errorMessage: action.message,
-        },
+        errorMessage: action.message,
       });
     default:
       return state;
   }
-}
+};
 
-export default refReducer;
+export default searchReducer;
