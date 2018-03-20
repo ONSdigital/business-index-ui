@@ -38,6 +38,10 @@ export function search(query, formQuery, jsonKey, redirect) {
   };
 }
 
+export function resetResults(results, jsonKey) {
+  return { type: SET_RESULTS, results, jsonKey };
+}
+
 export function setToHighlight(toHighlight, jsonKey) {
   return { type: SET_TO_HIGHLIGHT, toHighlight, jsonKey };
 }

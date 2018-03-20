@@ -14,9 +14,8 @@ The following tutorials were used to help with the deployment using Node.js, the
 **[4. Testing](#testing)**<br>
 **[5. Useful Extensions](#useful-extensions)**<br>
 **[6. Logging into the UI](#logging-into-the-ui)**<br>
-**[7. Troubleshooting](#troubleshooting)**<br>
-**[8. Contributing](#contributing)**<br>
-**[9. License](#license)**<br>
+**[7. Contributing](#contributing)**<br>
+**[8. License](#license)**<br>
 
 ## Environment Setup for the UI
 
@@ -115,20 +114,6 @@ The node server will carry on running afterwards, you can shut it down with `kil
 ## Logging into the UI:
 
 Username and password are `test` or `admin`.
-
-## Troubleshooting
-
-### Using SDC Patterns
-
-If you want to use any patterns from the [sdc-global-design-patterns library](https://onsdigital.github.io/sdc-global-design-patterns/index.html), you need to wrap your code in the following `div`:
-
-```javascript
-<div className="sdc-isolation">
-  ...
-</div>
-```
-
-If you want to use the sdc patterns inside a grid, it's probably a good idea to use the grid in the sdc pattern library, as many of the components inherit styles, so when using the external style library grid, you'll run into lots of problems with your sdc components inheriting the wrong colour/size etc.
 
 ## Contributing
 

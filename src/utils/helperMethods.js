@@ -25,6 +25,41 @@ export function formatData(business) {
   return formattedData;
 }
 
+const _pipe = (f, g) => (...args) => g(f(...args));
+const pipe = (...fns) => fns.reduce(_pipe);
+
+export const emptyObjCond = (childObj) => childObj.constructor === Object && everyKeyMatches(childObj, '');
+export const emptyStrCond = (str) => str === '';
+export const emptyArrCond = (child) => Array.isArray(child) && child.length === 0;
+
+const delKey = (obj, id) => {
+  const { [id]: value, ...newObj } = obj;
+  return newObj;
+};
+
+export const removeEmptyKey = (obj, id, value) => (...fns) => {
+  return (fns.map(f => f(value)).reduce((a, b) => a || b)) ? delKey(obj, id) : obj;
+};
+
+export const handleFormChange = (form, id, value) => {
+  const formCopy = { ...form };
+
+  // If setting to empty, delete
+  if (value.constructor === Object && everyKeyMatches(value, '')) {
+    delete formCopy[id];
+  } else if (value === '') {
+    delete formCopy[id];
+  } else if (Array.isArray(value) && value.length === 0) {
+    // Multiple select input will return an empty array if nothing is selected
+    delete formCopy[id];
+  } else if (id === 'BusinessName' || id === 'PostCode') {
+    formCopy[id] = value.toUpperCase();
+  } else {
+    formCopy[id] = value;
+  }
+  return formCopy;
+};
+
 /**
  * @const formSelectJson - Given some JSON including key value pairs (e.g. C: '2-4'),
  * transform the JSON into an array of JSON objects with the format:

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { search, setQuery, resetResults, setToHighlight } from '../actions/ApiActions';
 import { SET_QUERY } from '../constants/ApiConstants';
 import { formMatchQuery } from '../utils/formQuery';
-import { everyKeyMatches } from '../utils/helperMethods';
+import { handleFormChange } from '../utils/helperMethods';
 
 // The logic for the Match/Range/UBRN features are almost identical, so we
 // use a higher order component to create the pages, including the common
@@ -19,69 +19,27 @@ export default function withSearch(Content) {
       this.state = {
         showError: false,
         errorMessage: '',
-        formValues: {},
+        formValues: this.props.query,
       };
-      this.onSubmit = this.onSubmit.bind(this);
-      this.onChange = this.onChange.bind(this);
-      this.onClear = this.onClear.bind(this);
-    }
-    componentDidMount = () => {
-      // Reload the data from the store
-      this.setState({ formValues: this.props.query });
-    }
-    componentWillReceiveProps = (nextProps) => {
-      // The Redux action for the api request will set the errorMessage in the
-      // store if the response is 4xx/5xx etc. Show this errorMessage in a modal,
-      // props update on keypress so only show error if it has just appeared.
-      if (nextProps.errorMessage !== '' && nextProps.errorMessage !== this.props.errorMessage) {
-        this.setState({
-          showError: true,
-          errorMessage: nextProps.errorMessage,
-          results: [],
-        });
-      } else {
-        this.setState({ results: nextProps.results });
-      }
     }
     onSubmit = (e) => {
-      if ('BusinessName' in this.state.formValues) {
-        this.props.dispatch(setToHighlight(this.state.formValues.BusinessName, 'match'));
-      }
       e.preventDefault();
       const formValues = this.state.formValues;
+      const businessName = ('BusinessName' in formValues) ? formValues.BusinessName : '';
+      this.props.dispatch(setToHighlight(businessName, 'match'));
+
       // Check that there are some values in the form
       if (Object.keys(formValues).length === 0 && formValues.constructor === Object) {
-        this.props.dispatch(resetResults([], 'match')); // this.props.results = 0;
+        this.props.dispatch(resetResults([], 'match'));
         this.setState({ showError: true, errorMessage: 'You cannot submit an empty query.' });
       } else {
-        this.props.dispatch(search(this.state.formValues, formMatchQuery, 'match', true));
+        this.props.dispatch(search(formValues, formMatchQuery, 'match', true));
       }
     }
     onChange = (evt) => {
-      const formValues = this.state.formValues;
       const { value, id } = evt.target;
-  
-      // If setting to empty, delete
-      if (value.constructor === Object && everyKeyMatches(value, '')) {
-        delete formValues[id];
-      } else if (value === '') {
-        delete formValues[id];
-      } else if (Array.isArray(value) && value.length === 0) {
-        // Multiple select input will return an empty array if nothing is selected
-        delete formValues[id];
-      } else {
-        // Do some last transformations on the form values before adding them to
-        // our formValues state
-        if (id === 'BusinessName' || id === 'PostCode') {
-          formValues[id] = value.toUpperCase();
-        } else {
-          formValues[id] = value;
-        }
-      }
+      const formValues = handleFormChange(this.state.formValues, id, value);
       this.setState({ formValues });
-      
-      // Store the query in Redux store, so we can access it again if a user
-      // presses 'back to search' on the Enterprise View page.
       this.props.dispatch(setQuery(SET_QUERY, formValues, 'match'));
     }
     onClear = () => {
@@ -89,23 +47,21 @@ export default function withSearch(Content) {
       this.setState({ formValues: {} });
     }
     closeModal = () => this.setState({ showError: false, errorMessage: '' });
-    render() {
-      return (
-        <Content
-          showError={this.state.showError}
-          onChange={this.onChange}
-          onClear={this.onClear}
-          onSubmit={this.onSubmit}
-          closeModal={this.closeModal}
-          ref={(ch) => (this.child = ch)}
-          currentlySending={this.props.currentlySending}
-          query={this.props.query}
-          errorMessage={this.state.errorMessage}
-          results={this.props.results}
-          toHighlight={this.props.toHighlight}
-        />
-      );
-    }
+    render = () => (
+      <Content
+        showError={this.state.showError}
+        onChange={this.onChange}
+        onClear={this.onClear}
+        onSubmit={this.onSubmit}
+        closeModal={this.closeModal}
+        ref={(ch) => (this.child = ch)}
+        currentlySending={this.props.currentlySending}
+        query={this.props.query}
+        errorMessage={this.state.errorMessage}
+        results={this.props.results}
+        toHighlight={this.props.toHighlight}
+      />
+    )
   }
 
   const select = (state) => ({
@@ -121,7 +77,6 @@ export default function withSearch(Content) {
     currentlySending: PropTypes.bool.isRequired,
     query: PropTypes.object.isRequired,
     results: PropTypes.array.isRequired,
-    errorMessage: PropTypes.string.isRequired,
     toHighlight: PropTypes.string.isRequired,
   };
 
