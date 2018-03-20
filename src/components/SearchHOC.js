@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { search, setQuery, resetResults, setToHighlight } from '../actions/ApiActions';
 import { SET_QUERY } from '../constants/ApiConstants';
-import { formMatchQuery } from '../utils/formQuery';
 import { handleFormChange } from '../utils/helperMethods';
 
 /**
@@ -36,7 +35,7 @@ export default function withSearch(Content) {
         this.props.dispatch(resetResults());
         this.setState({ showError: true, errorMessage: 'You cannot submit an empty query.' });
       } else {
-        this.props.dispatch(search(formValues, formMatchQuery, true));
+        this.props.dispatch(search(formValues, true));
       }
     }
     onChange = (evt) => {

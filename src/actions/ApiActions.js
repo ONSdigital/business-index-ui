@@ -1,6 +1,7 @@
 import { browserHistory } from 'react-router';
 import { SET_RESULTS, SET_TO_HIGHLIGHT, SET_FORMATTED_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST, SET_QUERY } from '../constants/ApiConstants';
 import accessAPI from '../utils/accessAPI';
+import { formQuery } from '../utils/formQuery';
 import config from '../config/api-urls';
 
 const { REROUTE_URL, API_VERSION } = config;
@@ -22,7 +23,7 @@ export const setQuery = (type, query) => ({ type, query });
  * @param {Function} formQuery - A function to transform the query object a string
  * @param {Boolean} redirect - Whether or not to go to /Results after the search
  */
-export const search = (query, formQuery, redirect) => (dispatch) => {
+export const search = (query, redirect) => (dispatch) => {
   dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, ''));
   dispatch(sendingRequest(SENDING_SEARCH_REQUEST, true));
   dispatch(setResults(SET_RESULTS, []));

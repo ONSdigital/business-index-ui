@@ -28,10 +28,19 @@ const encodeSpecialChars = (businessName) => {
  *
  * @param {Object} query - The query object
  */
-const formMatchQuery = (query) => {
+const formQuery = (query) => {
+  const rangeSearch = ['EmploymentBands', 'Turnover', 'TradingStatus', 'LegalStatus'];
   const queryArr = Object.keys(query).map(param => {
     if (param === 'BusinessName') {
       return `${param}${SEPERATOR}${encodeSpecialChars(query[param])}`;
+    } else if (rangeSearch.includes(param)) {
+      return `${param}${SEPERATOR}(${query[param].join(' OR ')})`;
+    } else if (param === 'IndustryCode') {
+      if ('single' in query[param] && query[param].single !== '') {
+        return `${param}${SEPERATOR}${query[param].single}`;
+      } else {
+        return `${param}${SEPERATOR}%5B${query[param].min} TO ${query[param].max}%5D`;
+      }
     }
     return `${param}${SEPERATOR}${query[param]}`;
   });
@@ -39,20 +48,4 @@ const formMatchQuery = (query) => {
   return formattedQuery;
 };
 
-// const formRangeQuery = (query) => {
-//   const queryArr = Object.keys(query).map(param => {
-//     if (param === 'IndustryCode') {
-//       // ES format: IndustryCode:[${min} TO ${max}]
-//       return `${param}${SEPERATOR}%5B${query[param][0]} TO ${query[param][1]}%5D`;
-//     } else if (param === 'PostCode') {
-//       // ES format: PostCode:(${postCode})
-//       return `${param}${SEPERATOR}(${query[param]})`;
-//     }
-//     // ES format: Param:(A OR B OR C)
-//     return `${param}${SEPERATOR}(${query[param].join(' OR ')})`;
-//   });
-//   const formattedQuery = `${SEARCH_ENDPOINT}${queryArr.join(` ${ES_CONCAT} `)}${END_SEPERATOR}${LIMIT}`;
-//   return formattedQuery;
-// };
-
-export { formMatchQuery };
+export { formQuery };
