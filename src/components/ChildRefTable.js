@@ -66,6 +66,7 @@ class ChildRefTable extends React.Component {
           showPaginationTop={false}
           showPaginationBottom={false}
         />
+        <br />
         <h4>Industry Code [{business.industryCode}]: {description}</h4>
         <ErrorModal
           show={this.state.error}
