@@ -11,14 +11,6 @@ import ONSLogo from '../resources/img/logo.svg';
  *
  * Depending on the current route, slight changes are made to this
  * component, e.g. show smaller title text whilst on /Results.
- *
- * @param {Boolean} loggedIn
- * @param {String} username
- * @param {Boolean} currentlySending
- * @param {Object} location
- * @param {Function} dispatch
- *
- * @return {Object} - The Header component
  */
 const Header = ({ loggedIn, username, currentlySending, location, dispatch }) => {
   const headerText = (location.pathname === '/Results')

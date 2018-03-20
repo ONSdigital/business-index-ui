@@ -1,47 +1,54 @@
 import React from 'react';
 
-export function maxSize(...args) {
-  return args.reduce((a, b) => (b.length > a ? b.length : a), 0);
-}
+/**
+ * @const maxSize - Given any number of arrays, return the size of the largest
+ *
+ * @param {Array} args - Any number of arrays
+ *
+ * @return {Number} - The size of the largest array
+ */
+const maxSize = (...args) => args.reduce((a, b) => (b.length > a ? b.length : a), 0);
 
-export function formatData(business) {
+
+/**
+ * @const formatData - Format references from a Business object into a format
+ * that react-table can handle.
+ *
+ * @param {Object} business - Business JSON from the API
+ *
+ * @return {Array} - An array with an object for each table row
+ */
+const formatData = (business) => {
   const largestRef = maxSize(business.vatRefs, business.payeRefs, [business.companyNo]);
-  const formattedData = [];
-  for (let i = 0; i <= largestRef - 1; i += 1) {
-    if (i === 0) {
-      formattedData.push({
+  return Array.from({ length: largestRef }, (a, b) => {
+    if (b === 0) {
+      return {
         companyNo: business.companyNo,
-        vatRefs: business.vatRefs[i],
-        payeRefs: business.payeRefs[i],
-      });
-    } else {
-      formattedData.push({
-        companyNo: '',
-        vatRefs: business.vatRefs[i],
-        payeRefs: business.payeRefs[i],
-      });
+        vatRefs: business.vatRefs[b],
+        payeRefs: business.payeRefs[b],
+      };
     }
-  }
-  return formattedData;
-}
-
-const _pipe = (f, g) => (...args) => g(f(...args));
-const pipe = (...fns) => fns.reduce(_pipe);
-
-export const emptyObjCond = (childObj) => childObj.constructor === Object && everyKeyMatches(childObj, '');
-export const emptyStrCond = (str) => str === '';
-export const emptyArrCond = (child) => Array.isArray(child) && child.length === 0;
-
-const delKey = (obj, id) => {
-  const { [id]: value, ...newObj } = obj;
-  return newObj;
+    return {
+      companyNo: '',
+      vatRefs: business.vatRefs[b],
+      payeRefs: business.payeRefs[b],
+    };
+  });
 };
 
-export const removeEmptyKey = (obj, id, value) => (...fns) => {
-  return (fns.map(f => f(value)).reduce((a, b) => a || b)) ? delKey(obj, id) : obj;
-};
 
-export const handleFormChange = (form, id, value) => {
+/**
+ * @const handleFormChange - This is used in SearchHOC for transforming the form
+ * data when a change is made, e.g. delete empty keys
+ *
+ * @param {Object} form - The object with all the form values
+ * @param {String} id - The id of the input that changed
+ * @param {Any} value - This could be a string or an object
+ *
+ * @return {Object} - The transformed form JSON
+ */
+const handleFormChange = (form, id, value) => {
+  // Take a copy of the form JSON so we don't mutate the original
   const formCopy = { ...form };
 
   // If setting to empty, delete
@@ -60,6 +67,7 @@ export const handleFormChange = (form, id, value) => {
   return formCopy;
 };
 
+
 /**
  * @const formSelectJson - Given some JSON including key value pairs (e.g. C: '2-4'),
  * transform the JSON into an array of JSON objects with the format:
@@ -70,7 +78,7 @@ export const handleFormChange = (form, id, value) => {
  *
  * @return {Object} - An object with the correct format for react-select
  */
-export const formSelectJson = (json) => Object.keys(json).map(key => ({ label: `${key} [${json[key]}]`, value: key }));
+const formSelectJson = (json) => Object.keys(json).map(key => ({ label: `${key} [${json[key]}]`, value: key }));
 
 
 /**
@@ -83,7 +91,7 @@ export const formSelectJson = (json) => Object.keys(json).map(key => ({ label: `
  *
  * @return {Object} A <em> with a highlighted term (or not if it's not present)
  */
-export const getHighlightedText = (row, higlight) => {
+const getHighlightedText = (row, higlight) => {
   // Split text on higlight term, include term itself into parts, ignore case
   try {
     const parts = row.businessName.split(new RegExp(`(${higlight})`, 'gi'));
@@ -116,7 +124,8 @@ export const getHighlightedText = (row, higlight) => {
  *
  * @return {Boolean} - True if every key matches the given value
  */
-export const everyKeyMatches = (obj, value) => Object.keys(obj).map(key => (obj[key] === value)).reduce((a, b) => a && b);
+const everyKeyMatches = (obj, value) => Object.keys(obj).map(key => (obj[key] === value)).reduce((a, b) => a && b);
+
 
 /**
  * @const anyKeyEmpty - Check if any key within a given object is empty
@@ -125,4 +134,9 @@ export const everyKeyMatches = (obj, value) => Object.keys(obj).map(key => (obj[
  *
  * @return {Boolean} - True if any key is empty
  */
-export const anyKeyEmpty = (obj) => Object.keys(obj).map(key => (obj[key] === '')).reduce((a, b) => a || b);
+const anyKeyEmpty = (obj) => Object.keys(obj).map(key => (obj[key] === '')).reduce((a, b) => a || b);
+
+
+export {
+  formatData, handleFormChange, formSelectJson, getHighlightedText, everyKeyMatches, anyKeyEmpty,
+};

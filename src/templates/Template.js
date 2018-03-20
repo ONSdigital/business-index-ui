@@ -9,11 +9,6 @@ const { SHOW_CONFETTI_TIME } = config;
 
 /**
  * @const Template - The default template for all pages
- *
- * @prop {Object} location - The location object for getting the current path
- * @prop {Object} children - The React child component to render within the template
- *
- * @return {Object} - The template including the child component
  */
 const Template = ({ location, children }) => {
   // If we are not on the login page, we can show the 'confetti'

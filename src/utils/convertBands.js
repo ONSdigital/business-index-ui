@@ -1,4 +1,4 @@
-export const employmentBands = {
+const employmentBands = {
   A: '0',
   B: '1',
   C: '2-4',
@@ -16,7 +16,7 @@ export const employmentBands = {
   O: '500+',
 };
 
-export const legalStatusBands = {
+const legalStatusBands = {
   1: 'Company',
   2: 'Sole Proprietor',
   3: 'Partnership',
@@ -28,7 +28,7 @@ export const legalStatusBands = {
 };
 
 
-export const tradingStatusBands = {
+const tradingStatusBands = {
   A: 'Active',
   C: 'Closed',
   D: 'Dormant',
@@ -36,7 +36,7 @@ export const tradingStatusBands = {
 };
 
 
-export const turnoverBands = {
+const turnoverBands = {
   A: '0-99',
   B: '100-249',
   C: '250-499',
@@ -47,3 +47,5 @@ export const turnoverBands = {
   H: '10,000-49,999',
   I: '50,000+',
 };
+
+export { employmentBands, legalStatusBands, tradingStatusBands, turnoverBands };

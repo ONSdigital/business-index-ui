@@ -11,7 +11,6 @@ import request from './request';
  * @param {String} requestType - The request type (search/login/logout etc, used for mock requests)
  *
  * @return {Promise} - A fetch promise
- *
  */
 const accessAPI = (url, method, auth, body, requestType) => {
   return new Promise((resolve, reject) => {

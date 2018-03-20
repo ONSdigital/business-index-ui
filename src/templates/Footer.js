@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * @const FooterTemplate - The footer, which only shows a feedback prompt
+ */
 const FooterTemplate = () => (
   <footer className="page__footer">
     <div className="wrapper">

@@ -4,15 +4,12 @@
  * @param {Function} json - The function that returns some JSON
  *
  * @return {Promise} Returns a successful promise, using the same format as fetch
- *
  */
-export const formPromise = (json) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ status: 200, json, headers: [] });
-    }, Math.floor(Math.random() * 500) + 100);
-  });
-};
+const formPromise = (json) => new Promise((resolve) => {
+  setTimeout(() => {
+    resolve({ status: 200, json, headers: [] });
+  }, Math.floor(Math.random() * 500) + 100);
+});
 
 
 /**
@@ -21,9 +18,8 @@ export const formPromise = (json) => {
  * @param {Number} length - The length of the string to create
  *
  * @return {String} Returns a string of random characters
- *
  */
-export const makeId = (length) => {
+const makeId = (length) => {
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'.split('');
   return Array.from({ length }, () => possible[Math.floor(Math.random() * possible.length) + 0]).join('');
 };
@@ -35,9 +31,8 @@ export const makeId = (length) => {
  * @param {Object} options - JSON with a mandatory length field (upper/lower are optional)
  *
  * @return {Array} Returns an array of the specified length with random data
- *
  */
-export const randomArr = ({ length, lower = 10000, upper = 900000 }) => {
+const randomArr = ({ length, lower = 10000, upper = 900000 }) => {
   return Array.from({ length }, () => (Math.floor(Math.random() * upper) + lower));
 };
 
@@ -46,9 +41,8 @@ export const randomArr = ({ length, lower = 10000, upper = 900000 }) => {
  * @const returnBusiness - Return a single business with random attributes
  *
  * @return {Object} Returns a single object
- *
  */
-export const returnBusiness = () => ({
+const returnBusiness = () => ({
   id: Math.floor(Math.random() * 900000000000) + 100000000000,
   businessName: makeId(10),
   uPRN: Math.floor(Math.random() * 900000000000) + 100000000000,
@@ -70,7 +64,7 @@ export const returnBusiness = () => ({
  * @return {Object} Returns an object matching the format of the API auth routes
  *
  */
-export const returnAuthJson = () => ({
+const returnAuthJson = () => ({
   accessToken: '7cc42d22-2777-11e8-b467-0ed5f89f718b',
   username: 'admin',
   role: 'admin',
@@ -84,6 +78,8 @@ export const returnAuthJson = () => ({
  * @return {Array} Returns an array of JSON
  *
  */
-export const returnSearch = () => {
+const returnSearch = () => {
   return Array.from({ length: Math.floor(Math.random() * 10000) + 5 }, () => returnBusiness());
 };
+
+export { formPromise, returnSearch, returnAuthJson, returnBusiness };
