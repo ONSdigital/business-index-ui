@@ -38,6 +38,18 @@ const formatData = (business) => {
 
 
 /**
+ * @const everyKeyMatches - Given an object, will return true if every one of it's keys matches the
+ * value you provide it. It has to be an exact match as '===' are used.
+ *
+ * @param {Object} obj - The object whose keys need to be checked
+ * @param {Any} value - The value to match on
+ *
+ * @return {Boolean} - True if every key matches the given value
+ */
+const everyKeyMatches = (obj, value) => Object.keys(obj).map(key => (obj[key] === value)).reduce((a, b) => a && b);
+
+
+/**
  * @const handleFormChange - This is used in SearchHOC for transforming the form
  * data when a change is made, e.g. delete empty keys
  *
@@ -113,18 +125,6 @@ const getHighlightedText = (row, higlight) => {
     return (<em key={row.id}>{row.businessName}</em>);
   }
 };
-
-
-/**
- * @const everyKeyMatches - Given an object, will return true if every one of it's keys matches the
- * value you provide it. It has to be an exact match as '===' are used.
- *
- * @param {Object} obj - The object whose keys need to be checked
- * @param {Any} value - The value to match on
- *
- * @return {Boolean} - True if every key matches the given value
- */
-const everyKeyMatches = (obj, value) => Object.keys(obj).map(key => (obj[key] === value)).reduce((a, b) => a && b);
 
 
 /**

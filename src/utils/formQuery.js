@@ -4,6 +4,23 @@ import urls from '../config/api-urls';
 const { SEPERATOR, LIMIT, ES_CONCAT, END_SEPERATOR } = config;
 const { SEARCH_ENDPOINT } = urls;
 
+
+/**
+ * @const encodeSpecialChars - Encode special characters (for ElasticSearch)
+ *
+ * @param {String} businessName - The business name to encode
+ *
+ * @return {String} - The encoded string
+ */
+const encodeSpecialChars = (businessName) => {
+  const encodedName = encodeURIComponent(businessName);
+  if (encodedName.includes('%A3')) {
+    encodedName.replace('%A3,%C2%A3');
+  }
+  return encodedName;
+};
+
+
 /**
  * @const formMatchQuery - Form the query for the match search, where the query
  * object that is passed in has keys that correspond with the correct API
@@ -37,20 +54,5 @@ const formMatchQuery = (query) => {
 //   const formattedQuery = `${SEARCH_ENDPOINT}${queryArr.join(` ${ES_CONCAT} `)}${END_SEPERATOR}${LIMIT}`;
 //   return formattedQuery;
 // };
-
-/**
- * @const encodeSpecialChars - Encode special characters (for ElasticSearch)
- *
- * @param {String} businessName - The business name to encode
- *
- * @return {String} - The encoded string
- */
-const encodeSpecialChars = (businessName) => {
-  const encodedName = encodeURIComponent(businessName);
-  if (encodedName.includes('%A3')) {
-    encodedName.replace('%A3,%C2%A3');
-  }
-  return encodedName;
-};
 
 export { formMatchQuery };
