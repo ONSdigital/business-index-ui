@@ -12,8 +12,6 @@ import { employmentBands, legalStatusBands, turnoverBands, tradingStatusBands } 
  * because for refs to work, a React class has to be used.
  *
  * https://stackoverflow.com/questions/41048546/how-can-i-attach-to-a-stateless-components-ref-in-react
- *
- * @return {Object} - The SearchForm component
  */
 class SearchForm extends React.Component {
   render = () => (

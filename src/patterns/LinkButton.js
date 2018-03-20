@@ -8,14 +8,6 @@ import Loader from 'halogen/PulseLoader';
  * When the link is in a loading state, the onClick method will not be called. The
  * display: 'inline-block' style is added to the link to prevent it overflowing
  * onto a new line when the spinner is showing.
- *
- * @param {String} id
- * @param {String} className
- * @param {String} text
- * @param {Function} onClick - The function to run on a mouse click
- * @param {Boolean} loading - If true, the spinner will show
- *
- * @return {Object} - The LinkButton component
  */
 const LinkButton = ({ id, className, text, onClick, loading }) => {
   const spinner = (<Loader id="spinner" color="#FFFFFF" size="8px" margin="0px" />);

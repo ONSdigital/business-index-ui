@@ -76,6 +76,8 @@ export const formSelectJson = (json) => Object.keys(json).map(key => ({ label: `
 /**
  * @const getHighlightedText
  *
+ * https://stackoverflow.com/questions/29652862/highlight-text-using-reactjs
+ *
  * @param {Object} row - A business object
  * @param {String} higlight - The word/phrase to highlight
  *

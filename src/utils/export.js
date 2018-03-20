@@ -41,7 +41,7 @@ export function downloadCSV(results) {
  * @param  {Array} results - The results to save in a JSON file
  */
 export function downloadJSON(results) {
-  const jsonStr = JSON.stringify(results.slice(0, 10), null, 2);
+  const jsonStr = JSON.stringify(results, null, 2);
   const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(jsonStr)}`;
   const download = document.createElement('a');
   download.setAttribute('href', dataStr);

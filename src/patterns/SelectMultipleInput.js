@@ -5,7 +5,8 @@ import 'react-select/dist/react-select.min.css';
 import { formSelectJson } from '../utils/helperMethods';
 
 /**
- * @class SelectMultipleInput
+ * @class SelectMultipleInput - This provides a select input where multiple
+ * options can be selected, using react-select.
  */
 class SelectMultipleInput extends React.Component {
   constructor(props) {

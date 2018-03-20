@@ -6,12 +6,15 @@ import { SET_QUERY } from '../constants/ApiConstants';
 import { formMatchQuery } from '../utils/formQuery';
 import { handleFormChange } from '../utils/helperMethods';
 
-// The logic for the Match/Range/UBRN features are almost identical, so we
-// use a higher order component to create the pages, including the common
-// methods and state. Anything that isn't common can be passed in using
-// the settings or actions/constants parameters.
-
-// https://reactjs.org/docs/higher-order-components.html
+/**
+ * @function withSearch - This is a higher order component that accepts a component
+ * (which is either the Home/Results page) and wraps it with the common logic
+ * for changing form values and searching.
+ *
+ * https://reactjs.org/docs/higher-order-components.html
+ *
+ * @param {Object} Content - The child react component
+ */
 export default function withSearch(Content) {
   class SearchHOC extends React.Component {
     constructor(props) {

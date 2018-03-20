@@ -9,6 +9,12 @@ import accessAPI from '../utils/accessAPI';
 
 const { REROUTE_URL, API_VERSION, BUSINESS_ENDPOINT } = config;
 
+/**
+ * @class ChildRefTable - This is a sub table shown as an expandable row
+ * within the main ReactTable results table. When this component is created,
+ * the data will be fetched. Redux isn't used as the data is only required
+ * by this component.
+ */
 class ChildRefTable extends React.Component {
   constructor(props) {
     super(props);
@@ -18,10 +24,8 @@ class ChildRefTable extends React.Component {
       error: false,
       errorMessage: '',
     };
-    this.closeModal = this.closeModal.bind(this);
-    this.fetchData = this.fetchData.bind(this);
+    this.fetchData(this.props.row);
   }
-  componentDidMount = () => this.fetchData(this.props.row);
   fetchData = (row) => {
     accessAPI(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
       method: 'GET',
@@ -31,7 +35,7 @@ class ChildRefTable extends React.Component {
     .catch(() => this.setState({ errorMessage: 'Error: Unable to get child references.', error: true, isLoading: false }));
   }
   closeModal = () => this.setState({ error: false, errorMessage: '' });
-  render() {
+  render = () => {
     const business = this.props.row.original;
     const description = (industryCodeDescription[business.industryCode] === undefined)
       ? 'No industry code description found' : industryCodeDescription[business.industryCode];

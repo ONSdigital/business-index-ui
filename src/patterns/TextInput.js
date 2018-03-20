@@ -2,16 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /**
- * @class TextInput
- *
- * @param {String} id
- * @param {String} type - search/postCode etc.
- * @param {String} label
- * @param {Boolean} autoFocus
- * @param {String} value
+ * @class TextInput - For inputting text. This can be used either using
+ * onChange/value props or through using refs (hence why this isn't a
+ * functional component).
  */
 class TextInput extends React.Component {
-  render() {
+  render = () => {
     const width = (this.props.size === 'xs') ? { width: '100%' } : {};
     const conditionalProps = (this.props.onChange === null)
       ? {}

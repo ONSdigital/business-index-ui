@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import Business from './Business';
 
 /**
- * @class ResultsList
- *
- * @param {Array} results - An array of objects from the API
- * @param {String} toHighlight - The search term to highlight (businessName)
+ * @class ResultsList - This component shows the search results as a list, which
+ * is the default.
  */
 const ResultsList = ({ results, toHighlight }) => {
   // Scroll to the top of the page

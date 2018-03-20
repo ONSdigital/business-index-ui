@@ -8,11 +8,7 @@ import TextInput from '../patterns/TextInput';
 import ErrorModal from '../components/ErrorModal';
 
 /**
- * @class Login - The Login page and associated login logic
- *
- * @param {Object} dispatch
- * @param {Boolean} currentlySending - True if a login request is in progress
- * @param {String} errorMessage - The error message from the login request
+ * @class Login - The Login page and associated login logic.
  */
 class Login extends React.Component {
   constructor(props) {

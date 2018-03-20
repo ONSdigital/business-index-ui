@@ -10,7 +10,10 @@ import SearchForm from '../components/SearchForm';
 import { downloadCSV, downloadJSON } from '../utils/export';
 
 /**
- * @class Results
+ * @class Results - Results will be used with the SearchHOC which provides the correct
+ * props that Results require (for the search + form). This page is shown once a search
+ * has been made (or the user goes directly to /Results). In addition to showing the
+ * search results, it shows an edit search form.
  */
 class Results extends React.Component {
   constructor(props) {
@@ -49,7 +52,7 @@ class Results extends React.Component {
                 }
                 {(numResults !== 0 && this.state.tableView) &&
                   <ResultsTable
-                    businessName={this.props.toHighlight}
+                    toHighlight={this.props.toHighlight}
                     convertBands
                     results={this.props.results}
                     showFilter={this.state.showFilter}

@@ -5,12 +5,9 @@ import industryCodeDescription from '../utils/siccode';
 import { employmentBands, legalStatusBands, tradingStatusBands, turnoverBands } from '../utils/convertBands';
 
 /**
- * @const Business - A business
- *
- * @param {Object} business - Wide or thin
- * @param {String} toHighlight - The search term to highlight (businessName)
- *
- * @return {Object}
+ * @const Business - A business, which displays a business and highlights
+ * the businessName if one was present in the search. Conversions for the
+ * bands (legal status etc.) and industry code take place here.
  */
 const Business = ({ business, toHighlight }) => {
   const description = (industryCodeDescription[business.industryCode] === undefined)

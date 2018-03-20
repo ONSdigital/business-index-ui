@@ -3,7 +3,7 @@ import Panel from '../patterns/Panel';
 
 /**
  * @const NotFound - This is displayed whenever a user tries to
- * go to an unkown route
+ * go to an unkown route.
  */
 const NotFound = () => (
   <section>
