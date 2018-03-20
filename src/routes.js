@@ -25,7 +25,7 @@ const checkAuthentication = (nextState, replaceState) => {
   if (sessionStorage.accessToken) {
     store.dispatch(checkAuth());
   } else {
-    replaceState(null, '/');
+    replaceState({ pathname: '/' });
   }
 };
 
