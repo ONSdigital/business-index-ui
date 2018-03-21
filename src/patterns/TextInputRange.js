@@ -65,7 +65,7 @@ class TextInputRange extends React.Component {
       </div>
       {!this.state.range &&
         <div id="single">
-          <input id={`${this.props.id}`} value={this.props.value.single} onChange={this.onChange} className="input input--text input-type__input bi-postcode-edit" type="text" />
+          <input id={`${this.props.id}`} style={{ width: '92%' }} value={this.props.value.single} onChange={this.onChange} className="input input--text input-type__input bi-postcode-edit" type="text" />
         </div>
       }
       {this.state.range &&

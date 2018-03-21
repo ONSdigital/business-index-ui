@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
  */
 class TextInput extends React.Component {
   render = () => {
-    const width = (this.props.size === 'xs') ? { width: '100%' } : {};
+    const width = (this.props.size === 'xs') ? { width: '92%' } : {};
     const conditionalProps = (this.props.onChange === null)
       ? {}
       : { onChange: this.props.onChange, value: this.props.value };
