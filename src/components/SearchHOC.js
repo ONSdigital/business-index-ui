@@ -24,6 +24,16 @@ export default function withSearch(Content) {
         formValues: this.props.query,
       };
     }
+    componentWillReceiveProps = (nextProps) => {
+      // Check for error messages when we recieve new props
+      if (nextProps.errorMessage !== '' && nextProps.errorMessage !== this.props.errorMessage) {
+        this.setState({
+          ...this.state,
+          showError: true,
+          errorMessage: nextProps.errorMessage,
+        });
+      }
+    }
     onSubmit = (e) => {
       e.preventDefault();
       const formValues = this.state.formValues;
@@ -84,6 +94,7 @@ export default function withSearch(Content) {
     query: PropTypes.object.isRequired,
     results: PropTypes.array.isRequired,
     toHighlight: PropTypes.string.isRequired,
+    errorMessage: PropTypes.string.isRequired,
   };
 
   return connect(select)(SearchHOC);
