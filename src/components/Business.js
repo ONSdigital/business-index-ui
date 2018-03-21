@@ -23,6 +23,8 @@ class Business extends React.Component {
       isLoading: false,
     };
   }
+  showRefs = () => this.setState({ ...this.state.showRefs, showRefs: !this.state.showRefs });
+  isLoading = (isLoading) => this.setState({ ...this.state.isLoading, isLoading })
   render = () => {
     const business = this.props.business;
     const description = (industryCodeDescription[business.industryCode] === undefined)
@@ -41,9 +43,9 @@ class Business extends React.Component {
             <tr><th className="table-grey-text">Turnover band</th><td>{turnoverBands[business.turnover]}</td></tr>
           </tbody>
         </table>
-        <LinkButton id="expandRefs" className="mars" text={(this.state.isLoading) ? 'Loading...' : 'Show reference numbers'} onClick={() => this.setState({ showRefs: !this.state.showRefs })} loading={false} />
+        <LinkButton id="expandRefs" className="mars" text={(this.state.isLoading) ? 'Loading...' : 'Show reference numbers'} onClick={this.showRefs} loading={false} />
         {this.state.showRefs &&
-          <ChildRefList id={business.id} onLoad={(isLoading) => this.setState({ isLoading })} />
+          <ChildRefList id={business.id} onLoad={this.isLoading} />
         }
       </div>
     );

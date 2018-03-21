@@ -26,7 +26,12 @@ class ResultsList extends React.Component {
   handlePageChange = (offset) => {
     if (this.state.lower + offset >= 0 && this.state.upper + offset <= this.props.results.length + (this.state.pageSize - 1)) {
       const page = (offset === this.state.pageSize) ? this.state.page + 1 : this.state.page - 1;
-      this.setState({ upper: this.state.upper + offset, lower: this.state.lower + offset, page });
+      this.setState({
+        ...this.state,
+        upper: this.state.upper + offset,
+        lower: this.state.lower + offset,
+        page,
+      });
     }
   };
   render = () => {

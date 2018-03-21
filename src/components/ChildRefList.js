@@ -29,15 +29,16 @@ class ChildRefList extends React.Component {
       endpoint: `${API_VERSION}/${BUSINESS_ENDPOINT}/${id}`,
     }), 'business')
     .then(json => {
-      this.setState({ data: json, isLoading: false });
+      this.setState({ ...this.state, data: json, isLoading: false });
       this.props.onLoad(false);
     })
     .catch(() => {
-      this.setState({ errorMessage: 'Error: Unable to get child references.', error: true, isLoading: false });
+      const errorMessage = 'Error: Unable to get child references.';
+      this.setState({ ...this.state, errorMessage, error: true, isLoading: false });
       this.props.onLoad(false);
     });
   }
-  closeModal = () => this.setState({ error: false, errorMessage: '' });
+  closeModal = () => this.setState({ ...this.state, error: false, errorMessage: '' });
   chLink = (id) => (<a target="_blank" rel="noopener noreferrer" href={`http://data.companieshouse.gov.uk/doc/company/${id}`}>{id}</a>);
   render = () => (
     <div style={{ padding: '20px' }}>

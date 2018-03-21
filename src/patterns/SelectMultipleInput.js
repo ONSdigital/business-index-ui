@@ -18,7 +18,7 @@ class SelectMultipleInput extends React.Component {
   }
   componentWillReceiveProps = (nextProps) => {
     if (this.props.value !== nextProps.value) {
-      this.setState({ values: this.formValues(nextProps.value) });
+      this.setState({ ...this.state, values: this.formValues(nextProps.value) });
     }
   }
   componentDidUpdate = () => {
@@ -32,7 +32,7 @@ class SelectMultipleInput extends React.Component {
   }
   formValues = (value) => ((value === undefined || value.length === 0) ? [] : value.join(','));
   handleSelectChange = (values) => {
-    this.setState({ values });
+    this.setState({ ...this.state, values });
     // Make our lives easier by mimicking the exact json of an input event
     this.props.onChange({
       target: {

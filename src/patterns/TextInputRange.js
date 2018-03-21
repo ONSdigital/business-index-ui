@@ -30,7 +30,7 @@ class TextInputRange extends React.Component {
       value.min = '';
       value.max = '';
     }
-    this.setState({ value, range: !this.state.range });
+    this.setState({ ...this.state, value, range: !this.state.range });
   }
   onChange = (evt) => {
     const value = {};
@@ -47,7 +47,7 @@ class TextInputRange extends React.Component {
       value.max = evt.target.value;
       value.single = this.state.value.single;
     }
-    this.setState({ value });
+    this.setState({ ...this.state, value });
     const json = {
       target: {
         value,

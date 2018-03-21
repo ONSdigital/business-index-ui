@@ -40,7 +40,7 @@ class Results extends React.Component {
                 {numResults !== 0 &&
                   <div className="field--toggle" style={{ float: 'right' }}>
                     <label className="label label--inline venus field__label" htmlFor="rangeToggle">Table View</label>
-                    <input id="rangeToggle" checked={this.state.tableView} onChange={() => this.setState({ tableView: !this.state.tableView })} className="field__input input input--checkbox" type="checkbox" />
+                    <input id="rangeToggle" checked={this.state.tableView} onChange={() => this.setState({ ...this.state, tableView: !this.state.tableView })} className="field__input input input--checkbox" type="checkbox" />
                   </div>
                 }
                 {!this.props.currentlySending &&

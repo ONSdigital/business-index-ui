@@ -33,7 +33,11 @@ export default function withSearch(Content) {
       // Check that there are some values in the form
       if (Object.keys(formValues).length === 0 && formValues.constructor === Object) {
         this.props.dispatch(resetResults());
-        this.setState({ showError: true, errorMessage: 'You cannot submit an empty query.' });
+        this.setState({
+          ...this.state,
+          showError: true,
+          errorMessage: 'You cannot submit an empty query.',
+        });
       } else {
         this.props.dispatch(search(formValues, true));
       }
@@ -41,14 +45,14 @@ export default function withSearch(Content) {
     onChange = (evt) => {
       const { value, id } = evt.target;
       const formValues = handleFormChange(this.state.formValues, id, value);
-      this.setState({ formValues });
+      this.setState({ ...this.state, formValues });
       this.props.dispatch(setQuery(SET_QUERY, formValues));
     }
     onClear = () => {
       this.props.dispatch(setQuery(SET_QUERY, {}));
-      this.setState({ formValues: {} });
+      this.setState({ ...this.state, formValues: {} });
     }
-    closeModal = () => this.setState({ showError: false, errorMessage: '' });
+    closeModal = () => this.setState({ ...this.state, showError: false, errorMessage: '' });
     render = () => (
       <Content
         showError={this.state.showError}

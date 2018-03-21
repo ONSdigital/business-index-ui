@@ -24,7 +24,11 @@ class ShowConfetti extends React.Component {
     if (this.state.count > (this.props.seconds / 0.25)) {
       clearInterval(this.interval);
     }
-    this.setState({ count: this.state.count + 1, opacity: this.state.opacity - (0.25 / this.props.seconds) });
+    this.setState({
+      ...this.state,
+      count: this.state.count + 1,
+      opacity: this.state.opacity - (0.25 / this.props.seconds)
+    });
   }
   render = () => (
     <div>

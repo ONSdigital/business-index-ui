@@ -31,10 +31,15 @@ class ChildRefTable extends React.Component {
       method: 'GET',
       endpoint: `${API_VERSION}/${BUSINESS_ENDPOINT}/${row.original.id}`,
     }), 'business')
-    .then(json => this.setState({ data: formatData(json), isLoading: false }))
-    .catch(() => this.setState({ errorMessage: 'Error: Unable to get child references.', error: true, isLoading: false }));
+    .then(json => this.setState({ ...this.state, data: formatData(json), isLoading: false }))
+    .catch(() => this.setState({
+      ...this.state,
+      errorMessage: 'Error: Unable to get child references.',
+      error: true,
+      isLoading: false,
+    }));
   }
-  closeModal = () => this.setState({ error: false, errorMessage: '' });
+  closeModal = () => this.setState({ ...this.state, error: false, errorMessage: '' });
   render = () => {
     const business = this.props.row.original;
     const description = (industryCodeDescription[business.industryCode] === undefined)
