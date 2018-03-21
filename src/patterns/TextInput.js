@@ -22,7 +22,7 @@ class TextInput extends React.Component {
           autoFocus={this.props.autoFocus}
           ref={ip => (this.textInput = ip)}
           className={`input input--text input-type__input bi-${this.props.type}-input`}
-          type="text"
+          type={this.props.type}
         />
       </div>
     );
