@@ -44,7 +44,7 @@ class Results extends React.Component {
                   </div>
                 }
                 {!this.props.currentlySending &&
-                  <p className="mars">We&apos;ve found {numResults} {(numResults > 1) ? 'businesses' : 'business'}</p>
+                  <p className="mars">We&apos;ve found {numResults} {(numResults > 1 || numResults === 0) ? 'businesses' : 'business'}</p>
                 }
                 <div className="key-line"></div>
                 {(numResults !== 0 && !this.state.tableView) &&
