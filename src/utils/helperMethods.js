@@ -138,5 +138,6 @@ const anyKeyEmpty = (obj) => Object.keys(obj).map(key => (obj[key] === '')).redu
 
 
 export {
-  formatData, handleFormChange, formSelectJson, getHighlightedText, everyKeyMatches, anyKeyEmpty,
+  formatData, handleFormChange, formSelectJson, getHighlightedText,
+  everyKeyMatches, anyKeyEmpty, maxSize,
 };
