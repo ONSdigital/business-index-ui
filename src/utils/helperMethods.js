@@ -23,15 +23,15 @@ const formatData = (business) => {
   return Array.from({ length: largestRef }, (a, b) => {
     if (b === 0) {
       return {
-        companyNo: business.companyNo,
-        vatRefs: business.vatRefs[b],
-        payeRefs: business.payeRefs[b],
+        companyNo: (business.companyNo !== undefined) ? business.companyNo : '',
+        vatRefs: (business.vatRefs[b] !== undefined) ? business.vatRefs[b] : '',
+        payeRefs: (business.payeRefs[b] !== undefined) ? business.payeRefs[b] : '',
       };
     }
     return {
       companyNo: '',
-      vatRefs: business.vatRefs[b],
-      payeRefs: business.payeRefs[b],
+      vatRefs: (business.vatRefs[b] !== undefined) ? business.vatRefs[b] : '',
+      payeRefs: (business.payeRefs[b] !== undefined) ? business.payeRefs[b] : '',
     };
   });
 };

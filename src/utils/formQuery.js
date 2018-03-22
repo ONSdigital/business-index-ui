@@ -56,4 +56,4 @@ const formQuery = (query) => {
   }
 };
 
-export { formQuery };
+export { encodeSpecialChars, formQuery };
