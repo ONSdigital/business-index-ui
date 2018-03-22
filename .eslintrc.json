@@ -1,31 +1,37 @@
 {
-    "extends": [
-      "airbnb",
-      "plugin:flowtype/recommended"
-    ],
-    "plugins": [
-        "react",
-        "import",
-        "flowtype",
-        "jsx-a11y"
-    ],
-    "rules": {
-        "no-use-before-define": "off",
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-        "react/self-closing-comp": ["error", {
-          "component": false,
-          "html": false
-        }],
-        "global-require": "off",
-        "class-methods-use-this": "off",
-        "func-names": "off",
-        "react/forbid-prop-types": "off",
-        "arrow-body-style": "off",
-        "no-return-assign": "off",
-        "arrow-parens": "off",
-        "react/no-did-mount-set-state": "off"
-    },
-    "env": {
-      "browser": true
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true,
+      "experimentalObjectRestSpread": true
     }
+  },
+  "extends": [ "airbnb" ],
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "no-use-before-define": "off",
+    "react/jsx-filename-extension": [ 1, { "extensions": [ ".js", ".jsx" ] } ],
+    "react/self-closing-comp": [ "error", {
+      "component": false,
+      "html": false
+    }],
+    "global-require": "off",
+    "class-methods-use-this": "off",
+    "no-underscore-dangle": "off",
+    "func-names": "off",
+    "react/forbid-prop-types": "off",
+    "arrow-body-style": "off",
+    "no-return-assign": "off",
+    "arrow-parens": "off",
+    "react/no-did-mount-set-state": "off"
+  },
+  "env": {
+    "browser": true
+  }
 }

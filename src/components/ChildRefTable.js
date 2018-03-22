@@ -9,6 +9,12 @@ import accessAPI from '../utils/accessAPI';
 
 const { REROUTE_URL, API_VERSION, BUSINESS_ENDPOINT } = config;
 
+/**
+ * @class ChildRefTable - This is a sub table shown as an expandable row
+ * within the main ReactTable results table. When this component is created,
+ * the data will be fetched. Redux isn't used as the data is only required
+ * by this component.
+ */
 class ChildRefTable extends React.Component {
   constructor(props) {
     super(props);
@@ -18,20 +24,23 @@ class ChildRefTable extends React.Component {
       error: false,
       errorMessage: '',
     };
-    this.closeModal = this.closeModal.bind(this);
-    this.fetchData = this.fetchData.bind(this);
+    this.fetchData(this.props.row);
   }
-  componentDidMount = () => this.fetchData(this.props.row);
   fetchData = (row) => {
     accessAPI(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
       method: 'GET',
       endpoint: `${API_VERSION}/${BUSINESS_ENDPOINT}/${row.original.id}`,
     }), 'business')
-    .then(json => this.setState({ data: formatData(json), isLoading: false }))
-    .catch(() => this.setState({ errorMessage: 'Error: Unable to get child references.', error: true, isLoading: false }));
+    .then(json => this.setState({ ...this.state, data: formatData(json), isLoading: false }))
+    .catch(() => this.setState({
+      ...this.state,
+      errorMessage: 'Error: Unable to get child references.',
+      error: true,
+      isLoading: false,
+    }));
   }
-  closeModal = () => this.setState({ error: false, errorMessage: '' });
-  render() {
+  closeModal = () => this.setState({ ...this.state, error: false, errorMessage: '' });
+  render = () => {
     const business = this.props.row.original;
     const description = (industryCodeDescription[business.industryCode] === undefined)
       ? 'No industry code description found' : industryCodeDescription[business.industryCode];
@@ -62,6 +71,7 @@ class ChildRefTable extends React.Component {
           showPaginationTop={false}
           showPaginationBottom={false}
         />
+        <br />
         <h4>Industry Code [{business.industryCode}]: {description}</h4>
         <ErrorModal
           show={this.state.error}

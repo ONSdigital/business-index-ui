@@ -1,41 +1,78 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, Header } from 'registers-react-library';
+import { browserHistory } from 'react-router';
+import LinkButton from '../patterns/LinkButton';
 import { logout } from '../actions/LoginActions';
+import ONSLogo from '../resources/img/logo.svg';
 
-const HeaderTemplate = (props) => {
+/**
+ * @const Header - The header, including ONS logo and sign out button
+ *
+ * Depending on the current route, slight changes are made to this
+ * component, e.g. show smaller title text whilst on /Results.
+ */
+const Header = ({ loggedIn, username, currentlySending, location, dispatch }) => {
+  const headerText = (location.pathname === '/Results')
+  ? (<p className="saturn main_heading_sub_page">Business Index</p>)
+  : (<h1 className="jupiter main_heading">Business Index</h1>);
   return (
-    <Header
-      showHeaderItems={props.data.loggedIn}
-      headerLinks={[
-        { text: 'User Details', link: '/UserDetails' },
-        { text: 'Information', link: '/TechnicalInformation' },
-      ]}
-      imageUrl="/Home"
-    >
-      <Button
-        id="logoutButton"
-        size="thin"
-        text="Logout"
-        onClick={!props.data.currentlySending ? () => props.dispatch(logout()) : null}
-        ariaLabel="Logout Button"
-        type="submit"
-        loading={props.data.currentlySending}
-      />
-    </Header>
+    <header className="page__header">
+      <div className="logo_container">
+        <div className="wrapper">
+          <div className="group">
+            <div className="col-7">
+              <div className="logo_header">
+                <a onClick={() => browserHistory.push('/Home')} style={{ cursor: 'pointer' }}>
+                  <img src={ONSLogo} alt="Office for National Statistics" className="logo__img" />
+                </a>
+              </div>
+            </div>
+            <div className="col-5">
+              <div className="header_links">
+                {/* If the user is logged in, we show their username and a sign out button (shown as a link) */}
+                {loggedIn &&
+                  <ul className="menubar" role="menubar" id="appmenu">
+                    <li role="menuitem"><a className="username">{username}</a></li>
+                    &nbsp; {/* Add a gap between the list items on small screens  */}
+                    <li className="menubar" role="menuitem">
+                      <LinkButton id="logoutLink" className="username" text="Sign out" onClick={() => dispatch(logout())} loading={currentlySending} />
+                    </li>
+                  </ul>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="page_title">
+        <div className="wrapper">
+          <div className="group">
+            <div className="col-12">
+              {headerText}
+              {!(location.pathname === '/Results') &&
+                <h2 className="neptune sub_heading">A list of UK businesses for statistical use across government</h2>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
   );
 };
 
-HeaderTemplate.propTypes = {
-  data: PropTypes.object.isRequired,
+Header.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
+  username: PropTypes.string.isRequired,
+  currentlySending: PropTypes.bool.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
-function select(state) {
-  return {
-    data: state.login,
-  };
-}
+const select = (state) => ({
+  loggedIn: state.login.loggedIn,
+  username: state.login.username,
+  currentlySending: state.login.currentlySending,
+});
 
-export default connect(select)(HeaderTemplate);
+export default connect(select)(Header);

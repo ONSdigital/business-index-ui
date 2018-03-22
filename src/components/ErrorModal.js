@@ -2,6 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ModalContainer, ModalDialog } from 'react-modal-dialog';
 
+/**
+ * @const ErrorModal - This will display a modal with an info/error message. In
+ * future Panels will be used to display info/error information, to comply with
+ * ONS pattern standards.
+ */
 const ErrorModal = ({ show, message, close }) => {
   const modal = (show) ? (<ModalContainer onClose={() => close()}>
     <ModalDialog style={{ width: '80%' }} onClose={() => close()}>

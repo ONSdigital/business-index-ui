@@ -7,7 +7,6 @@ import { formPromise, returnAuthJson, returnSearch, returnBusiness } from './req
  * @param {Object} options - Request options
  *
  * @return {Fetch} Returns either the real fetch or a mocked version with test data
- *
  */
 const fakeFetch = (url, options) => {
   const { requestType } = options;

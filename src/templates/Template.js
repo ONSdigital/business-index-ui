@@ -1,46 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Header from './Header';
-import NavBar from './NavBar';
-import Banner from './Banner';
 import Footer from './Footer';
 import ShowConfetti from '../components/Confetti';
 import config from '../config/constants';
 
-const { ENV } = config;
+const { SHOW_CONFETTI_TIME } = config;
 
-const Template = (props) => {
-  const onProdEnv = (ENV === 'prod');
-  const banner = (onProdEnv) ? '' : (<Banner />);
-  if (props.location.pathname === '/' || props.location.pathname === 'Login') {
-    return (
-      <div>
-        {banner}
-        <div className="container">
-          <Header />
-          {props.children}
-        </div>
-      </div>
-    );
-  }
+/**
+ * @const Template - The default template for all pages
+ */
+const Template = ({ location, children }) => {
+  // If we are not on the login page, we can show the 'confetti'
+  const confettiComponent = <ShowConfetti seconds={SHOW_CONFETTI_TIME} />;
+  const path = location.pathname;
+  const confetti = (path === '/' || path === 'Login') ? null : confettiComponent;
+
+  // The components that are included in the template component do not change between
+  // logged in / not logged in states, we handle changes (i.e. not showing the sign
+  // out button) in the underlying components
   return (
-    <div>
-      <ShowConfetti seconds={config.SHOW_CONFETTI_TIME} />
-      {banner}
-      <Header />
-      <NavBar primary={props.location.pathname} />
-      <div className="container">
-        {props.children}
-      </div>
+    <section>
+      {confetti}
+      <Header location={location} />
+      <section>
+        {children}
+      </section>
       <Footer />
-    </div>
+    </section>
   );
 };
 
 Template.propTypes = {
-  location: React.PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-  }).isRequired,
+  location: PropTypes.object.isRequired,
   children: PropTypes.object.isRequired,
 };
 

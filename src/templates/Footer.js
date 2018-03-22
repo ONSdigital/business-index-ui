@@ -1,16 +1,18 @@
 import React from 'react';
-import { Footer } from 'registers-react-library';
 
-const FooterTemplate = () => {
-  return (
-    <Footer
-      footerSection={[
-        { title: 'Help', items: [{ text: 'Accessibility', link: '/Accessibility' }] },
-        { title: 'About BI', items: [{ text: 'What is BI', link: '/WhatIsBI' }] },
-        { title: 'Connect with us', items: [{ text: 'business.index@ons.gov.uk', emailHref: 'mailto:business.index@ons.gov.uk?subject=SBR&body=message%20goes%20here' }] },
-      ]}
-    />
-  );
-};
+/**
+ * @const FooterTemplate - The footer, which only shows a feedback prompt
+ */
+const FooterTemplate = () => (
+  <footer className="page__footer">
+    <div className="wrapper">
+      <div className="group">
+        <div className="col-12">
+          <span className="pluto">This release is in development. Your <a href="mailto:Register@ons.gov.uk?Subject=User%20feedback"> feedback</a> will help us improve it.</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+);
 
 export default FooterTemplate;
