@@ -59,10 +59,10 @@ describe("formQuery.js test suite", () => {
   });
 
   it("creates a valid query given an search for refs (CH/VAT/PATE)", () => {
-    const Ref = '123456AB';
-    const correctQuery = `search/CompanyNo:${Ref} OR PayeRefs:${Ref} OR VatRefs:${Ref}${END_SEPERATOR}${LIMIT}`;
+    const CompanyNo = '123456AB';
+    const correctQuery = `search/CompanyNo:${CompanyNo}${END_SEPERATOR}${LIMIT}`;
     const query = formQuery({
-      Ref,
+      CompanyNo,
     });
 
     expect(correctQuery).toBe(query);

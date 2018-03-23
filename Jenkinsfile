@@ -71,13 +71,19 @@ pipeline {
         }
       }
     }
-    stage('Test - Unit & Server') {
+    stage('Test - Unit, Server & Stress') {
       agent { label 'GMU' }
       steps {
         parallel (
           "Unit" :  {
             colourText("info","Running unit tests...")
             sh 'npm run test:unit'
+          },
+          "Stress" :  {
+            colourText("info","Running stress tests...")
+            sh 'ENV=local node server/ & HOST=http://localhost:3001 REQUEST=5000 REQ_PER_SECOND=50 npm run test:load'
+            // sh 'killall node'
+            // The above command will leave node running, will this be closed along with the workspace?
           },
           "Server" : {
             colourText("info","Running server tests...")
