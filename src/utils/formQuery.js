@@ -41,8 +41,6 @@ const formQuery = (query) => {
         return `${param}${SEPERATOR}${encodeSpecialChars(query[param])}`;
       } else if (rangeSearch.includes(param)) {
         return `${param}${SEPERATOR}(${query[param].join(' OR ')})`;
-      } else if (param === 'Ref') {
-        return refs.map(refType => `${refType}${SEPERATOR}${query[param]}`).join(' OR ');
       } else if (param === 'IndustryCode') {
         if ('single' in query[param] && query[param].single !== '') {
           return `${param}${SEPERATOR}${query[param].single}`;
