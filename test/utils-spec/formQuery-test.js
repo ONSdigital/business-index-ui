@@ -58,11 +58,31 @@ describe("formQuery.js test suite", () => {
     expect(correctQuery).toBe(query);
   });
 
-  it("creates a valid query given an search for refs (CH/VAT/PATE)", () => {
-    const Ref = '123456AB';
-    const correctQuery = `search/CompanyNo:${Ref} OR PayeRefs:${Ref} OR VatRefs:${Ref}${END_SEPERATOR}${LIMIT}`;
+  it("creates a valid query given an search for refs (CH)", () => {
+    const CompanyNo = '123456AB';
+    const correctQuery = `search/CompanyNo:${CompanyNo}${END_SEPERATOR}${LIMIT}`;
     const query = formQuery({
-      Ref,
+      CompanyNo,
+    });
+
+    expect(correctQuery).toBe(query);
+  });
+
+  it("creates a valid query given an search for refs (VAT)", () => {
+    const VatRefs = '123456789';
+    const correctQuery = `search/VatRefs:${VatRefs}${END_SEPERATOR}${LIMIT}`;
+    const query = formQuery({
+      VatRefs,
+    });
+
+    expect(correctQuery).toBe(query);
+  });
+
+  it("creates a valid query given an search for refs (PAYE)", () => {
+    const PayeRefs = '123456789';
+    const correctQuery = `search/PayeRefs:${PayeRefs}${END_SEPERATOR}${LIMIT}`;
+    const query = formQuery({
+      PayeRefs,
     });
 
     expect(correctQuery).toBe(query);

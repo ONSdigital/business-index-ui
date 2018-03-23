@@ -18,7 +18,9 @@ class SearchForm extends React.Component {
     <form className={`form ${this.props.className}`}>
       <TextInput id="BusinessName" size={this.props.size} onChange={this.props.onChange} autoFocus={this.props.autoFocus} type="text" label="Business name" value={this.props.initialValues.BusinessName} ref={ip => (this.childTextInput = ip)} />
       <TextInput id="Id" size={this.props.size} onChange={this.props.onChange} type="text" label="UBRN" value={this.props.initialValues.Id} />
-      <TextInput id="Ref" size={this.props.size} onChange={this.props.onChange} type="text" label="CRN, VAT, PAYE" value={this.props.initialValues.Ref} />
+      <TextInput id="CompanyNo" size={this.props.size} onChange={this.props.onChange} type="text" label="CRN" value={this.props.initialValues.CompanyNo} />
+      <TextInput id="VatRefs" size={this.props.size} onChange={this.props.onChange} type="text" label="VAT" value={this.props.initialValues.VatRefs} />
+      <TextInput id="PayeRefs" size={this.props.size} onChange={this.props.onChange} type="text" label="PAYE" value={this.props.initialValues.PayeRefs} />
       <TextInput id="PostCode" size={this.props.size} onChange={this.props.onChange} type="text" label="Postcode" value={this.props.initialValues.PostCode} />
       <TextInputRange id="IndustryCode" size={this.props.size} onChange={this.props.onChange} label="Industry classification (SIC)" toggleText="Search range" value={this.props.initialValues.IndustryCode} />
       <SelectMultipleInput id="EmploymentBands" size={this.props.size} value={this.props.initialValues.EmploymentBands} onChange={this.props.onChange} label="Employment Bands" bands={employmentBands} />
