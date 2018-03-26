@@ -6,16 +6,13 @@ import LinkButton from '../patterns/LinkButton';
 /**
  * @const ChildRefTable - This is a sub list of the child references of
  * a business that is displayed when a user clicks on the 'Show child
- * references' link in the parent <Business /> component.
+ * references' link. This component is only ever used as a child of
+ * ChildSearchHOC which provides the loading/fetchData props.
  */
 const ChildRefList = (props) => (
   <div style={{ padding: '20px' }}>
     <LinkButton id="expandRefs" className="mars" text={(props.isLoading) ? 'Loading...' : 'Show reference numbers'} onClick={props.fetchData} loading={false} />
-    <ErrorModal
-      show={props.error}
-      message={props.errorMessage}
-      close={props.closeModal}
-    />
+    <ErrorModal show={props.error} message={props.errorMessage} close={props.closeModal} />
     {props.finishedLoading &&
       <table>
         <tbody>

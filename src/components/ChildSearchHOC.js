@@ -7,8 +7,8 @@ const { REROUTE_URL, API_VERSION, BUSINESS_ENDPOINT } = config;
 
 /**
  * @function withChildSearch - This is a higher order component that accepts a component
- * (which is either the Home/Results page) and wraps it with the common logic
- * for changing form values and searching.
+ * (which is either the ChildRefTable or ChildRefList page) and wraps it with the common logic
+ * for getting child ref data from the API.
  *
  * https://reactjs.org/docs/higher-order-components.html
  *
@@ -42,7 +42,7 @@ export default function withChildSearch(Content) {
             const errorMessage = 'Error: Unable to get child references.';
             this.setState({ ...this.state, errorMessage, error: true, finishedLoading: true, isLoading: false });
           });
-        })
+        });
       }
     }
     createChLink = (id) => (<a target="_blank" rel="noopener noreferrer" href={`http://data.companieshouse.gov.uk/doc/company/${id}`}>{id}</a>);

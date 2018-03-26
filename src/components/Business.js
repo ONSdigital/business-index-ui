@@ -17,7 +17,7 @@ import { employmentBands, legalStatusBands, tradingStatusBands, turnoverBands } 
  */
 const Business = (props) => {
   const business = props.business;
-  const Child = withChildSearch(ChildRefList);
+  const ChildList = withChildSearch(ChildRefList);
   const description = (industryCodeDescription[business.industryCode] === undefined)
   ? 'No industry code description found' : industryCodeDescription[business.industryCode];
   return (
@@ -34,10 +34,10 @@ const Business = (props) => {
           <tr><th className="table-grey-text">Turnover band</th><td>{turnoverBands[business.turnover]}</td></tr>
         </tbody>
       </table>
-      <Child id={business.id} />
+      <ChildList id={business.id} />
     </div>
   );
-}
+};
 
 Business.propTypes = {
   business: PropTypes.object.isRequired,
