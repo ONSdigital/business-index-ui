@@ -8,7 +8,7 @@ import SearchForm from '../components/SearchForm';
  * @const Home - The Home component will be used with SearchHOC, which provides the
  * props required for searching and updating the form. On a successful search, the
  * user is redirected to /Results in ApiActions. A functional component is used
- * instead of a React class as we don't use refs (unlike the Results page).
+ * instead of a React class as we don't use refs.
  */
 const Home = (props) => (
   <section>

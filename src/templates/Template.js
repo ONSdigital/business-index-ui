@@ -15,9 +15,6 @@ const { SHOW_CONFETTI_TIME } = config;
  * @const Template - The default template for all pages
  */
 class Template extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   componentDidMount = () => {
     if (sessionStorage.accessToken) {
       this.props.dispatch(checkAuth());
@@ -49,7 +46,7 @@ class Template extends React.Component {
 
 Template.propTypes = {
   location: PropTypes.object.isRequired,
-  children: PropTypes.array.isRequired,
+  children: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 

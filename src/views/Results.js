@@ -74,7 +74,6 @@ class Results extends React.Component {
                     onChange={this.props.onChange}
                     onClear={this.props.onClear}
                     value={this.props.query}
-                    ref={(ch) => (this.child = ch)}
                   />
                 </div>
               </div>

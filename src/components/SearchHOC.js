@@ -70,7 +70,6 @@ export default function withSearch(Content) {
         onClear={this.onClear}
         onSubmit={this.onSubmit}
         closeModal={this.closeModal}
-        ref={(ch) => (this.child = ch)}
         currentlySending={this.props.currentlySending}
         query={this.props.query}
         errorMessage={this.state.errorMessage}
