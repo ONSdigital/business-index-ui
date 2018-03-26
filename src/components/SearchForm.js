@@ -29,7 +29,7 @@ class SearchForm extends React.Component {
       <SelectMultipleInput id="LegalStatus" size={this.props.size} value={this.props.initialValues.LegalStatus} onChange={this.props.onChange} label="Legal Status Bands" bands={legalStatusBands} />
       <Button id="searchButton" type="submit" size="wide" text="Search" onClick={this.props.onSubmit} ariaLabel="Search Button" loading={this.props.currentlySending} />
       &nbsp;
-      <Button id="clearButton" size="wide" text="Clear" onClick={this.props.onClear} ariaLabel="Clear Button" type="reset" />
+      <Button id="clearButton" style={{ padding: '0.64rem 2.49rem' }} btnBorder="btn--border" btnClass="secondary" size="wide" text="Clear" onClick={this.props.onClear} ariaLabel="Clear Button" type="reset" />
     </form>
   );
 }
