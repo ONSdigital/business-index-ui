@@ -5,7 +5,7 @@ import { login, resetLoginErrorMsg } from '../actions/LoginActions';
 import Button from '../patterns/Button';
 import LinkButton from '../patterns/LinkButton';
 import TextInput from '../patterns/TextInput';
-// import ErrorModal from '../components/ErrorModal';
+import Panel from '../patterns/Panel';
 
 /**
  * @class Login - The Login page and associated login logic.
@@ -47,9 +47,9 @@ class Login extends React.Component {
                 <p className="forgot-password">
                   <LinkButton id="forgotPasswordLink" text="Forgot password?" onClick={() => this.setState({ ...this.state, showForgotPass: true })} />
                 </p>
-                {/* <ErrorModal show={this.state.showForgotPass} message={forgotPassMsg} close={this.closeForgotPassModal} /> */}
                 <Button id="loginButton" type="submit" size="thin" text="Sign in" onClick={this.onSubmit} ariaLabel="Sign In Button" loading={this.props.currentlySending} />
-                {/* <ErrorModal show={this.state.showError && this.props.errorMessage !== ''} message={this.props.errorMessage} close={this.closeErrorModal} /> */}
+                <Panel id="forgotPassPanel" text={forgotPassMsg} level="info" show={this.state.showForgotPass} close={this.closeForgotPassModal} marginBottom="1rem" />
+                <Panel id="loginErrorPanel" text={this.props.errorMessage} level="info" show={this.state.showError && this.props.errorMessage !== ''} close={this.closeErrorModal} marginBottom="1rem" />
               </form>
             </div>
           </div>

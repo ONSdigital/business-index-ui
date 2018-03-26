@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
-// import ErrorModal from '../components/ErrorModal';
+import Panel from '../patterns/Panel';
 import industryCodeDescription from '../utils/siccode';
 import config from '../config/api-urls';
 import { formatData } from '../utils/helperMethods';
@@ -73,11 +73,7 @@ class ChildRefTable extends React.Component {
         />
         <br />
         <h4>Industry Code [{business.industryCode}]: {description}</h4>
-        {/* <ErrorModal
-          show={this.state.error}
-          message={this.state.errorMessage}
-          close={this.closeModal}
-        /> */}
+        <Panel id="refsErrorPanel" text={this.state.errorMessage} level="error" show={this.state.error} close={null} marginBottom="1rem" />
       </div>
     );
   }

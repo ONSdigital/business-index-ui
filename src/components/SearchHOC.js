@@ -49,6 +49,7 @@ export default function withSearch(Content) {
           errorMessage: 'You cannot submit an empty query.',
         });
       } else {
+        this.setState({ ...this.state, showError: false });
         this.props.dispatch(search(formValues, true));
       }
     }
@@ -60,7 +61,7 @@ export default function withSearch(Content) {
     }
     onClear = () => {
       this.props.dispatch(setQuery(SET_QUERY, {}));
-      this.setState({ ...this.state, formValues: {} });
+      this.setState({ ...this.state, formValues: {}, showError: false });
     }
     closeModal = () => this.setState({ ...this.state, showError: false, errorMessage: '' });
     render = () => (
