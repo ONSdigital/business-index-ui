@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
+// import { browserHistory } from 'react-router';
 import LinkButton from '../patterns/LinkButton';
 import { logout } from '../actions/LoginActions';
 import ONSLogo from '../resources/img/logo.svg';
@@ -23,7 +23,7 @@ const Header = ({ loggedIn, username, currentlySending, location, dispatch }) =>
           <div className="group">
             <div className="col-7">
               <div className="logo_header">
-                <a onClick={() => browserHistory.push('/Home')} style={{ cursor: 'pointer' }}>
+                <a onClick={() => alert('/Home')} style={{ cursor: 'pointer' }}>
                   <img src={ONSLogo} alt="Office for National Statistics" className="logo__img" />
                 </a>
               </div>

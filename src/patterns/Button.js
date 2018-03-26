@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Loader from 'halogen/PulseLoader';
+import { PulseLoader } from 'halogenium';
 
 /**
  * @const Button - An ONS style Button with a loading spinner. The button
@@ -8,7 +8,7 @@ import Loader from 'halogen/PulseLoader';
  * loading state.
  */
 const Button = ({ id, size, ariaLabel, loading, onClick, text, type }) => {
-  const spinner = (<Loader id="spinner" color="#FFFFFF" size="8px" margin="0px" />);
+  const spinner = (<PulseLoader id="spinner" color="#FFFFFF" size="8px" margin="0px" />);
   return (
     <button
       className={`btn btn--primary venus btn--${size}`}
