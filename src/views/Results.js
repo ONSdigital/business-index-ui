@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
+import history from '../history';
 import LinkButton from '../patterns/LinkButton';
 import Button from '../patterns/Button';
 import ResultsTable from '../components/ResultsTable';
-import ErrorModal from '../components/ErrorModal';
+// import ErrorModal from '../components/ErrorModal';
 import ResultsList from '../components/ResultsList';
 import SearchForm from '../components/SearchForm';
 import { downloadCSV, downloadJSON } from '../utils/export';
@@ -26,7 +26,7 @@ class Results extends React.Component {
   newSearch = () => {
     // We need to clear the form values before redirecting the user
     this.props.onClear();
-    browserHistory.push('/Home');
+    history.push('/Home');
   }
   render() {
     const numResults = this.props.results.length;
@@ -90,7 +90,7 @@ class Results extends React.Component {
             }
           </div>
         </div>
-        <ErrorModal show={this.props.showError} message={this.props.errorMessage} close={this.props.closeModal} />
+        {/* <ErrorModal show={this.props.showError} message={this.props.errorMessage} close={this.props.closeModal} /> */}
       </section>
     );
   }

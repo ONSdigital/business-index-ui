@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ErrorModal from './ErrorModal';
+// import ErrorModal from './ErrorModal';
 import config from '../config/api-urls';
 import accessAPI from '../utils/accessAPI';
 
@@ -42,11 +42,11 @@ class ChildRefList extends React.Component {
   chLink = (id) => (<a target="_blank" rel="noopener noreferrer" href={`http://data.companieshouse.gov.uk/doc/company/${id}`}>{id}</a>);
   render = () => (
     <div style={{ padding: '20px' }}>
-      <ErrorModal
+      {/* <ErrorModal
         show={this.state.error}
         message={this.state.errorMessage}
         close={this.closeModal}
-      />
+      /> */}
       {!this.state.isLoading &&
         <table>
           <tbody>

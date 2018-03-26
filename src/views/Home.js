@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Panel from '../patterns/Panel';
-import ErrorModal from '../components/ErrorModal';
+// import ErrorModal from '../components/ErrorModal';
 import SearchForm from '../components/SearchForm';
 
 /**
@@ -41,7 +41,7 @@ const Home = (props) => (
         </div>
       </div>
     </div>
-    <ErrorModal show={props.showError} message={props.errorMessage} close={props.closeModal} />
+    {/* <ErrorModal show={props.showError} message={props.errorMessage} close={props.closeModal} /> */}
   </section>
 );
 
