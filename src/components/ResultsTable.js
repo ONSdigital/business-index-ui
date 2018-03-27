@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import withChildSearch from './ChildSearchHOC';
 import ChildRefTable from '../components/ChildRefTable';
 import { getHighlightedText } from '../utils/helperMethods';
 import { employmentBands, legalStatusBands, tradingStatusBands, turnoverBands } from '../utils/convertBands';
 
 const ResultsTable = (props) => {
+  const ChildTable = withChildSearch(ChildRefTable);
   return (
     <div id="react-table">
       <ReactTable
@@ -58,7 +60,7 @@ const ResultsTable = (props) => {
         ]}
         defaultPageSize={props.defaultPageSize}
         className="-striped -highlight"
-        SubComponent={row => <ChildRefTable row={row} />}
+        SubComponent={row => <ChildTable id={row.original.id} />}
       />
     </div>
   );
