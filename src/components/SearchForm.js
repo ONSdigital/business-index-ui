@@ -13,26 +13,24 @@ import { employmentBands, legalStatusBands, turnoverBands, tradingStatusBands } 
  *
  * https://stackoverflow.com/questions/41048546/how-can-i-attach-to-a-stateless-components-ref-in-react
  */
-class SearchForm extends React.Component {
-  render = () => (
-    <form className={`form ${this.props.className}`}>
-      <TextInput id="BusinessName" size={this.props.size} onChange={this.props.onChange} autoFocus={this.props.autoFocus} type="text" label="Business name" value={this.props.initialValues.BusinessName} ref={ip => (this.childTextInput = ip)} />
-      <TextInput id="Id" size={this.props.size} onChange={this.props.onChange} type="text" label="UBRN" value={this.props.initialValues.Id} />
-      <TextInput id="CompanyNo" size={this.props.size} onChange={this.props.onChange} type="text" label="CRN" value={this.props.initialValues.CompanyNo} />
-      <TextInput id="VatRefs" size={this.props.size} onChange={this.props.onChange} type="text" label="VAT" value={this.props.initialValues.VatRefs} />
-      <TextInput id="PayeRefs" size={this.props.size} onChange={this.props.onChange} type="text" label="PAYE" value={this.props.initialValues.PayeRefs} />
-      <TextInput id="PostCode" size={this.props.size} onChange={this.props.onChange} type="text" label="Postcode" value={this.props.initialValues.PostCode} />
-      <TextInputRange id="IndustryCode" size={this.props.size} onChange={this.props.onChange} label="Industry classification (SIC)" toggleText="Search range" value={this.props.initialValues.IndustryCode} />
-      <SelectMultipleInput id="EmploymentBands" size={this.props.size} value={this.props.initialValues.EmploymentBands} onChange={this.props.onChange} label="Employment Bands" bands={employmentBands} />
-      <SelectMultipleInput id="Turnover" size={this.props.size} value={this.props.initialValues.Turnover} onChange={this.props.onChange} label="Turnover Bands" bands={turnoverBands} />
-      <SelectMultipleInput id="TradingStatus" size={this.props.size} value={this.props.initialValues.TradingStatus} onChange={this.props.onChange} label="Trading Status Bands" bands={tradingStatusBands} />
-      <SelectMultipleInput id="LegalStatus" size={this.props.size} value={this.props.initialValues.LegalStatus} onChange={this.props.onChange} label="Legal Status Bands" bands={legalStatusBands} />
-      <Button id="searchButton" type="submit" size="wide" text="Search" onClick={this.props.onSubmit} ariaLabel="Search Button" loading={this.props.currentlySending} />
-      &nbsp;
-      <Button id="clearButton" size="wide" text="Clear" onClick={this.props.onClear} ariaLabel="Clear Button" type="reset" />
-    </form>
-  );
-}
+const SearchForm = (props) => (
+  <form className={`form ${props.className}`}>
+    <TextInput id="BusinessName" size={props.size} onChange={props.onChange} autoFocus={props.autoFocus} type="text" label="Business name" value={props.initialValues.BusinessName} />
+    <TextInput id="Id" size={props.size} onChange={props.onChange} type="text" label="UBRN" value={props.initialValues.Id} />
+    <TextInput id="CompanyNo" size={props.size} onChange={props.onChange} type="text" label="CRN" value={props.initialValues.CompanyNo} />
+    <TextInput id="VatRefs" size={props.size} onChange={props.onChange} type="text" label="VAT" value={props.initialValues.VatRefs} />
+    <TextInput id="PayeRefs" size={props.size} onChange={props.onChange} type="text" label="PAYE" value={props.initialValues.PayeRefs} />
+    <TextInput id="PostCode" size={props.size} onChange={props.onChange} type="text" label="Postcode" value={props.initialValues.PostCode} />
+    <TextInputRange id="IndustryCode" size={props.size} onChange={props.onChange} label="Industry classification (SIC)" toggleText="Search range" value={props.initialValues.IndustryCode} />
+    <SelectMultipleInput id="EmploymentBands" size={props.size} value={props.initialValues.EmploymentBands} onChange={props.onChange} label="Employment Bands" bands={employmentBands} />
+    <SelectMultipleInput id="Turnover" size={props.size} value={props.initialValues.Turnover} onChange={props.onChange} label="Turnover Bands" bands={turnoverBands} />
+    <SelectMultipleInput id="TradingStatus" size={props.size} value={props.initialValues.TradingStatus} onChange={props.onChange} label="Trading Status Bands" bands={tradingStatusBands} />
+    <SelectMultipleInput id="LegalStatus" size={props.size} value={props.initialValues.LegalStatus} onChange={props.onChange} label="Legal Status Bands" bands={legalStatusBands} />
+    <Button id="searchButton" type="submit" size="wide" text="Search" onClick={props.onSubmit} ariaLabel="Search Button" loading={props.currentlySending} />
+    &nbsp;
+    <Button id="clearButton" size="wide" text="Clear" onClick={props.onClear} ariaLabel="Clear Button" type="reset" />
+  </form>
+);
 
 SearchForm.defaultProps = {
   className: '',

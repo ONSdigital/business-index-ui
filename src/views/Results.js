@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
+import history from '../history';
 import LinkButton from '../patterns/LinkButton';
 import Button from '../patterns/Button';
+import Panel from '../patterns/Panel';
 import ResultsTable from '../components/ResultsTable';
-import ErrorModal from '../components/ErrorModal';
 import ResultsList from '../components/ResultsList';
 import SearchForm from '../components/SearchForm';
 import { downloadCSV, downloadJSON } from '../utils/export';
@@ -26,7 +26,7 @@ class Results extends React.Component {
   newSearch = () => {
     // We need to clear the form values before redirecting the user
     this.props.onClear();
-    browserHistory.push('/Home');
+    history.push('/Home');
   }
   render() {
     const numResults = this.props.results.length;
@@ -47,6 +47,10 @@ class Results extends React.Component {
                   <p className="mars">We&apos;ve found {numResults} {(numResults > 1 || numResults === 0) ? 'businesses' : 'business'}</p>
                 }
                 <div className="key-line"></div>
+                {this.props.showError &&
+                  <br />
+                }
+                <Panel id="searchErrorPanel" text={this.props.errorMessage} level="error" show={this.props.showError} close={this.props.closeModal} marginBottom="1rem" />
                 {(numResults !== 0 && !this.state.tableView) &&
                   <ResultsList results={this.props.results} toHighlight={this.props.toHighlight} />
                 }
@@ -74,7 +78,6 @@ class Results extends React.Component {
                     onChange={this.props.onChange}
                     onClear={this.props.onClear}
                     value={this.props.query}
-                    ref={(ch) => (this.child = ch)}
                   />
                 </div>
               </div>
@@ -90,7 +93,6 @@ class Results extends React.Component {
             }
           </div>
         </div>
-        <ErrorModal show={this.props.showError} message={this.props.errorMessage} close={this.props.closeModal} />
       </section>
     );
   }

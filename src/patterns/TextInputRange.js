@@ -8,6 +8,8 @@ import PropTypes from 'prop-types';
  *
  * @todo: it would probably be best to refactor this, don't have this component
  * handling the switch between 2 text inputs to 1 etc.
+ *
+ * @todo: refactor onChangeFilter method to not mutate JSON
  */
 class TextInputRange extends React.Component {
   constructor(props) {

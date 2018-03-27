@@ -1,10 +1,10 @@
 import React from 'react';
-import { Router, Route, browserHistory, IndexRoute } from 'react-router';
+import { Router, Route, Switch } from 'react-router-dom';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
+import history from './history';
 import reducer from './reducers/index';
-import { checkAuth } from './actions/LoginActions';
 import Home from './views/Home';
 import Results from './views/Results';
 import NotFound from './views/NotFound';
@@ -21,29 +21,19 @@ const store = createStoreWithMiddleware(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
 
-const checkAuthentication = (nextState, replaceState) => {
-  if (sessionStorage.accessToken) {
-    store.dispatch(checkAuth());
-  } else {
-    replaceState({ pathname: '/' });
-  }
-};
-
-const checkLogin = () => {
-  if (sessionStorage.accessToken) store.dispatch(checkAuth());
-};
-
 const Routes = () => (
   <Provider store={store}>
-    <Router history={browserHistory}>
-      <Route path="/" component={Template}>
-        <IndexRoute component={Login} onEnter={checkLogin} />
-        <Route onEnter={checkAuthentication}>
-          <Route path="/Home" component={withSearch(Home)} />
-          <Route path="/Results" component={withSearch(Results)} />
-          <Route path="/*" component={NotFound} />
-        </Route>
-      </Route>
+    <Router history={history}>
+      <div>
+        <Template>
+          <Switch>
+            <Route exact path="/" component={Login} />
+            <Route exact path="/Home" component={withSearch(Home)} />
+            <Route exact path="/Results" component={withSearch(Results)} />
+            <Route component={NotFound} />
+          </Switch>
+        </Template>
+      </div>
     </Router>
   </Provider>
 );
