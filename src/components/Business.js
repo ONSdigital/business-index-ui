@@ -1,15 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LinkButton from '../patterns/LinkButton';
 import ChildRefList from './ChildRefList';
 import { getHighlightedText } from '../utils/helperMethods';
 import industryCodeDescription from '../utils/siccode';
 import { employmentBands, legalStatusBands, tradingStatusBands, turnoverBands } from '../utils/convertBands';
+import Arrow from '../resources/img/icons--chevron-down.svg';
 
 /**
  * @class Business - A business, which displays a business and highlights
  * the businessName if one was present in the search. Conversions for the
  * bands (legal status etc.) and industry code take place here.
+ *
+ * As aria-expanded and data-guidance toggles don't seem to work with React
+ * (or at least they haven't been initialised properly), we have to use a
+ * 'hacky' workaround involving toggling the showing/hiding of references
+ * ourselves.
  *
  * @todo: Use a proper spinner when the child refs are loading. I tried this
  * by setting the <LinkButton> loading prop to true, however the spinner
@@ -23,9 +28,14 @@ class Business extends React.Component {
       isLoading: false,
     };
   }
-  showRefs = () => this.setState({ ...this.state.showRefs, showRefs: !this.state.showRefs });
   isLoading = (isLoading) => this.setState({ ...this.state.isLoading, isLoading })
+  showRefs = () => {
+    const toggle = document.getElementById('toggleLink');
+    toggle.style.transform = (toggle.style.transform === 'rotate(-90deg)') ? '' : 'rotate(-90deg)';
+    this.setState({ ...this.state.showRefs, showRefs: !this.state.showRefs });
+  }
   render = () => {
+    const expandText = ((!this.state.showRefs) ? 'Show references' : 'Hide references');
     const business = this.props.business;
     const description = (industryCodeDescription[business.industryCode] === undefined)
     ? 'No industry code description found' : industryCodeDescription[business.industryCode];
@@ -43,10 +53,15 @@ class Business extends React.Component {
             <tr><th className="table-grey-text">Turnover band</th><td>{turnoverBands[business.turnover]}</td></tr>
           </tbody>
         </table>
-        <LinkButton id="expandRefs" className="mars" text={(this.state.isLoading) ? 'Loading...' : 'Show reference numbers'} onClick={this.showRefs} loading={false} />
-        {this.state.showRefs &&
-          <ChildRefList id={business.id} onLoad={this.isLoading} />
-        }
+        <div id="outerExpand" className="guidance js-details" dataShowLabel="Show reference numbers" dataHideLabel="Hide reference numbers">
+          <a className="mars" style={{ cursor: 'pointer' }} onClick={this.showRefs}>
+            <img src={Arrow} id="toggleLink" style={{ transform: 'rotate(-90deg)', height: '20px' }} />
+            {(this.state.isLoading) ? 'Loading...' : expandText}
+          </a>
+          {this.state.showRefs &&
+            <ChildRefList id={business.id} onLoad={this.isLoading} />
+          }
+        </div>
       </div>
     );
   }

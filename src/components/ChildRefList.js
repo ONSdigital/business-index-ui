@@ -41,15 +41,11 @@ class ChildRefList extends React.Component {
   closeModal = () => this.setState({ ...this.state, error: false, errorMessage: '' });
   chLink = (id) => (<a target="_blank" rel="noopener noreferrer" href={`http://data.companieshouse.gov.uk/doc/company/${id}`}>{id}</a>);
   render = () => (
-    <div style={{ padding: '20px' }}>
-      <ErrorModal
-        show={this.state.error}
-        message={this.state.errorMessage}
-        close={this.closeModal}
-      />
+    <div id="guidance-answer-body" style={{ paddingLeft: '9px' }}>
+      <ErrorModal show={this.state.error} message={this.state.errorMessage} close={this.closeModal} />
       {!this.state.isLoading &&
-        <table>
-          <tbody>
+        <div className="guidance__content new">
+          <table>
             {(this.state.data.companyNo !== '') &&
               <tr><th className="table-grey-text-reveal">CH</th><td>{this.chLink(this.state.data.companyNo)}</td></tr>
             }
@@ -59,8 +55,8 @@ class ChildRefList extends React.Component {
             { this.state.data.payeRefs.map(p => {
               return (<tr key={p}><th className="table-grey-text-reveal">PAYE</th><td>{p}</td></tr>);
             }) }
-          </tbody>
-        </table>
+          </table>
+        </div>
       }
     </div>
   );
