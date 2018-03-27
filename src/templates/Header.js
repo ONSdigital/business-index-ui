@@ -33,8 +33,6 @@ const Header = ({ loggedIn, username, currentlySending, location, dispatch }) =>
                 {/* If the user is logged in, we show their username and a sign out button (shown as a link) */}
                 {loggedIn &&
                   <ul className="menubar" role="menubar" id="appmenu">
-                    <li role="menuitem"><a className="username">{username}</a></li>
-                    &nbsp; {/* Add a gap between the list items on small screens  */}
                     <li className="menubar" role="menuitem">
                       <LinkButton id="logoutLink" className="username" text="Sign out" onClick={() => dispatch(logout())} loading={currentlySending} />
                     </li>
