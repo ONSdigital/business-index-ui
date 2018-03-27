@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Panel from '../patterns/Panel';
-import ErrorModal from '../components/ErrorModal';
 import SearchForm from '../components/SearchForm';
 
 /**
  * @const Home - The Home component will be used with SearchHOC, which provides the
  * props required for searching and updating the form. On a successful search, the
  * user is redirected to /Results in ApiActions. A functional component is used
- * instead of a React class as we don't use refs (unlike the Results page).
+ * instead of a React class as we don't use refs.
  */
 const Home = (props) => (
   <section>
@@ -22,6 +21,7 @@ const Home = (props) => (
               text="To get started, search using one or more of the options below."
               level="info"
             />
+            <Panel id="searchErrorPanel" text={props.errorMessage} level="error" show={props.showError} close={props.closeModal} marginBottom="1rem" />
           </div>
         </div>
       </div>
@@ -41,7 +41,6 @@ const Home = (props) => (
         </div>
       </div>
     </div>
-    <ErrorModal show={props.showError} message={props.errorMessage} close={props.closeModal} />
   </section>
 );
 

@@ -1,10 +1,11 @@
-import { browserHistory } from 'react-router';
+// import { browserHistory } from 'react-router';
 import base64 from 'base-64';
 import { SET_AUTH, SET_CONFETTI, USER_LOGOUT, SENDING_REQUEST, SET_ERROR_MESSAGE, SET_USER_DETAILS } from '../constants/LoginConstants';
 import * as errorMessages from '../constants/MessageConstants';
 import { anyKeyEmpty } from '../utils/helperMethods';
 import accessAPI from '../utils/accessAPI';
 import config from '../config/api-urls';
+import history from '../history';
 
 const { AUTH_URL } = config;
 
@@ -14,7 +15,7 @@ const setUserState = (newState) => ({ type: SET_USER_DETAILS, newState });
 const setAuthState = (newState) => ({ type: SET_AUTH, newState });
 const sendingRequest = (sending) => ({ type: SENDING_REQUEST, sending });
 const setErrorMessage = (message) => ({ type: SET_ERROR_MESSAGE, message });
-const forwardTo = (location) => browserHistory.push(location);
+const forwardTo = (location) => history.push(location);
 
 export const resetLoginErrorMsg = () => ({ type: SET_ERROR_MESSAGE, message: '' });
 
@@ -81,7 +82,7 @@ export const logout = () => (dispatch) => {
   accessAPI(`${AUTH_URL}/auth/logout`, 'POST', sessionStorage.accessToken, {}, 'logout').then(() => {
     dispatch(setAuthState(false));
     sessionStorage.clear();
-    browserHistory.push('/');
+    forwardTo('/');
     // This needs to go at the end, or else if we logout whilst on a page
     // that uses the redux store, an error will occur before the user
     // is redirected to '/'.
@@ -90,7 +91,7 @@ export const logout = () => (dispatch) => {
     dispatch(setAuthState(false));
     dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
     sessionStorage.clear();
-    browserHistory.push('/');
+    forwardTo('/');
     dispatch(resetState(undefined));
   });
 };

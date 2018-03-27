@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Loader from 'halogen/PulseLoader';
+import { PulseLoader } from 'halogenium';
+
 
 /**
  * @const LinkButton - A link that acts as a button and a spinner for loading states
@@ -10,7 +11,7 @@ import Loader from 'halogen/PulseLoader';
  * onto a new line when the spinner is showing.
  */
 const LinkButton = ({ id, className, text, onClick, loading }) => {
-  const spinner = (<Loader id="spinner" color="#FFFFFF" size="8px" margin="0px" />);
+  const spinner = (<PulseLoader id="spinner" color="#FFFFFF" size="8px" margin="0px" />);
   return (
     <a
       id={id}

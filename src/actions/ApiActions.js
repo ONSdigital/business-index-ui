@@ -1,8 +1,8 @@
-import { browserHistory } from 'react-router';
 import { SET_RESULTS, SET_TO_HIGHLIGHT, SET_FORMATTED_QUERY, SET_SEARCH_ERROR_MESSAGE, SENDING_SEARCH_REQUEST, SET_QUERY } from '../constants/ApiConstants';
 import accessAPI from '../utils/accessAPI';
 import { formQuery } from '../utils/formQuery';
 import config from '../config/api-urls';
+import history from '../history';
 
 const { REROUTE_URL, API_VERSION } = config;
 
@@ -42,10 +42,10 @@ export const search = (query, redirect) => (dispatch) => {
     } else if (Object.keys(json).length > 0 && json.constructor === Object) {
       // Wrap the results in an array as we only get {} from the API
       dispatch(setResults(SET_RESULTS, [json]));
-      if (redirect) browserHistory.push('/Results');
+      if (redirect) history.push('/Results');
     } else {
       dispatch(setResults(SET_RESULTS, json));
-      if (redirect) browserHistory.push('/Results');
+      if (redirect) history.push('/Results');
     }
   }).catch(msg => {
     dispatch(sendingRequest(SENDING_SEARCH_REQUEST, false));

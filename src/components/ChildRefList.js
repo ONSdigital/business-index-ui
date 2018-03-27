@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ErrorModal from './ErrorModal';
+import Panel from '../patterns/Panel';
 import config from '../config/api-urls';
 import accessAPI from '../utils/accessAPI';
 
@@ -38,16 +38,11 @@ class ChildRefList extends React.Component {
       this.props.onLoad(false);
     });
   }
-  closeModal = () => this.setState({ ...this.state, error: false, errorMessage: '' });
   chLink = (id) => (<a target="_blank" rel="noopener noreferrer" href={`http://data.companieshouse.gov.uk/doc/company/${id}`}>{id}</a>);
   render = () => (
     <div style={{ padding: '20px' }}>
-      <ErrorModal
-        show={this.state.error}
-        message={this.state.errorMessage}
-        close={this.closeModal}
-      />
-      {!this.state.isLoading &&
+      <Panel id="refsErrorPanel" text={this.state.errorMessage} level="error" show={this.state.error} close={null} marginBottom="1rem" />
+      {(!this.state.isLoading && !this.state.error) &&
         <table>
           <tbody>
             {(this.state.data.companyNo !== '') &&
