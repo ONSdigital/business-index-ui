@@ -16,8 +16,8 @@ const HomeSearchForm = (props) => (
     <TextInput labelClass="label__description" id="CompanyNo" size="u-mb-s" onChange={props.onChange} type="bi-search-input" label="Company Number (CN)" value={props.initialValues.CompanyNo} />
     <TextInput labelClass="label__description" id="VatRefs" size="u-mb-s" onChange={props.onChange} type="bi-search-input" label="Value-Added Tax (VAT)" value={props.initialValues.VatRefs} />
     <TextInput labelClass="label__description" id="PayeRefs" size="u-mb-s" onChange={props.onChange} type="bi-search-input" label="Pay As You Earn (PAYE)" value={props.initialValues.PayeRefs} />
-    <TextInput labelClass="label neptune" id="PostCode" size="u-mb-s" onChange={props.onChange} type="bi-postcode-input" label="Postcode" value={props.initialValues.PostCode} /><br />
-    <TextInputRange labelClass="label neptune" id="IndustryCode" size="u-mb-s" onChange={props.onChange} label="Industry classification (SIC)" toggleText="Search range" value={props.initialValues.IndustryCode} /><br />
+    <TextInput labelClass="label neptune" id="PostCode" size="u-mb-s" onChange={props.onChange} type="bi-postcode-input" label="Postcode" value={props.initialValues.PostCode} />
+    <TextInputRange labelClass="label neptune" id="IndustryCode" size="u-mb-s" onChange={props.onChange} label="Industry classification (SIC)" toggleText="Search range" value={props.initialValues.IndustryCode} />
     <SelectMultipleInput labelClass="label neptune" id="EmploymentBands" size="s" value={props.initialValues.EmploymentBands} onChange={props.onChange} label="Employment Bands" bands={employmentBands} />
     <SelectMultipleInput labelClass="label neptune" id="Turnover" size="s" value={props.initialValues.Turnover} onChange={props.onChange} label="Turnover Bands" bands={turnoverBands} />
     <SelectMultipleInput labelClass="label neptune" id="TradingStatus" size="s" value={props.initialValues.TradingStatus} onChange={props.onChange} label="Trading Status Bands" bands={tradingStatusBands} />
