@@ -18,11 +18,6 @@ class ResultsList extends React.Component {
       numPages: Math.ceil(this.props.results.length / 5),
     };
   }
-  componentDidMount = () => {
-    // Scroll to the top of the page
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-  }
   handlePageChange = (offset) => {
     if (this.state.lower + offset >= 0 && this.state.upper + offset <= this.props.results.length + (this.state.pageSize - 1)) {
       const page = (offset === this.state.pageSize) ? this.state.page + 1 : this.state.page - 1;

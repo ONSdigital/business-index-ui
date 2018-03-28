@@ -22,11 +22,6 @@ class Results extends React.Component {
       showFilter: false,
     };
   }
-  newSearch = () => {
-    // We need to clear the form values before redirecting the user
-    this.props.onClear();
-    browserHistory.push('/Home');
-  }
   render() {
     const capped = (<div style={{ marginLeft: '5px' }} className="badge badge--amber">CAPPED</div>);
     const numResults = this.props.results.length;

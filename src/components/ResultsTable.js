@@ -34,7 +34,7 @@ const ResultsTable = (props) => (
           Header: 'PostCode',
           id: 'postCode',
           accessor: d => d.postCode,
-          width: 100,
+          width: 110,
         },
         {
           Header: 'SIC',
