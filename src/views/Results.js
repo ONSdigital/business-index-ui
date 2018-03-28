@@ -22,7 +22,7 @@ class Results extends React.Component {
     };
   }
   componentDidMount = () => this.scrollToResults();
-  scrollToResults = () => document.getElementById('resultsKeyLine').scrollIntoView({ block: 'start', behavior: 'smooth' });
+  scrollToResults = () => document.getElementById('homeTitle').scrollIntoView({ block: 'start', behavior: 'smooth' });
   onSubmit = (e) => {
     e.preventDefault();
     // We need to pass e through so the parent e.preventDefault() will work
@@ -65,7 +65,7 @@ class Results extends React.Component {
                 {!this.props.currentlySending &&
                   <p className="mars">We&apos;ve found {numResults} {(numResults > 1 || numResults === 0) ? 'businesses' : 'business'} {(numResults === 10000) ? capped : null}</p>
                 }
-                <div id="resultsKeyLine" className="key-line"></div>
+                <div className="key-line"></div>
                 <Panel id="searchErrorPanel" text={this.props.errorMessage} level="error" show={this.props.showError} close={this.props.closeModal} marginBottom="1rem" />
                 {(numResults !== 0 && this.state.listView) &&
                   <ResultsList results={this.props.results} toHighlight={this.props.toHighlight} />
