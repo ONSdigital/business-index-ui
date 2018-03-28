@@ -48,7 +48,7 @@ class ChildRefTable extends React.Component {
         />
         <br />
         <h4>Industry Code [{business.industryCode}]: {description}</h4>
-        <Panel id="refsErrorPanel" text={this.state.errorMessage} level="error" show={this.state.error} close={null} marginBottom="1rem" />
+        <Panel id="refsErrorPanel" text={this.props.errorMessage} level="error" show={this.props.error} close={null} marginBottom="1rem" />
       </div>
     );
   }
