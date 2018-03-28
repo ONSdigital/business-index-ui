@@ -43,7 +43,7 @@ class SelectMultipleInput extends React.Component {
   }
   render = () => (
     <div id={this.props.id} className={`field field--select u-mb-${this.props.size}`}>
-      <label className="label" htmlFor="select">{this.props.label}</label>
+      <label className={this.props.labelClass} htmlFor="select">{this.props.label}</label>
       <Select
         style={{ width: '100%', height: '46px' }}
         closeOnSelect={false}
@@ -61,6 +61,7 @@ class SelectMultipleInput extends React.Component {
 
 SelectMultipleInput.defaultProps = {
   value: [],
+  labelClass: 'label',
 };
 
 SelectMultipleInput.propTypes = {
@@ -69,6 +70,7 @@ SelectMultipleInput.propTypes = {
   size: PropTypes.string.isRequired,
   bands: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
+  labelClass: PropTypes.string,
   value: PropTypes.array,
 };
 

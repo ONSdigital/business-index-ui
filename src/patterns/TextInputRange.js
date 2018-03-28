@@ -7,7 +7,8 @@ import PropTypes from 'prop-types';
  * can be input.
  *
  * @todo: it would probably be best to refactor this, don't have this component
- * handling the switch between 2 text inputs to 1 etc.
+ * handling the switch between 2 text inputs to 1 etc + use the TextInput
+ * component
  */
 class TextInputRange extends React.Component {
   constructor(props) {
@@ -56,40 +57,24 @@ class TextInputRange extends React.Component {
     };
     this.props.onChange(json);
   }
-  // render = () => (
-  //   <div className={`field ${this.props.size}`}>
-  //     <label className={this.props.labelClass} htmlFor={this.props.id}>{this.props.label}</label>
-  //     <div className={`field--toggle ${this.props.checkBoxSize}`}>
-  //       <label className="label label--inline venus field__label" htmlFor="rangeToggle">{this.props.toggleText}</label>
-  //       <input id="rangeToggle" checked={this.state.range} onChange={this.onChangeFilter} className="field__input input input--checkbox" type="checkbox" />
-  //     </div>
-  //     {!this.state.range &&
-  //       <div id="single">
-  //         <input id={`${this.props.id}`} value={this.props.value.single} onChange={this.onChange} className="input input--text input-type__input bi-postcode-input-edit" type="text" />
-  //       </div>
-  //     }
-  //     {this.state.range &&
-  //       <div style={{ height: '45px' }}>
-  //         <input id={`${this.props.id}-min`} value={this.props.value.min} onChange={this.onChange} className="input input--text input-type__input bi-sic-input" type="text" placeholder="From" />
-  //         <input id={`${this.props.id}-max`} value={this.props.value.max} onChange={this.onChange} className="input input--text input-type__input bi-sic-input second" type="text" placeholder="To" />
-  //       </div>
-  //     }
-  //   </div>
-  // );
   render = () => (
-    <div className="field">
-      <label className="label input-margin-sic">Industry classification (SIC)</label>
-        <div className="field--toggle sml">
-          <label className="label label--inline venus field__label" htmlFor="showPasswordToggle">Search range</label>
-          <input id="showPasswordToggle" className="field__input input input--checkbox" type="checkbox" />
-        </div>
+    <div className={`field ${this.props.size}`} style={this.props.style}>
+      <label className={this.props.labelClass} htmlFor="rangeToggle">{this.props.label}</label>
+      <div className={`field--toggle ${this.props.checkBoxSize}`}>
+        <label className="label label--inline venus field__label" htmlFor="rangeToggle">{this.props.toggleText}</label>
+        <input id="rangeToggle" checked={this.state.range} onChange={this.onChangeFilter} className="field__input input input--checkbox" type="checkbox" />
+      </div>
+      {!this.state.range &&
         <div id="single">
-          <input className="input input--text input-type__input bi-postcode-input-edit" type="text" id="text-input" />
+          <input id={`${this.props.id}`} value={this.props.value.single} onChange={this.onChange} className={`input input--text input-type__input ${this.props.inputClass}`} type="text" />
         </div>
-        <div id="range">
-          <input className="input input--text input-type__input bi-sic-input-edit-landscape" type="text" id="text-input" placeholder="From" />
-          <input className="input input--text input-type__input bi-sic-input-edit-landscape second" type="text" id="text-input" placeholder="To"/>
+      }
+      {this.state.range &&
+        <div style={{ height: '45px' }}>
+          <input id={`${this.props.id}-min`} value={this.props.value.min} onChange={this.onChange} className={`input input--text input-type__input ${this.props.minInputClass}`} type="text" placeholder="From" />
+          <input id={`${this.props.id}-max`} value={this.props.value.max} onChange={this.onChange} className={`input input--text input-type__input ${this.props.minInputClass} second`} type="text" placeholder="To" />
         </div>
+      }
     </div>
   );
 }
@@ -97,8 +82,11 @@ class TextInputRange extends React.Component {
 TextInputRange.defaultProps = {
   value: { min: '', max: '', single: '' },
   size: '',
-  labelClass: 'label',
   checkBoxSize: '',
+  style: {},
+  labelClass: 'label input-margin-sic',
+  inputClass: 'bi-postcode-input',
+  minInputClass: 'bi-sic-input',
 };
 
 TextInputRange.propTypes = {
@@ -108,8 +96,10 @@ TextInputRange.propTypes = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.object,
   size: PropTypes.string,
+  style: PropTypes.object,
   labelClass: PropTypes.string,
   checkBoxSize: PropTypes.string,
+  inputClass: PropTypes.string,
 };
 
 export default TextInputRange;

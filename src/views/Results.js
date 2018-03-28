@@ -41,14 +41,12 @@ class Results extends React.Component {
             </div>
           </div>
           <ResultsSearchForm
-            size="xs"
             currentlySending={this.props.currentlySending}
             initialValues={this.props.query}
             onSubmit={this.props.onSubmit}
             onChange={this.props.onChange}
             onClear={this.props.onClear}
             value={this.props.query}
-            ref={(ch) => (this.child = ch)}
           />
         </div>
         <div className="main-content">
