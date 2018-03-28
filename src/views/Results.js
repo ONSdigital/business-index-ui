@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
-import LinkButton from '../patterns/LinkButton';
 import Button from '../patterns/Button';
 import ResultsTable from '../components/ResultsTable';
 import ErrorModal from '../components/ErrorModal';
 import ResultsList from '../components/ResultsList';
-import SearchForm from '../components/SearchForm';
+import ResultsSearchForm from '../components/ResultsSearchForm';
 import { downloadCSV, downloadJSON } from '../utils/export';
 
 /**
@@ -33,6 +32,25 @@ class Results extends React.Component {
     const numResults = this.props.results.length;
     return (
       <section>
+        <div className="landscape-search">
+          <div className="wrapper">
+            <div className="group">
+              <div className="col-12 minus-margin">
+                <p className="saturn">Edit search</p>
+              </div>
+            </div>
+          </div>
+          <ResultsSearchForm
+            size="xs"
+            currentlySending={this.props.currentlySending}
+            initialValues={this.props.query}
+            onSubmit={this.props.onSubmit}
+            onChange={this.props.onChange}
+            onClear={this.props.onClear}
+            value={this.props.query}
+            ref={(ch) => (this.child = ch)}
+          />
+        </div>
         <div className="main-content">
           <div className="wrapper">
             <div className="group">
@@ -62,31 +80,14 @@ class Results extends React.Component {
                   />
                 }
               </div>
-              <div className="col-4">
-                <div className="edit-search">
-                  <p className="saturn float">Edit search</p>
-                  <LinkButton id="newSearch" className="float-right mars" text="New Search" onClick={this.newSearch} loading={false} />
-                  <SearchForm
-                    size="xs"
-                    className="remove-margin"
-                    currentlySending={this.props.currentlySending}
-                    initialValues={this.props.query}
-                    onSubmit={this.props.onSubmit}
-                    onChange={this.props.onChange}
-                    onClear={this.props.onClear}
-                    value={this.props.query}
-                    ref={(ch) => (this.child = ch)}
-                  />
-                </div>
-              </div>
             </div>
             {numResults > 0 &&
               <div>
                 <div className="key-line-download"></div>
                 <h3 className="saturn">Download your search results</h3>
-                <Button id="downloadCsvButton" type="submit" size="wide" text="CSV" onClick={() => downloadCSV(this.props.results)} ariaLabel="Download CSV Button" loading={false} />
+                <Button className="btn btn--primary venus btn--wide" id="downloadCsvButton" type="submit" text="CSV" onClick={() => downloadCSV(this.props.results)} ariaLabel="Download CSV Button" loading={false} />
                 &nbsp;
-                <Button id="downloadJsonButton" type="submit" size="wide" text="JSON" onClick={() => downloadJSON(this.props.results)} ariaLabel="Download JSON Button" loading={false} />
+                <Button className="btn btn--primary venus btn--wide" id="downloadJsonButton" type="submit" text="JSON" onClick={() => downloadJSON(this.props.results)} ariaLabel="Download JSON Button" loading={false} />
               </div>
             }
           </div>

@@ -7,11 +7,11 @@ import Loader from 'halogen/PulseLoader';
  * will only call the passed in onClick function if it is not in a
  * loading state.
  */
-const Button = ({ id, size, ariaLabel, loading, onClick, text, type, btnClass, btnBorder, style }) => {
+const Button = ({ id, ariaLabel, loading, onClick, text, type, btnClass, btnBorder, style, className }) => {
   const spinner = (<Loader id="spinner" color="#FFFFFF" size="8px" margin="0px" />);
   return (
     <button
-      className={`btn btn--${btnClass} ${btnBorder} venus btn--${size}`}
+      className={className}
       id={id}
       aria-label={ariaLabel}
       onClick={loading ? null : onClick}
@@ -37,7 +37,7 @@ Button.propTypes = {
   onClick: PropTypes.func,
   ariaLabel: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
   btnClass: PropTypes.string,
   loading: PropTypes.bool,
   btnBorder: PropTypes.string,

@@ -15,27 +15,25 @@ import { employmentBands, legalStatusBands, turnoverBands, tradingStatusBands } 
  */
 class SearchForm extends React.Component {
   render = () => (
-    <form className={`form ${this.props.className}`}>
-      <TextInput id="BusinessName" size={this.props.size} onChange={this.props.onChange} autoFocus={this.props.autoFocus} type="text" label="Business name" value={this.props.initialValues.BusinessName} ref={ip => (this.childTextInput = ip)} />
-      <TextInput id="Id" size={this.props.size} onChange={this.props.onChange} type="text" label="UBRN" value={this.props.initialValues.Id} />
-      <TextInput id="CompanyNo" size={this.props.size} onChange={this.props.onChange} type="text" label="CRN" value={this.props.initialValues.CompanyNo} />
-      <TextInput id="VatRefs" size={this.props.size} onChange={this.props.onChange} type="text" label="VAT" value={this.props.initialValues.VatRefs} />
-      <TextInput id="PayeRefs" size={this.props.size} onChange={this.props.onChange} type="text" label="PAYE" value={this.props.initialValues.PayeRefs} />
-      <TextInput id="PostCode" size={this.props.size} onChange={this.props.onChange} type="text" label="Postcode" value={this.props.initialValues.PostCode} />
-      <TextInputRange id="IndustryCode" size={this.props.size} onChange={this.props.onChange} label="Industry classification (SIC)" toggleText="Search range" value={this.props.initialValues.IndustryCode} />
+    <form className={this.props.className}>
+      <TextInput id="BusinessName" size={`u-mb-${this.props.size}`} onChange={this.props.onChange} autoFocus={this.props.autoFocus} type="bi-search-input" label="Business name" value={this.props.initialValues.BusinessName} ref={ip => (this.childTextInput = ip)} />
+      <TextInput labelClass="label__description" legend="Reference number" id="Id" size={`u-mb-${this.props.size}`} onChange={this.props.onChange} type="bi-search-input" label="Unique Business Reference Number (UBRN)" value={this.props.initialValues.Id} />
+      <TextInput labelClass="label__description" id="CompanyNo" size={`u-mb-${this.props.size}`} onChange={this.props.onChange} type="bi-search-input" label="Company Number (CN)" value={this.props.initialValues.CompanyNo} />
+      <TextInput labelClass="label__description" id="VatRefs" size={`u-mb-${this.props.size}`} onChange={this.props.onChange} type="bi-search-input" label="Value-Added Tax (VAT)" value={this.props.initialValues.VatRefs} />
+      <TextInput labelClass="label__description" id="PayeRefs" size={`u-mb-${this.props.size}`} onChange={this.props.onChange} type="bi-search-input" label="Pay As You Earn (PAYE)" value={this.props.initialValues.PayeRefs} />
+      <TextInput id="PostCode" size={`u-mb-${this.props.size}`} onChange={this.props.onChange} type="bi-postcode-input" label="Postcode" value={this.props.initialValues.PostCode} />
+      <TextInputRange id="IndustryCode" size={`u-mb-${this.props.size}`} onChange={this.props.onChange} label="Industry classification (SIC)" toggleText="Search range" value={this.props.initialValues.IndustryCode} />
       <SelectMultipleInput id="EmploymentBands" size={this.props.size} value={this.props.initialValues.EmploymentBands} onChange={this.props.onChange} label="Employment Bands" bands={employmentBands} />
       <SelectMultipleInput id="Turnover" size={this.props.size} value={this.props.initialValues.Turnover} onChange={this.props.onChange} label="Turnover Bands" bands={turnoverBands} />
       <SelectMultipleInput id="TradingStatus" size={this.props.size} value={this.props.initialValues.TradingStatus} onChange={this.props.onChange} label="Trading Status Bands" bands={tradingStatusBands} />
       <SelectMultipleInput id="LegalStatus" size={this.props.size} value={this.props.initialValues.LegalStatus} onChange={this.props.onChange} label="Legal Status Bands" bands={legalStatusBands} />
-      <Button id="searchButton" type="submit" size="wide" text="Search" onClick={this.props.onSubmit} ariaLabel="Search Button" loading={this.props.currentlySending} />
-      &nbsp;
-      <Button id="clearButton" style={{ padding: '0.64rem 2.49rem' }} btnBorder="btn--border" btnClass="secondary" size="wide" text="Clear" onClick={this.props.onClear} ariaLabel="Clear Button" type="reset" />
+      <Button className="btn btn--primary venus btn--wide" id="searchButton" type="submit" text="Search" onClick={this.props.onSubmit} ariaLabel="Search Button" loading={this.props.currentlySending} />
+      <Button className="btn btn--secondary btn--border" id="clearButton" text="Clear" onClick={this.props.onClear} ariaLabel="Clear Button" type="reset" />
     </form>
   );
 }
 
 SearchForm.defaultProps = {
-  className: '',
   size: 's',
   autoFocus: false,
 };
@@ -47,7 +45,7 @@ SearchForm.propTypes = {
   onChange: PropTypes.func.isRequired,
   onClear: PropTypes.func.isRequired,
   initialValues: PropTypes.object.isRequired,
-  className: PropTypes.string,
+  className: PropTypes.string.isRequired,
   autoFocus: PropTypes.bool,
 };
 

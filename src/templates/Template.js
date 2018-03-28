@@ -23,9 +23,7 @@ const Template = ({ location, children }) => {
     <section>
       {confetti}
       <Header location={location} />
-      <section>
-        {children}
-      </section>
+      {children}
       <Footer />
     </section>
   );

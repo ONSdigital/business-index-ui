@@ -56,39 +56,60 @@ class TextInputRange extends React.Component {
     };
     this.props.onChange(json);
   }
+  // render = () => (
+  //   <div className={`field ${this.props.size}`}>
+  //     <label className={this.props.labelClass} htmlFor={this.props.id}>{this.props.label}</label>
+  //     <div className={`field--toggle ${this.props.checkBoxSize}`}>
+  //       <label className="label label--inline venus field__label" htmlFor="rangeToggle">{this.props.toggleText}</label>
+  //       <input id="rangeToggle" checked={this.state.range} onChange={this.onChangeFilter} className="field__input input input--checkbox" type="checkbox" />
+  //     </div>
+  //     {!this.state.range &&
+  //       <div id="single">
+  //         <input id={`${this.props.id}`} value={this.props.value.single} onChange={this.onChange} className="input input--text input-type__input bi-postcode-input-edit" type="text" />
+  //       </div>
+  //     }
+  //     {this.state.range &&
+  //       <div style={{ height: '45px' }}>
+  //         <input id={`${this.props.id}-min`} value={this.props.value.min} onChange={this.onChange} className="input input--text input-type__input bi-sic-input" type="text" placeholder="From" />
+  //         <input id={`${this.props.id}-max`} value={this.props.value.max} onChange={this.onChange} className="input input--text input-type__input bi-sic-input second" type="text" placeholder="To" />
+  //       </div>
+  //     }
+  //   </div>
+  // );
   render = () => (
-    <div className={`field u-mb-${this.props.size}`}>
-      <label className="label" htmlFor={this.props.id}>{this.props.label}</label>
-      <div className="field--toggle">
-        <label className="label label--inline venus field__label" htmlFor="rangeToggle">{this.props.toggleText}</label>
-        <input id="rangeToggle" checked={this.state.range} onChange={this.onChangeFilter} className="field__input input input--checkbox" type="checkbox" />
-      </div>
-      {!this.state.range &&
+    <div className="field">
+      <label className="label input-margin-sic">Industry classification (SIC)</label>
+        <div className="field--toggle sml">
+          <label className="label label--inline venus field__label" htmlFor="showPasswordToggle">Search range</label>
+          <input id="showPasswordToggle" className="field__input input input--checkbox" type="checkbox" />
+        </div>
         <div id="single">
-          <input id={`${this.props.id}`} style={{ width: '92%' }} value={this.props.value.single} onChange={this.onChange} className="input input--text input-type__input bi-postcode-edit" type="text" />
+          <input className="input input--text input-type__input bi-postcode-input-edit" type="text" id="text-input" />
         </div>
-      }
-      {this.state.range &&
-        <div style={{ height: '45px' }}>
-          <input id={`${this.props.id}-min`} value={this.props.value.min} onChange={this.onChange} className="input input--text input-type__input bi-sic-input-edit" type="text" placeholder="From" />
-          <input id={`${this.props.id}-max`} value={this.props.value.max} onChange={this.onChange} className="input input--text input-type__input bi-sic-input-edit second" type="text" placeholder="To" />
+        <div id="range">
+          <input className="input input--text input-type__input bi-sic-input-edit-landscape" type="text" id="text-input" placeholder="From" />
+          <input className="input input--text input-type__input bi-sic-input-edit-landscape second" type="text" id="text-input" placeholder="To"/>
         </div>
-      }
     </div>
   );
 }
 
 TextInputRange.defaultProps = {
   value: { min: '', max: '', single: '' },
+  size: '',
+  labelClass: 'label',
+  checkBoxSize: '',
 };
 
 TextInputRange.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
   toggleText: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.object,
+  size: PropTypes.string,
+  labelClass: PropTypes.string,
+  checkBoxSize: PropTypes.string,
 };
 
 export default TextInputRange;

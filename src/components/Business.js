@@ -53,9 +53,9 @@ class Business extends React.Component {
             <tr><th className="table-grey-text">Turnover band</th><td>{turnoverBands[business.turnover]}</td></tr>
           </tbody>
         </table>
-        <div id="outerExpand" className="guidance js-details" dataShowLabel="Show reference numbers" dataHideLabel="Hide reference numbers">
+        <div id="outerExpand" className="guidance js-details">
           <a className="mars" style={{ cursor: 'pointer' }} onClick={this.showRefs}>
-            <img src={Arrow} id="toggleLink" style={{ transform: 'rotate(-90deg)', height: '20px' }} />
+            <img role="presentation" src={Arrow} id="toggleLink" style={{ transform: 'rotate(-90deg)', height: '20px' }} />
             {(this.state.isLoading) ? 'Loading...' : expandText}
           </a>
           {this.state.showRefs &&

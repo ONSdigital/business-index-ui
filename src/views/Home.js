@@ -29,6 +29,7 @@ const Home = (props) => (
         <div className="group">
           <div className="col-6">
             <SearchForm
+              className="form"
               size="s"
               currentlySending={props.currentlySending}
               initialValues={props.query}
