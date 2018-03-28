@@ -19,7 +19,7 @@ class Results extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tableView: false,
+      listView: false,
       showFilter: false,
     };
   }
@@ -29,6 +29,7 @@ class Results extends React.Component {
     browserHistory.push('/Home');
   }
   render() {
+    const capped = (<div style={{ marginLeft: '5px' }} className="badge badge--amber">CAPPED</div>);
     const numResults = this.props.results.length;
     return (
       <section>
@@ -39,18 +40,18 @@ class Results extends React.Component {
                 <h1 id="homeTitle" className="jupiter remove-margin">Search results</h1>
                 {numResults !== 0 &&
                   <div className="field--toggle" style={{ float: 'right' }}>
-                    <label className="label label--inline venus field__label" htmlFor="rangeToggle">Table View</label>
-                    <input id="rangeToggle" checked={this.state.tableView} onChange={() => this.setState({ ...this.state, tableView: !this.state.tableView })} className="field__input input input--checkbox" type="checkbox" />
+                    <label className="label label--inline venus field__label" htmlFor="rangeToggle">List View</label>
+                    <input id="rangeToggle" checked={this.state.listView} onChange={() => this.setState({ ...this.state, listView: !this.state.listView })} className="field__input input input--checkbox" type="checkbox" />
                   </div>
                 }
                 {!this.props.currentlySending &&
-                  <p className="mars">We&apos;ve found {numResults} {(numResults > 1 || numResults === 0) ? 'businesses' : 'business'}</p>
+                  <p className="mars">We&apos;ve found {numResults} {(numResults > 1 || numResults === 0) ? 'businesses' : 'business'} {(numResults === 10000) ? capped : null}</p>
                 }
                 <div className="key-line"></div>
-                {(numResults !== 0 && !this.state.tableView) &&
+                {(numResults !== 0 && this.state.listView) &&
                   <ResultsList results={this.props.results} toHighlight={this.props.toHighlight} />
                 }
-                {(numResults !== 0 && this.state.tableView) &&
+                {(numResults !== 0 && !this.state.listView) &&
                   <ResultsTable
                     toHighlight={this.props.toHighlight}
                     convertBands
