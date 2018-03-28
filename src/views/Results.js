@@ -52,7 +52,7 @@ class Results extends React.Component {
         <div className="main-content">
           <div className="wrapper">
             <div className="group">
-              <div className="col-8">
+              <div className="col-12">
                 <h1 id="homeTitle" className="jupiter remove-margin">Search results</h1>
                 {numResults !== 0 &&
                   <div className="field--toggle" style={{ float: 'right' }}>
