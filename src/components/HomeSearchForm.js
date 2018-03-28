@@ -13,7 +13,7 @@ const HomeSearchForm = (props) => (
   <form className="form">
     <TextInput labelClass="label neptune" id="BusinessName" size="u-mb-s" onChange={props.onChange} autoFocus type="bi-search-input" label="Business name" value={props.initialValues.BusinessName} />
     <TextInput labelClass="label__description" legend="Reference number" id="Id" size="u-mb-s" onChange={props.onChange} type="bi-search-input" label="Unique Business Reference Number (UBRN)" value={props.initialValues.Id} />
-    <TextInput labelClass="label__description" id="CompanyNo" size="u-mb-s" onChange={props.onChange} type="bi-search-input" label="Company Number (CN)" value={props.initialValues.CompanyNo} />
+    <TextInput labelClass="label__description" id="CompanyNo" size="u-mb-s" onChange={props.onChange} type="bi-search-input" label="Company Reference Number (CRN)" value={props.initialValues.CompanyNo} />
     <TextInput labelClass="label__description" id="VatRefs" size="u-mb-s" onChange={props.onChange} type="bi-search-input" label="Value-Added Tax (VAT)" value={props.initialValues.VatRefs} />
     <TextInput labelClass="label__description" id="PayeRefs" size="u-mb-s" onChange={props.onChange} type="bi-search-input" label="Pay As You Earn (PAYE)" value={props.initialValues.PayeRefs} />
     <TextInput labelClass="label neptune" id="PostCode" size="u-mb-s" onChange={props.onChange} type="bi-postcode-input" label="Postcode" value={props.initialValues.PostCode} />

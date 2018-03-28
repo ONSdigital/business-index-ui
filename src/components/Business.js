@@ -28,6 +28,9 @@ class Business extends React.Component {
       isLoading: false,
     };
   }
+  onFocus = () => {
+    console.log('focus');
+  }
   isLoading = (isLoading) => this.setState({ ...this.state.isLoading, isLoading })
   showRefs = () => {
     const toggle = document.getElementById('toggleLink');
@@ -54,7 +57,7 @@ class Business extends React.Component {
           </tbody>
         </table>
         <div id="outerExpand" className="guidance js-details">
-          <a className="mars" style={{ cursor: 'pointer' }} onClick={this.showRefs}>
+          <a className="mars" style={{ padding: '5px', cursor: 'pointer', backgroundColor: ((this.state.showRefs) ? '#4263c2' : ''), color: ((this.state.showRefs) ? 'white' : '') }} onClick={this.showRefs}>
             <img role="presentation" src={Arrow} id="toggleLink" style={{ transform: 'rotate(-90deg)', height: '20px' }} />
             {(this.state.isLoading) ? 'Loading...' : expandText}
           </a>

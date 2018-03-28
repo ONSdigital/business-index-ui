@@ -61,7 +61,7 @@ const ResultsTable = (props) => (
           width: 100,
         },
         {
-          Header: 'Employment Bands',
+          Header: 'Employment',
           id: 'employmentBands',
           accessor: d => ((props.convertBands) ? employmentBands[d.employmentBands] : d.employmentBands),
           width: 100,
