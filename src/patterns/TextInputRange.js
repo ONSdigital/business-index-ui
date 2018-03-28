@@ -10,6 +10,8 @@ import PropTypes from 'prop-types';
  * handling the switch between 2 text inputs to 1 etc.
  *
  * @todo: refactor onChangeFilter method to not mutate JSON
+ * handling the switch between 2 text inputs to 1 etc + use the TextInput
+ * component
  */
 class TextInputRange extends React.Component {
   constructor(props) {
@@ -59,21 +61,21 @@ class TextInputRange extends React.Component {
     this.props.onChange(json);
   }
   render = () => (
-    <div className={`field u-mb-${this.props.size}`}>
-      <label className="label" htmlFor={this.props.id}>{this.props.label}</label>
-      <div className="field--toggle">
-        <label className="label label--inline venus field__label" htmlFor="rangeToggle">{this.props.toggleText}</label>
-        <input id="rangeToggle" checked={this.state.range} onChange={this.onChangeFilter} className="field__input input input--checkbox" type="checkbox" />
+    <div className={`field ${this.props.size}`} style={this.props.style}>
+      <label className={this.props.labelClass} htmlFor="rangeToggle">{this.props.label}</label>
+      <div className={`field--toggle ${this.props.checkBoxSize}`}>
+        <label className="label label--inline venus field__label" htmlFor="sicRangeToggle">{this.props.toggleText}</label>
+        <input id="sicRangeToggle" checked={this.state.range} onChange={this.onChangeFilter} className="field__input input input--checkbox" type="checkbox" />
       </div>
       {!this.state.range &&
         <div id="single">
-          <input id={`${this.props.id}`} style={{ width: '92%' }} value={this.props.value.single} onChange={this.onChange} className="input input--text input-type__input bi-postcode-edit" type="text" />
+          <input id={`${this.props.id}`} value={this.props.value.single} onChange={this.onChange} className={`input input--text input-type__input ${this.props.inputClass}`} type="text" />
         </div>
       }
       {this.state.range &&
         <div style={{ height: '45px' }}>
-          <input id={`${this.props.id}-min`} value={this.props.value.min} onChange={this.onChange} className="input input--text input-type__input bi-sic-input-edit" type="text" placeholder="From" />
-          <input id={`${this.props.id}-max`} value={this.props.value.max} onChange={this.onChange} className="input input--text input-type__input bi-sic-input-edit second" type="text" placeholder="To" />
+          <input id={`${this.props.id}-min`} value={this.props.value.min} onChange={this.onChange} className={`input input--text input-type__input ${this.props.minInputClass}`} type="text" placeholder="From" />
+          <input id={`${this.props.id}-max`} value={this.props.value.max} onChange={this.onChange} className={`input input--text input-type__input ${this.props.minInputClass} second`} type="text" placeholder="To" />
         </div>
       }
     </div>
@@ -82,15 +84,25 @@ class TextInputRange extends React.Component {
 
 TextInputRange.defaultProps = {
   value: { min: '', max: '', single: '' },
+  size: '',
+  checkBoxSize: '',
+  style: {},
+  labelClass: 'label input-margin-sic',
+  inputClass: 'bi-postcode-input',
+  minInputClass: 'bi-sic-input',
 };
 
 TextInputRange.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
   toggleText: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.object,
+  size: PropTypes.string,
+  style: PropTypes.object,
+  labelClass: PropTypes.string,
+  checkBoxSize: PropTypes.string,
+  inputClass: PropTypes.string,
 };
 
 export default TextInputRange;

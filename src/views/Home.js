@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Panel from '../patterns/Panel';
-import SearchForm from '../components/SearchForm';
+import HomeSearchForm from '../components/HomeSearchForm';
 
 /**
  * @const Home - The Home component will be used with SearchHOC, which provides the
@@ -28,14 +28,12 @@ const Home = (props) => (
       <div className="wrapper">
         <div className="group">
           <div className="col-6">
-            <SearchForm
-              size="s"
+            <HomeSearchForm
               currentlySending={props.currentlySending}
               initialValues={props.query}
               onSubmit={props.onSubmit}
               onChange={props.onChange}
               onClear={props.onClear}
-              autoFocus
             />
           </div>
         </div>

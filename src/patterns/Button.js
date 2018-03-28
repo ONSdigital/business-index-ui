@@ -7,14 +7,15 @@ import { PulseLoader } from 'halogenium';
  * will only call the passed in onClick function if it is not in a
  * loading state.
  */
-const Button = ({ id, size, ariaLabel, loading, onClick, text, type }) => {
+const Button = ({ id, ariaLabel, loading, onClick, text, type, btnClass, btnBorder, style, className }) => {
   const spinner = (<PulseLoader id="spinner" color="#FFFFFF" size="8px" margin="0px" />);
   return (
     <button
-      className={`btn btn--primary venus btn--${size}`}
+      className={className}
       id={id}
       aria-label={ariaLabel}
       onClick={loading ? null : onClick}
+      style={style}
       type={type}
     >
       {loading ? spinner : text}
@@ -25,6 +26,9 @@ const Button = ({ id, size, ariaLabel, loading, onClick, text, type }) => {
 Button.defaultProps = {
   loading: false,
   onClick: null,
+  btnClass: 'primary',
+  btnBorder: '',
+  style: {},
 };
 
 Button.propTypes = {
@@ -33,8 +37,11 @@ Button.propTypes = {
   onClick: PropTypes.func,
   ariaLabel: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
+  btnClass: PropTypes.string,
   loading: PropTypes.bool,
+  btnBorder: PropTypes.string,
+  style: PropTypes.object,
 };
 
 export default Button;

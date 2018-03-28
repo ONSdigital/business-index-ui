@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+/* BI search results table list */
+
 table {
     min-width: 100%;
     border-spacing: 0;
@@ -38,4 +40,34 @@ td {
 .legal {
   border-bottom: 1px solid #cfcfcf;
   padding: 0.75rem 0;
+}
+
+/* BI Table view */
+
+.business-name {
+  min-width: 228px;
+}
+
+.turnover {
+  min-width: 105px;
+}
+
+.postcode {
+  min-width: 90px;
+}
+
+.ubrn {
+  width: 123px;
+}
+
+.no-data {
+  color: #C1C1C1;
+}
+
+.table--cell {
+  font-size: 15px;
+}
+
+.download-results {
+  margin: 3.5rem 0 0 0;
 }

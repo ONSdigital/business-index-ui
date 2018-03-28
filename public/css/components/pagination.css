@@ -1,0 +1,24 @@
+@charset "UTF-8";
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    color: #4263C2;
+    float: left;
+    padding: 0.6rem 1rem;
+    text-decoration: underline;
+
+}
+
+.pagination a.active {
+    background-color: #033e58;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #e4e8eb;
+  outline: none;
+  color: #033e58;
+}
