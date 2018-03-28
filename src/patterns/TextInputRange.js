@@ -61,8 +61,8 @@ class TextInputRange extends React.Component {
     <div className={`field ${this.props.size}`} style={this.props.style}>
       <label className={this.props.labelClass} htmlFor="rangeToggle">{this.props.label}</label>
       <div className={`field--toggle ${this.props.checkBoxSize}`}>
-        <label className="label label--inline venus field__label" htmlFor="rangeToggle">{this.props.toggleText}</label>
-        <input id="rangeToggle" checked={this.state.range} onChange={this.onChangeFilter} className="field__input input input--checkbox" type="checkbox" />
+        <label className="label label--inline venus field__label" htmlFor="sicRangeToggle">{this.props.toggleText}</label>
+        <input id="sicRangeToggle" checked={this.state.range} onChange={this.onChangeFilter} className="field__input input input--checkbox" type="checkbox" />
       </div>
       {!this.state.range &&
         <div id="single">

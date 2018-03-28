@@ -21,42 +21,50 @@ const ResultsTable = (props) => (
           Header: 'UBRN',
           id: 'id',
           accessor: d => d.id,
+          width: 150,
         },
         {
           Header: 'Business Name',
           id: 'businessName',
           accessor: d => d.businessName,
           Cell: row => ((props.toHighlight !== '') ? getHighlightedText({ businessName: row.value, id: row.id }, props.toHighlight) : row.value),
+          width: 400,
         },
         {
           Header: 'PostCode',
           id: 'postCode',
           accessor: d => d.postCode,
+          width: 100,
         },
         {
-          Header: 'Industry Code',
+          Header: 'SIC',
           id: 'industryCode',
           accessor: d => d.industryCode,
+          width: 75,
         },
         {
           Header: 'Legal Status',
           id: 'legalStatus',
           accessor: d => ((props.convertBands) ? legalStatusBands[d.legalStatus] : d.legalStatus),
+          width: 150,
         },
         {
           Header: 'Trading Status',
           id: 'tradingStatus',
           accessor: d => ((props.convertBands) ? tradingStatusBands[d.tradingStatus] : d.tradingStatus),
+          width: 150,
         },
         {
           Header: 'Turnover',
           id: 'turnover',
           accessor: d => ((props.convertBands) ? turnoverBands[d.turnover] : d.turnover),
+          width: 100,
         },
         {
           Header: 'Employment Bands',
           id: 'employmentBands',
           accessor: d => ((props.convertBands) ? employmentBands[d.employmentBands] : d.employmentBands),
+          width: 100,
         },
       ]}
       defaultPageSize={props.defaultPageSize}
