@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
 import Button from '../patterns/Button';
 import ResultsTable from '../components/ResultsTable';
 import ErrorModal from '../components/ErrorModal';
@@ -22,6 +21,14 @@ class Results extends React.Component {
       showFilter: false,
     };
   }
+  componentDidMount = () => this.scrollToResults();
+  scrollToResults = () => document.getElementById('resultsKeyLine').scrollIntoView({ block: 'start', behavior: 'smooth' });
+  onSubmit = (e) => {
+    e.preventDefault();
+    // We need to pass e through so the parent e.preventDefault() will work
+    this.props.onSubmit(e);
+    this.scrollToResults();
+  }
   render() {
     const capped = (<div style={{ marginLeft: '5px' }} className="badge badge--amber">CAPPED</div>);
     const numResults = this.props.results.length;
@@ -31,14 +38,14 @@ class Results extends React.Component {
           <div className="wrapper">
             <div className="group">
               <div className="col-12 minus-margin">
-                <p className="saturn">Edit search</p>
+                <p id="editSearchText" className="saturn">Edit search</p>
               </div>
             </div>
           </div>
           <ResultsSearchForm
             currentlySending={this.props.currentlySending}
             initialValues={this.props.query}
-            onSubmit={this.props.onSubmit}
+            onSubmit={this.onSubmit}
             onChange={this.props.onChange}
             onClear={this.props.onClear}
             value={this.props.query}
@@ -58,7 +65,7 @@ class Results extends React.Component {
                 {!this.props.currentlySending &&
                   <p className="mars">We&apos;ve found {numResults} {(numResults > 1 || numResults === 0) ? 'businesses' : 'business'} {(numResults === 10000) ? capped : null}</p>
                 }
-                <div className="key-line"></div>
+                <div id="resultsKeyLine" className="key-line"></div>
                 {(numResults !== 0 && this.state.listView) &&
                   <ResultsList results={this.props.results} toHighlight={this.props.toHighlight} />
                 }
