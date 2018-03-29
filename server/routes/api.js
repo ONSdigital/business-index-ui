@@ -58,7 +58,10 @@ router.post('/api', authMiddleware, (req, res) => {
     getApiEndpoint(`${urls.API_GW}/bi/${endpoint}`, key)
       .then((response) => {
         logger.info('Returning GET response from API Gateway');
-        return res.send(response);
+        if ('x-total-count' in response.headers) {
+          res.setHeader('X-Total-Count', response.headers['x-total-count']);
+        }
+        return res.send(response.body);
       })
       .catch((err) => {
         logger.info('Error in API Gateway for GET request');
@@ -69,7 +72,7 @@ router.post('/api', authMiddleware, (req, res) => {
     postApiEndpoint(`${urls.API_GW}/bi/${endpoint}`, postBody, key)
       .then((response) => {
         logger.info('Returning POST response from API Gateway');
-        return res.send(response);
+        return res.send(response.body);
       })
       .catch((err) => {
         logger.info('Error in API Gateway for POST request');
@@ -87,6 +90,7 @@ function getApiEndpoint(url, apiKey) {
     },
     uri: url,
     timeout: timeouts.API_GET,
+    resolveWithFullResponse: true,
   };
 
   return rp(options);
@@ -104,6 +108,7 @@ function postApiEndpoint(url, postBody, apiKey) {
     },
     body: JSON.stringify(postBody),
     json: false,
+    resolveWithFullResponse: true,
   };
 
   return rp(options);
