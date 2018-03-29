@@ -29,6 +29,8 @@ const accessAPI = (url, method, auth, body, requestType) => {
 
       // Below is a small workaround for adding headers if we are using fake fetch
       if (process.env.REACT_APP_ENV === 'test') {
+        // Headers are not added on when mocking fetch ourselves so we use this
+        // workaround to add them in (we need the .get method to be available)
         response.headers = new Headers();
       }
       
