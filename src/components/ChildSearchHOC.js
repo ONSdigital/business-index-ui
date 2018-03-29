@@ -36,7 +36,7 @@ export default function withChildSearch(Content) {
           accessAPI(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
             method: 'GET',
             endpoint: `${API_VERSION}/${BUSINESS_ENDPOINT}/${id}`,
-          }), 'business')
+          }), 'business').then(response => response.json())
           .then(json => this.setState({ ...this.state, data: json, finishedLoading: true, isLoading: false }))
           .catch(() => {
             const errorMessage = 'Error: Unable to get child references.';

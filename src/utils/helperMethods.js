@@ -11,6 +11,18 @@ const maxSize = (...args) => args.reduce((a, b) => (b.length > a ? b.length : a)
 
 
 /**
+ * @const numberWithCommas - Make a number more human readable
+ *
+ * Source: https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+ *
+ * @param {Number} x - The number to add commas to
+ *
+ * @return {String}
+ */
+const numberWithCommas = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+
+/**
  * @const formatData - Format references from a Business object into a format
  * that react-table can handle.
  *
@@ -139,5 +151,5 @@ const anyKeyEmpty = (obj) => Object.keys(obj).map(key => (obj[key] === '')).redu
 
 export {
   formatData, handleFormChange, formSelectJson, getHighlightedText,
-  everyKeyMatches, anyKeyEmpty, maxSize,
+  everyKeyMatches, anyKeyEmpty, maxSize, numberWithCommas,
 };

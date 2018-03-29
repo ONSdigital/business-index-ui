@@ -75,6 +75,7 @@ export default function withSearch(Content) {
         query={this.props.query}
         errorMessage={this.state.errorMessage}
         results={this.props.results}
+        capped={this.props.capped}
         toHighlight={this.props.toHighlight}
       />
     )
@@ -84,6 +85,7 @@ export default function withSearch(Content) {
     currentlySending: state.apiSearch.currentlySending,
     query: state.apiSearch.query,
     results: state.apiSearch.results,
+    capped: state.apiSearch.capped,
     errorMessage: state.apiSearch.errorMessage,
     toHighlight: state.apiSearch.toHighlight,
   });
@@ -93,6 +95,7 @@ export default function withSearch(Content) {
     currentlySending: PropTypes.bool.isRequired,
     query: PropTypes.object.isRequired,
     results: PropTypes.array.isRequired,
+    capped: PropTypes.string.isRequired,
     toHighlight: PropTypes.string.isRequired,
     errorMessage: PropTypes.string.isRequired,
   };

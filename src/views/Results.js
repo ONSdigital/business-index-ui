@@ -5,6 +5,7 @@ import Panel from '../patterns/Panel';
 import ResultsTable from '../components/ResultsTable';
 import ResultsList from '../components/ResultsList';
 import ResultsSearchForm from '../components/ResultsSearchForm';
+import { numberWithCommas } from '../utils/helperMethods';
 import { downloadCSV, downloadJSON } from '../utils/export';
 
 /**
@@ -12,6 +13,9 @@ import { downloadCSV, downloadJSON } from '../utils/export';
  * props that Results require (for the search + form). This page is shown once a search
  * has been made (or the user goes directly to /Results). In addition to showing the
  * search results, it shows an edit search form.
+ *
+ * @todo - The Panel for displaying how many results have been capped should be created
+ * as a component
  */
 class Results extends React.Component {
   constructor(props) {
@@ -22,15 +26,15 @@ class Results extends React.Component {
     };
   }
   componentDidMount = () => this.scrollToResults();
-  scrollToResults = () => document.getElementById('homeTitle').scrollIntoView({ block: 'start', behavior: 'smooth' });
   onSubmit = (e) => {
     e.preventDefault();
     // We need to pass e through so the parent e.preventDefault() will work
     this.props.onSubmit(e);
     this.scrollToResults();
   }
+  scrollToResults = () => document.getElementById('homeTitle').scrollIntoView({ block: 'start', behavior: 'smooth' });
   render() {
-    const capped = (<div style={{ marginLeft: '5px' }} className="badge badge--amber">CAPPED</div>);
+    const capped = (<div style={{ marginLeft: '10px', display: 'inline-block' }} className="badge badge--amber">CAPPED</div>);
     const numResults = this.props.results.length;
     return (
       <section>
@@ -63,7 +67,10 @@ class Results extends React.Component {
                   </div>
                 }
                 {!this.props.currentlySending &&
-                  <p className="mars">We&apos;ve found {numResults} {(numResults > 1 || numResults === 0) ? 'businesses' : 'business'} {(numResults === 10000) ? capped : null}</p>
+                  <div style={{ display: 'inline' }}>
+                    <p style={{ display: 'inline' }} className="mars">We&apos;ve found {numberWithCommas(numResults)} {(numResults > 1 || numResults === 0) ? 'businesses' : 'business'}</p>
+                    {(numResults === 10000) ? capped : null}
+                  </div>
                 }
                 <div className="key-line"></div>
                 <Panel id="searchErrorPanel" text={this.props.errorMessage} level="error" show={this.props.showError} close={this.props.closeModal} marginBottom="1rem" />
@@ -79,6 +86,19 @@ class Results extends React.Component {
                     showPagination
                     defaultPageSize={10}
                   />
+                }
+                {(!this.props.currentlySending && this.props.results.length === 10000) &&
+                  <div>
+                    <br />
+                    <div className="panel panel--warn">
+                      <div className="panel__header">
+                        <div className="venus">Warning</div>
+                      </div>
+                      <div className="panel__body">
+                        <div>Your results have been capped at 10,000, from a total of {numberWithCommas(this.props.capped)} results</div>
+                      </div>
+                    </div>
+                  </div>
                 }
               </div>
             </div>
@@ -102,6 +122,7 @@ Results.propTypes = {
   currentlySending: PropTypes.bool.isRequired,
   query: PropTypes.object.isRequired,
   results: PropTypes.array.isRequired,
+  capped: PropTypes.string.isRequired,
   showError: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,

@@ -1,4 +1,3 @@
-// import { browserHistory } from 'react-router';
 import base64 from 'base-64';
 import { SET_AUTH, SET_CONFETTI, USER_LOGOUT, SENDING_REQUEST, SET_ERROR_MESSAGE, SET_USER_DETAILS } from '../constants/LoginConstants';
 import * as errorMessages from '../constants/MessageConstants';
@@ -36,7 +35,8 @@ export const login = (username, password) => (dispatch) => {
   const basicAuth = base64.encode(`${username}:${password}`);
   accessAPI(`${AUTH_URL}/auth/login`, 'POST', `Basic ${basicAuth}`, JSON.stringify({
     username,
-  }), 'login').then(json => {
+  }), 'login').then(response => response.json())
+  .then(json => {
     dispatch(sendingRequest(false));
     dispatch(setAuthState(true));
     dispatch(setConfetti(json.showConfetti));
@@ -59,7 +59,9 @@ export const login = (username, password) => (dispatch) => {
  * accessToken is valid, if not the user will be logged out.
  */
 export const checkAuth = () => (dispatch) => {
-  accessAPI(`${AUTH_URL}/auth/checkToken`, 'POST', sessionStorage.accessToken, {}, 'checkAuth').then(json => {
+  accessAPI(`${AUTH_URL}/auth/checkToken`, 'POST', sessionStorage.accessToken, {}, 'checkAuth')
+  .then(response => response.json())
+  .then(json => {
     dispatch(setAuthState(true));
     if (window.location.pathname === '/') forwardTo('/Home');
     dispatch(setUserState({
@@ -79,7 +81,9 @@ export const checkAuth = () => (dispatch) => {
  */
 export const logout = () => (dispatch) => {
   dispatch(sendingRequest(true));
-  accessAPI(`${AUTH_URL}/auth/logout`, 'POST', sessionStorage.accessToken, {}, 'logout').then(() => {
+  accessAPI(`${AUTH_URL}/auth/logout`, 'POST', sessionStorage.accessToken, {}, 'logout')
+  .then(response => response.json())
+  .then(() => {
     dispatch(setAuthState(false));
     sessionStorage.clear();
     forwardTo('/');

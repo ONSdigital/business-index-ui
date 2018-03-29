@@ -10,9 +10,9 @@ const setFormattedQuery = (type, query) => ({ type, query });
 const sendingRequest = (type, sending) => ({ type, sending });
 const setErrorMessage = (type, message) => ({ type, message });
 
-export const resetResults = () => ({ type: SET_RESULTS, results: [] });
+export const resetResults = () => ({ type: SET_RESULTS, results: [], capped: '' });
 export const setToHighlight = (toHighlight) => ({ type: SET_TO_HIGHLIGHT, toHighlight });
-export const setResults = (type, results) => ({ type, results });
+export const setResults = (type, results, capped) => ({ type, results, capped });
 export const setQuery = (type, query) => ({ type, query });
 
 /**
@@ -26,7 +26,7 @@ export const setQuery = (type, query) => ({ type, query });
 export const search = (query, redirect) => (dispatch) => {
   dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, ''));
   dispatch(sendingRequest(SENDING_SEARCH_REQUEST, true));
-  dispatch(setResults(SET_RESULTS, []));
+  dispatch(setResults(SET_RESULTS, [], ''));
   dispatch(setQuery(SET_QUERY, query));
   const formattedQuery = formQuery(query);
   dispatch(setFormattedQuery(SET_FORMATTED_QUERY, formattedQuery));
@@ -34,17 +34,26 @@ export const search = (query, redirect) => (dispatch) => {
   accessAPI(REROUTE_URL, 'POST', sessionStorage.accessToken, JSON.stringify({
     method: 'GET',
     endpoint: `${API_VERSION}/${formattedQuery}`,
-  }), 'search').then(json => {
+  }), 'search').then(response =>
+    response.json().then(json => ({ json,
+      headers: {
+        'X-Total-Count': response.headers.get('X-Total-Count'),
+      },
+    })),
+  ).then(resp => {
+    const json = resp.json;
+    const capped = (resp.headers['X-Total-Count'] === null)
+    ? 'Error: Unable to get number of capped results.' : resp.headers['X-Total-Count'].toString();
     dispatch(sendingRequest(SENDING_SEARCH_REQUEST, false));
     // This is a workaround for the API returning 200 {} for no results, should be 404
     if (Object.keys(json).length === 0 && json.constructor === Object) {
       dispatch(setErrorMessage(SET_SEARCH_ERROR_MESSAGE, '404: No results found.'));
     } else if (Object.keys(json).length > 0 && json.constructor === Object) {
       // Wrap the results in an array as we only get {} from the API
-      dispatch(setResults(SET_RESULTS, [json]));
+      dispatch(setResults(SET_RESULTS, [json], capped));
       if (redirect) history.push('/Results');
     } else {
-      dispatch(setResults(SET_RESULTS, json));
+      dispatch(setResults(SET_RESULTS, json, capped));
       if (redirect) history.push('/Results');
     }
   }).catch(msg => {

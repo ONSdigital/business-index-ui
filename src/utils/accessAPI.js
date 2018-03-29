@@ -26,7 +26,7 @@ const accessAPI = (url, method, auth, body, requestType) => {
       // We don't need to return the promise below, but it gets rid of an ESLint error
       // relating to not using a 'break' after each case
       switch (response.status) {
-        case 200: return resolve(response.json());
+        case 200: return resolve(response);
         case 400: return reject('Malformed query. Please review your input parameters.');
         case 404: return reject('Not found. Please review your input parameters.');
         case 401: return reject('Authentication problem. Please ensure you are logged in.');
