@@ -35,13 +35,11 @@ class Template extends React.Component {
       <section>
         {confetti}
         <Header location={location} />
-        <section>
-          {this.props.children}
-        </section>
+        {this.props.children}
         <Footer />
       </section>
     );
-  }
+  };
 }
 
 Template.propTypes = {

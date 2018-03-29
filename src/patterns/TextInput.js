@@ -13,15 +13,18 @@ class TextInput extends React.Component {
       ? {}
       : { onChange: this.props.onChange, value: this.props.value };
     return (
-      <div className={`field u-mb-${this.props.size}`}>
-        <label className="label" htmlFor={this.props.id}>{this.props.label}</label>
+      <div className={`field ${this.props.size}`}>
+        {(this.props.legend !== null) &&
+          <legend className="neptune">{this.props.legend}</legend>
+        }
+        <label className={this.props.labelClass} htmlFor={this.props.id}>{this.props.label}</label>
         <input
           id={this.props.id}
           style={width}
           {...conditionalProps}
           autoFocus={this.props.autoFocus}
           ref={ip => (this.textInput = ip)}
-          className={`input input--text input-type__input bi-${this.props.type}-input`}
+          className={`input input--text input-type__input ${this.props.type}`}
           type={this.props.type}
         />
       </div>
@@ -33,16 +36,21 @@ TextInput.defaultProps = {
   autoFocus: false,
   value: '',
   onChange: null,
+  legend: null,
+  labelClass: 'label',
+  size: '',
 };
 
 TextInput.propTypes = {
   id: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
+  size: PropTypes.string,
+  labelClass: PropTypes.string,
   onChange: PropTypes.func,
   value: PropTypes.string,
   autoFocus: PropTypes.bool,
+  legend: PropTypes.string,
 };
 
 export default TextInput;

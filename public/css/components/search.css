@@ -23,7 +23,7 @@
 .bi-sic-input {
     width: 12.57rem;
     float: left;
-    color: #999999;
+    color: #222222;
 }
 
 .second {
@@ -35,7 +35,16 @@
   height: 45px;
 }
 
-/* BI Edit search */
+.label__description {
+  padding-bottom: 4px;
+}
+
+#middle {
+    height:500px;
+    width:200px;
+    border:2px solid red;}
+
+/* BI Edit search right panel */
 
 .edit-search {
   background-color: #E4E8EB;
@@ -63,39 +72,77 @@
 }
 
 .edit {
-  width: 100% !important;
+    width: 100% !important;
 }
 
 .float {
-  display: inline-block;
+    display: inline-block;
 }
 
 .float-right {
-  float: right;
-  margin-top: 9px;
+    float: right;
+    margin-top: 9px;
 }
 
+/* BI Edit search right landscape top */
 
-/* SBR Primary search page */
-
-.label__description {
-  padding-bottom: 0.5rem;
+.landscape-search {
+    background-color: #E4E8EB;
+    height: auto;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
-/* SBR search header */
-
-.search_bar {
-  background-color: #E4E8EB;
-  padding: 1rem 0 0 0;
+.input-margin {
+    margin-bottom: 3px;
+    margin-top: 29px;
 }
 
-.sbr-search-input {
-  width: 100%;
+.input-margin-sml {
+    margin-bottom: 3px;
+    margin-top: 6px;
 }
 
-.three-col-button {
-  width: 100%;
-  padding: 0.5456rem 0.8889rem 0.5456rem 0.8889rem;
-  margin-top: 1.75rem;
+.input-margin-sic {
+    margin-bottom: 2px;
+}
+
+.bi-search-input-wide {
+    width: 100%;
+    min-height: 45px;
+}
+
+.sml {
+    margin-bottom: .25em;
+}
+
+.bi-sic-input-edit-landscape {
+    width: 48%;
+    float: left;
+    color: #222222;
+    min-height: 45px;
+}
+
+.input--checkbox {
+    background-color: #ffffff;
+}
+
+.btn--secondary.btn--border {
+    padding: .75rem 2.5rem;
+    margin-left: 12px;
+}
+
+.btn-wide {
+    width: 100%;
+}
+.minus-margin {
+  margin-bottom: -1rem;
+}
+
+@media only screen and (max-width: 1279px) {
+
+.bi-sic-input-edit-landscape {
+    width: 47.4%;
+}
 
 }

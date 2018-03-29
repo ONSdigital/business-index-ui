@@ -47,7 +47,7 @@ class Login extends React.Component {
                 <p className="forgot-password">
                   <LinkButton id="forgotPasswordLink" text="Forgot password?" onClick={() => this.setState({ ...this.state, showForgotPass: true })} />
                 </p>
-                <Button id="loginButton" type="submit" size="thin" text="Sign in" onClick={this.onSubmit} ariaLabel="Sign In Button" loading={this.props.currentlySending} />
+                <Button className="btn btn--primary venus btn--wide" id="loginButton" type="submit" text="Sign in" onClick={this.onSubmit} ariaLabel="Sign In Button" loading={this.props.currentlySending} />
                 <Panel id="forgotPassPanel" text={forgotPassMsg} level="info" show={this.state.showForgotPass} close={this.closeForgotPassModal} marginBottom="1rem" />
                 <Panel id="loginErrorPanel" text={this.props.errorMessage} level="info" show={this.state.showError && this.props.errorMessage !== ''} close={this.closeErrorModal} marginBottom="1rem" />
               </form>
