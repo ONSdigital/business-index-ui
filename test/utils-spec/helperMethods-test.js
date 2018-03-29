@@ -1,6 +1,6 @@
 import {
   maxSize, formatData, everyKeyMatches, handleFormChange,
-  formSelectJson, anyKeyEmpty
+  formSelectJson, anyKeyEmpty, numberWithCommas
 } from '../../src/utils/helperMethods';
 
 describe("maxSize", () => {
@@ -167,5 +167,27 @@ describe("anyKeyEmpty", () => {
   it("returns false if no keys are empty", () => {
     const result = anyKeyEmpty({ a: '1', b: '2', c: '3' });
     expect(result).toBe(false);
+  });
+});
+
+describe("numberWithCommas", () => {
+  it("returns a small number with no commas", () => {
+    const result = numberWithCommas(100);
+    expect(result).toBe('100');
+  });
+
+  it("returns a large number with commas", () => {
+    const result = numberWithCommas(100000);
+    expect(result).toBe('100,000');
+  });
+
+  it("returns a very large number with commas", () => {
+    const result = numberWithCommas(100000000);
+    expect(result).toBe('100,000,000');
+  });
+
+  it("handles being passed a string", () => {
+    const result = numberWithCommas('Error');
+    expect(result).toBe('Error');
   });
 });
