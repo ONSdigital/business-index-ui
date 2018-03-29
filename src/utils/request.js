@@ -18,7 +18,7 @@ const fakeFetch = (url, options) => {
     case 'logout': return formPromise(() => ({})); // We just need a 200 OK for logging out
     case 'apiInfo': return formPromise(() => ({ version: '0.0.1', lastUpdate: new Date().toDateString() }));
     case 'uiInfo': return formPromise(() => ({ version: '0.0.1', lastUpdate: new Date().toDateString() }));
-    case 'search': return formPromise(() => returnSearch());
+    case 'search': return formPromise(() => Promise.resolve(returnSearch()));
     case 'business': return formPromise(() => returnBusiness());
     default: return 'Error';
   }

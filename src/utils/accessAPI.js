@@ -25,6 +25,13 @@ const accessAPI = (url, method, auth, body, requestType) => {
     }).then((response) => {
       // We don't need to return the promise below, but it gets rid of an ESLint error
       // relating to not using a 'break' after each case
+      // response.headers.append('X-Total-Count', '100');
+
+      // Below is a small workaround for adding headers if we are using fake fetch
+      if (process.env.REACT_APP_ENV === 'test') {
+        response.headers = new Headers();
+      }
+      
       switch (response.status) {
         case 200: return resolve(response);
         case 400: return reject('Malformed query. Please review your input parameters.');

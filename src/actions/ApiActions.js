@@ -35,7 +35,8 @@ export const search = (query, redirect) => (dispatch) => {
     method: 'GET',
     endpoint: `${API_VERSION}/${formattedQuery}`,
   }), 'search').then(response =>
-    response.json().then(json => ({ json,
+    response.json().then(json => ({
+      json,
       headers: {
         'X-Total-Count': response.headers.get('X-Total-Count'),
       },
