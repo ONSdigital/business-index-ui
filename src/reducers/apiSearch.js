@@ -7,6 +7,7 @@ const initialState = {
   formattedQuery: '',
   currentlySending: false,
   errorMessage: '',
+  capped: '',
 };
 
 /**
@@ -23,6 +24,7 @@ const searchReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         ...state,
         results: action.results,
+        capped: action.capped,
       });
     case SET_TO_HIGHLIGHT:
       return Object.assign({}, state, {

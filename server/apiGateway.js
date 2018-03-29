@@ -68,7 +68,10 @@ app.get('/bi/*', (req, res) => {
     getApiEndpoint(`${urls.API_URL}${url}`)
     .then((response) => {
       logger.info('Returning re-routed GET API request');
-      return res.send(response);
+      if ('x-total-count' in response.headers) {
+        res.setHeader('x-total-count', response.headers['x-total-count']);
+      }
+      return res.send(response.body);
     })
     .catch((error) => {
       logger.error('Error rerouting GET request');
@@ -90,7 +93,7 @@ app.post('/bi/*', (req, res) => {
     postApiEndpoint(`${urls.API_URL}${url}`, postBody)
       .then((response) => {
         logger.info('Returning re-routed POST API request');
-        return res.send(response);
+        return res.send(response.body);
       })
       .catch((error) => {
         logger.error('Error rerouting POST request');
@@ -114,7 +117,8 @@ function getApiEndpoint(url) {
   const options = {
     method: 'GET',
     uri: url,
-    timeout: timeouts.API_GET
+    timeout: timeouts.API_GET,
+    resolveWithFullResponse: true
   };
 
   return rp(options);
@@ -128,6 +132,7 @@ function postApiEndpoint(url, postBody) {
     timeout: timeouts.API_POST,
     headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
     body: JSON.stringify(postBody), // '{"updatedBy":"name","vars":{"ent_name":"name"}}',
+    resolveWithFullResponse: true,
     json: false
   };
 
