@@ -1,17 +1,14 @@
-import config from '../config/export';
 import { convertLegalStatus, convertTradingStatus, convertTurnover, convertEmploymentBands, pipe } from './helperMethods';
 
-const { FILE_NAME } = config;
-
 /**
- * @const exportCSV - Create the CSV string
+ * @const formCSV - Create the CSV string
  *
  * @param  {string} header - The header to use in the CSV
  * @param  {Array} results - The results to save in a CSV file
  *
  * @return {string} A string of all the results in CSV format
  */
-const exportCSV = (header, results) => {
+const formCSV = (header, results) => {
   const cols = ['id', 'businessName', 'postCode', 'industryCode', 'legalStatus', 'tradingStatus', 'turnover', 'employmentBands', 'companyNo'];
   const rows = results.map(
     leu => cols.map(
@@ -19,48 +16,6 @@ const exportCSV = (header, results) => {
     ).join('').concat('\r\n'), // Make into a string and add tab + newline at the end
   );
   return `${header}\r\n`.concat(rows.join(''));
-};
-
-
-/**
- * @const downloadCSV - Download the results as a CSV file
- *
- * @param {Array} results - The results to save in a CSV file
- */
-const downloadCSV = (results) => {
-  Promise.all(convertBands(results)).then(res => {
-    const header = 'UBRN,Business Name,PostCode,Industry Code,Legal Status,Trading Status,Turnover,Employment,Company Reference Number';
-    const csv = exportCSV(header, res);
-    const uri = `data:text/csv;charset=utf-8,${escape(csv)}`;
-    const link = document.createElement('a');
-    link.href = uri;
-    link.download = `${FILE_NAME}.csv`;
-    link.click();
-  });
-};
-
-
-/**
- * @const downloadJSON - Download the results as a JSON file
- *
- * @param {Array} results - The results to save in a JSON file
- */
-const downloadJSON = (results) => {
-  Promise.all(convertBands(results)).then(res => {
-    // There is an issue with a.click() when the JSON string to append to the DOM
-    // is too long, so we use a workaround from below.
-    // https://stackoverflow.com/a/19328891
-    const a = document.createElement('a');
-    document.body.appendChild(a);
-    a.style = 'display: none';
-    const json = JSON.stringify(res, null, 2);
-    const blob = new Blob([json], { type: 'octet/stream' });
-    const url = window.URL.createObjectURL(blob);
-    a.href = url;
-    a.download = `${FILE_NAME}.json`;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  });
 };
 
 
@@ -90,4 +45,4 @@ const transformBusiness = (business) => new Promise((resolve) => resolve(pipe(
   convertLegalStatus, convertTradingStatus, convertTurnover, convertEmploymentBands,
 )(business)));
 
-export { exportCSV, downloadCSV, downloadJSON };
+export { formCSV, convertBands, transformBusiness };

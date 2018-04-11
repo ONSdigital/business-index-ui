@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { exportCSV, exportJSON } from '../actions/ExportActions';
 import Button from '../patterns/Button';
 import Panel from '../patterns/Panel';
 import ResultsTable from '../components/ResultsTable';
 import ResultsList from '../components/ResultsList';
 import ResultsSearchForm from '../components/ResultsSearchForm';
 import { numberWithCommas } from '../utils/helperMethods';
-import { downloadCSV, downloadJSON } from '../utils/export';
 
 /**
  * @class Results - Results will be used with the SearchHOC which provides the correct
@@ -106,9 +107,9 @@ class Results extends React.Component {
               <div>
                 <div className="key-line-download"></div>
                 <h3 className="saturn">Download your search results</h3>
-                <Button className="btn btn--primary venus btn--wide" id="downloadCsvButton" type="submit" text="CSV" onClick={() => downloadCSV(this.props.results)} ariaLabel="Download CSV Button" loading={false} />
+                <Button className="btn btn--primary venus btn--wide" id="downloadCsvButton" type="submit" text="CSV" onClick={() => this.props.dispatch(exportCSV(this.props.results))} ariaLabel="Download CSV Button" loading={this.props.formingCsv} />
                 &nbsp;
-                <Button className="btn btn--primary venus btn--wide" id="downloadJsonButton" type="submit" text="JSON" onClick={() => downloadJSON(this.props.results)} ariaLabel="Download JSON Button" loading={false} />
+                <Button className="btn btn--primary venus btn--wide" id="downloadJsonButton" type="submit" text="JSON" onClick={() => this.props.dispatch(exportJSON(this.props.results))} ariaLabel="Download JSON Button" loading={this.props.formingJson} />
               </div>
             }
           </div>
@@ -130,6 +131,16 @@ Results.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   toHighlight: PropTypes.string.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  formingCsv: PropTypes.bool.isRequired,
+  formingJson: PropTypes.bool.isRequired,
 };
 
-export default Results;
+const select = (state) => ({
+  formingCsv: state.exportResults.formingCsv,
+  formingJson: state.exportResults.formingJson,
+  csvErrorMessage: state.exportResults.csvErrorMessage,
+  jsonErrorMessage: state.exportResults.jsonErrorMessage,
+});
+
+export default connect(select)(Results);

@@ -79,7 +79,7 @@ const returnAuthJson = () => ({
  *
  */
 const returnSearch = () => {
-  return Array.from({ length: 5000 }, () => returnBusiness());
+  return Array.from({ length: Math.floor(Math.random() * 10000) + 5 }, () => returnBusiness());
 };
 
 export { formPromise, returnSearch, returnAuthJson, returnBusiness };
