@@ -1,4 +1,13 @@
 import React from 'react';
+import { employmentBands, legalStatusBands, tradingStatusBands, turnoverBands } from './convertBands';
+
+const _pipe = (f, g) => (...args) => g(f(...args));
+const pipe = (...fns) => fns.reduce(_pipe);
+
+const convertLegalStatus = (x) => ({ ...x, legalStatus: legalStatusBands[x.legalStatus] });
+const convertTradingStatus = (x) => ({ ...x, tradingStatus: tradingStatusBands[x.tradingStatus] });
+const convertTurnover = (x) => ({ ...x, turnover: turnoverBands[x.turnover] });
+const convertEmploymentBands = (x) => ({ ...x, employmentBands: employmentBands[x.employmentBands] });
 
 /**
  * @const maxSize - Given any number of arrays, return the size of the largest
@@ -151,5 +160,6 @@ const anyKeyEmpty = (obj) => Object.keys(obj).map(key => (obj[key] === '')).redu
 
 export {
   formatData, handleFormChange, formSelectJson, getHighlightedText,
-  everyKeyMatches, anyKeyEmpty, maxSize, numberWithCommas,
+  everyKeyMatches, anyKeyEmpty, maxSize, numberWithCommas, pipe,
+  convertLegalStatus, convertTradingStatus, convertTurnover, convertEmploymentBands,
 };
