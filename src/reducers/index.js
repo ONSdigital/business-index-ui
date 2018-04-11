@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
 import login from './login';
 import apiSearch from './apiSearch';
+import exportResults from './exportResults';
 import { USER_LOGOUT } from '../constants/LoginConstants';
 
-const appReducer = combineReducers({ login, apiSearch });
+const appReducer = combineReducers({ login, apiSearch, exportResults });
 
 /**
  * @const rootReducer - Our root redux reducer
