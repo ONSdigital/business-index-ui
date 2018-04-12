@@ -1,5 +1,21 @@
 import { convertLegalStatus, convertTradingStatus, convertTurnover, convertEmploymentBands, pipe } from './helperMethods';
 
+
+/**
+ * @const transformBusiness - Convert the bands of each business in an array. We use
+ * the pipe helper method to pipe the return value of one function into the
+ * next function, so we can apply a sequence of transformations immutably.
+ *
+ * @param {Object} business - An array of business objects
+ *
+ * @return {Prmoise} - The promise which resolves to a business object with
+ * transformations applied
+ */
+const transformBusiness = (business) => new Promise((resolve) => resolve(pipe(
+  convertLegalStatus, convertTradingStatus, convertTurnover, convertEmploymentBands,
+)(business)));
+
+
 /**
  * @const formCSV - Create the CSV string
  *
@@ -30,19 +46,5 @@ const formCSV = (header, results) => {
  */
 const convertBands = (results) => results.map(x => transformBusiness(x));
 
-
-/**
- * @const transformBusiness - Convert the bands of each business in an array. We use
- * the pipe helper method to pipe the return value of one function into the
- * next function, so we can apply a sequence of transformations immutably.
- *
- * @param {Object} business - An array of business objects
- *
- * @return {Prmoise} - The promise which resolves to a business object with
- * transformations applied
- */
-const transformBusiness = (business) => new Promise((resolve) => resolve(pipe(
-  convertLegalStatus, convertTradingStatus, convertTurnover, convertEmploymentBands,
-)(business)));
 
 export { formCSV, convertBands, transformBusiness };
