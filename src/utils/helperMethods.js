@@ -1,4 +1,38 @@
 import React from 'react';
+import { employmentBands, legalStatusBands, tradingStatusBands, turnoverBands } from './convertBands';
+
+/**
+ * @const _pipe - Given two functions, f and g and curried arguments (...args), pass
+ * the result of f(...args) into g, returning the resulting function
+ *
+ * @param {function} f - The first function
+ * @param {function} g - The second function
+ *
+ * @return {function} - Return a function composition of calling g with the result
+ * of f(...args)
+ */
+const _pipe = (f, g) => (...args) => g(f(...args));
+
+/**
+ * @const pipe - Given any number of functions, run those functions on a curried
+ * input.
+ *
+ * e.g. pipe(addOne, multiplyBy5)(2)
+ *
+ * The above will return 15 (assuming addOne and multiplyBy5 are implemented)
+ *
+ * @param {function} fns - Any number of functions
+ *
+ * @return {Any} - The result of running the provided functions on an argument
+ */
+const pipe = (...fns) => fns.reduce(_pipe);
+
+// Below are immutable transformations on a business object to convert the bands
+const convertLegalStatus = (x) => ({ ...x, legalStatus: legalStatusBands[x.legalStatus] });
+const convertTradingStatus = (x) => ({ ...x, tradingStatus: tradingStatusBands[x.tradingStatus] });
+const convertTurnover = (x) => ({ ...x, turnover: turnoverBands[x.turnover] });
+const convertEmploymentBands = (x) => ({ ...x, employmentBands: employmentBands[x.employmentBands] });
+
 
 /**
  * @const maxSize - Given any number of arrays, return the size of the largest
@@ -151,5 +185,6 @@ const anyKeyEmpty = (obj) => Object.keys(obj).map(key => (obj[key] === '')).redu
 
 export {
   formatData, handleFormChange, formSelectJson, getHighlightedText,
-  everyKeyMatches, anyKeyEmpty, maxSize, numberWithCommas,
+  everyKeyMatches, anyKeyEmpty, maxSize, numberWithCommas, pipe,
+  convertLegalStatus, convertTradingStatus, convertTurnover, convertEmploymentBands,
 };
