@@ -17,6 +17,8 @@ import { numberWithCommas } from '../utils/helperMethods';
  *
  * @todo - The Panel for displaying how many results have been capped should be created
  * as a component
+ *
+ * @todo - Add in error panels for csv/json download
  */
 class Results extends React.Component {
   constructor(props) {
