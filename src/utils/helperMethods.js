@@ -28,10 +28,10 @@ const _pipe = (f, g) => (...args) => g(f(...args));
 const pipe = (...fns) => fns.reduce(_pipe);
 
 // Below are immutable transformations on a business object to convert the bands
-const convertLegalStatus = (x) => ({ ...x, legalStatus: legalStatusBands[x.legalStatus] });
-const convertTradingStatus = (x) => ({ ...x, tradingStatus: tradingStatusBands[x.tradingStatus] });
-const convertTurnover = (x) => ({ ...x, turnover: turnoverBands[x.turnover] });
-const convertEmploymentBands = (x) => ({ ...x, employmentBands: employmentBands[x.employmentBands] });
+const convertLegalStatus = (x) => ({ ...x, LegalStatus: legalStatusBands[x.LegalStatus] });
+const convertTradingStatus = (x) => ({ ...x, TradingStatus: tradingStatusBands[x.TradingStatus] });
+const convertTurnover = (x) => ({ ...x, Turnover: turnoverBands[x.Turnover] });
+const convertEmploymentBands = (x) => ({ ...x, EmploymentBands: employmentBands[x.EmploymentBands] });
 
 
 /**
