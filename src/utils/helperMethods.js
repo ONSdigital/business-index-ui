@@ -65,19 +65,19 @@ const numberWithCommas = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',
  * @return {Array} - An array with an object for each table row
  */
 const formatData = (business) => {
-  const largestRef = maxSize(business.vatRefs, business.payeRefs, [business.companyNo]);
+  const largestRef = maxSize(business.VatRefs, business.PayeRefs, [business.CompanyNo]);
   return Array.from({ length: largestRef }, (a, b) => {
     if (b === 0) {
       return {
-        companyNo: (business.companyNo !== undefined) ? business.companyNo : '',
-        vatRefs: (business.vatRefs[b] !== undefined) ? business.vatRefs[b] : '',
-        payeRefs: (business.payeRefs[b] !== undefined) ? business.payeRefs[b] : '',
+        CompanyNo: (business.CompanyNo !== undefined) ? business.CompanyNo : '',
+        VatRefs: (business.VatRefs[b] !== undefined) ? business.VatRefs[b] : '',
+        PayeRefs: (business.PayeRefs[b] !== undefined) ? business.PayeRefs[b] : '',
       };
     }
     return {
-      companyNo: '',
-      vatRefs: (business.vatRefs[b] !== undefined) ? business.vatRefs[b] : '',
-      payeRefs: (business.payeRefs[b] !== undefined) ? business.payeRefs[b] : '',
+      CompanyNo: '',
+      VatRefs: (business.vatRefs[b] !== undefined) ? business.VatRefs[b] : '',
+      PayeRefs: (business.PayeRefs[b] !== undefined) ? business.PayeRefs[b] : '',
     };
   });
 };
@@ -152,7 +152,7 @@ const formSelectJson = (json) => Object.keys(json).map(key => ({ label: `${key} 
 const getHighlightedText = (row, higlight) => {
   // Split text on higlight term, include term itself into parts, ignore case
   try {
-    const parts = row.businessName.split(new RegExp(`(${higlight})`, 'gi'));
+    const parts = row.BusinessName.split(new RegExp(`(${higlight})`, 'gi'));
     // We can use the array index as a key as we already use the UBRN as part of the key
     /* eslint react/no-array-index-key: "off" */
     return (
@@ -168,7 +168,7 @@ const getHighlightedText = (row, higlight) => {
       </span>);
   } catch (e) {
     // Catch the invalid regular expressions
-    return (<em key={row.id}>{row.businessName}</em>);
+    return (<em key={row.id}>{row.BusinessName}</em>);
   }
 };
 

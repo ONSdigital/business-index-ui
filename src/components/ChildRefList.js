@@ -16,7 +16,7 @@ const ChildRefList = (props) => {
     const toggle = document.getElementById(`${props.data.id}-toggleLink`);
     toggle.style.transform = (toggle.style.transform === 'rotate(-90deg)') ? '' : 'rotate(-90deg)';
     props.fetchData();
-  }
+  };
   return (
     <div id="outerExpand" className="guidance js-details">
       <a className="mars" style={{ padding: '5px', cursor: 'pointer', backgroundColor: ((props.finishedLoading) ? '#4263c2' : ''), color: ((props.finishedLoading) ? 'white' : '') }} onClick={() => showRefs()}>
@@ -29,15 +29,15 @@ const ChildRefList = (props) => {
           <div className="guidance__content new">
             <table>
               <tbody>
-              {(props.data.companyNo !== '') &&
-                <tr><th className="table-grey-text-reveal">CH</th><td>{props.createChLink(props.data.companyNo)}</td></tr>
-              }
-              { props.data.vatRefs.map(v => {
-                return (<tr key={v}><th className="table-grey-text-reveal">VAT</th><td>{v}</td></tr>);
-              }) }
-              { props.data.payeRefs.map(p => {
-                return (<tr key={p}><th className="table-grey-text-reveal">PAYE</th><td>{p}</td></tr>);
-              }) }
+                {(props.data.companyNo !== '') &&
+                  <tr><th className="table-grey-text-reveal">CH</th><td>{props.createChLink(props.data.CompanyNo)}</td></tr>
+                }
+                { props.data.VatRefs.map(v => {
+                  return (<tr key={v}><th className="table-grey-text-reveal">VAT</th><td>{v}</td></tr>);
+                }) }
+                { props.data.PayeRefs.map(p => {
+                  return (<tr key={p}><th className="table-grey-text-reveal">PAYE</th><td>{p}</td></tr>);
+                }) }
               </tbody>
             </table>
           </div>
@@ -45,12 +45,11 @@ const ChildRefList = (props) => {
       </div>
     </div>
   );
-}
+};
 
 ChildRefList.propTypes = {
   error: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string.isRequired,
-  closeModal: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
   finishedLoading: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,

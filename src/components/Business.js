@@ -32,20 +32,20 @@ class Business extends React.Component {
   render = () => {
     const ChildList = withChildSearch(ChildRefList);
     const business = this.props.business;
-    const description = (industryCodeDescription[business.industryCode] === undefined)
-    ? 'No industry code description found' : industryCodeDescription[business.industryCode];
+    const description = (industryCodeDescription[business.IndustryCode] === undefined)
+    ? 'No industry code description found' : industryCodeDescription[business.IndustryCode];
     return (
       <div className="search-item-container">
-        <h3 className="saturn sml-margin">{(this.props.toHighlight !== '') ? getHighlightedText(business, this.props.toHighlight) : business.businessName}</h3>
+        <h3 className="saturn sml-margin">{(this.props.toHighlight !== '') ? getHighlightedText(business, this.props.toHighlight) : business.BusinessName}</h3>
         <table className="mars">
           <tbody>
             <tr><th className="table-grey-text">UBRN</th><td>{business.id}</td></tr>
-            <tr><th className="table-grey-text">Post code</th><td>{business.postCode}</td></tr>
-            <tr><th className="table-grey-text">Industry</th><td>{business.industryCode} – {description}</td></tr>
-            <tr><th className="table-grey-text">Trading status</th><td>{tradingStatusBands[business.tradingStatus]}</td></tr>
-            <tr><th className="table-grey-text">Legal status</th><td>{legalStatusBands[business.legalStatus]}</td></tr>
-            <tr><th className="table-grey-text">Employment band</th><td>{employmentBands[business.employmentBands]}</td></tr>
-            <tr><th className="table-grey-text">Turnover band</th><td>{turnoverBands[business.turnover]}</td></tr>
+            <tr><th className="table-grey-text">Post code</th><td>{business.PostCode}</td></tr>
+            <tr><th className="table-grey-text">Industry</th><td>{business.IndustryCode} – {description}</td></tr>
+            <tr><th className="table-grey-text">Trading status</th><td>{tradingStatusBands[business.TradingStatus]}</td></tr>
+            <tr><th className="table-grey-text">Legal status</th><td>{legalStatusBands[business.LegalStatus]}</td></tr>
+            <tr><th className="table-grey-text">Employment band</th><td>{employmentBands[business.EmploymentBands]}</td></tr>
+            <tr><th className="table-grey-text">Turnover band</th><td>{turnoverBands[business.Turnover]}</td></tr>
           </tbody>
         </table>
         <ChildList id={business.id} />
