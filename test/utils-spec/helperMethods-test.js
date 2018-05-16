@@ -15,14 +15,14 @@ describe("maxSize", () => {
 describe("formatData", () => {
   it("creates the correct data format for react-table (single CH)", () => {
     const business = {
-      companyNo: '123456AB',
-      vatRefs: [],
-      payeRefs: [],
+      CompanyNo: '123456AB',
+      VatRefs: [],
+      PayeRefs: [],
     }; 
     const correctFormat = [{
-      companyNo: '123456AB',
-      vatRefs: '',
-      payeRefs: '',
+      CompanyNo: '123456AB',
+      VatRefs: '',
+      PayeRefs: '',
     }];
     const formatted = formatData(business);
     expect(JSON.stringify(correctFormat)).toBe(JSON.stringify(formatted));
@@ -30,14 +30,14 @@ describe("formatData", () => {
 
   it("creates the correct data format for react-table (no CH)", () => {
     const business = {
-      companyNo: '',
-      vatRefs: [],
-      payeRefs: [],
+      CompanyNo: '',
+      VatRefs: [],
+      PayeRefs: [],
     }; 
     const correctFormat = [{
-      companyNo: '',
-      vatRefs: '',
-      payeRefs: '',
+      CompanyNo: '',
+      VatRefs: '',
+      PayeRefs: '',
     }];
     const formatted = formatData(business);
     expect(JSON.stringify(correctFormat)).toBe(JSON.stringify(formatted));
@@ -45,18 +45,18 @@ describe("formatData", () => {
 
   it("creates the correct data format for react-table (multiple VatRefs)", () => {
     const business = {
-      companyNo: '123456AB',
-      vatRefs: ['123', '456'],
-      payeRefs: [234],
+      CompanyNo: '123456AB',
+      VatRefs: ['123', '456'],
+      PayeRefs: [234],
     };
     const correctFormat = [{
-      companyNo: '123456AB',
-      vatRefs: '123',
-      payeRefs: 234,
+      CompanyNo: '123456AB',
+      VatRefs: '123',
+      PayeRefs: 234,
     },{
-      companyNo: '',
-      vatRefs: '456',
-      payeRefs: '',
+      CompanyNo: '',
+      VatRefs: '456',
+      PayeRefs: '',
     }];
     const formatted = formatData(business);
     expect(JSON.stringify(correctFormat)).toBe(JSON.stringify(formatted));
@@ -64,18 +64,18 @@ describe("formatData", () => {
 
   it("creates the correct data format for react-table (multiple PayeRefs)", () => {
     const business = {
-      companyNo: '123456AB',
-      vatRefs: ['123'],
-      payeRefs: [234, 567],
+      CompanyNo: '123456AB',
+      VatRefs: ['123'],
+      PayeRefs: [234, 567],
     };
     const correctFormat = [{
-      companyNo: '123456AB',
-      vatRefs: '123',
-      payeRefs: 234,
+      CompanyNo: '123456AB',
+      VatRefs: '123',
+      PayeRefs: 234,
     },{
-      companyNo: '',
-      vatRefs: '',
-      payeRefs: 567,
+      CompanyNo: '',
+      VatRefs: '',
+      PayeRefs: 567,
     }];
     const formatted = formatData(business);
     expect(JSON.stringify(correctFormat)).toBe(JSON.stringify(formatted));

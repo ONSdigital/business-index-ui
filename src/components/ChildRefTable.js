@@ -26,18 +26,18 @@ class ChildRefTable extends React.Component {
           columns={[
             {
               Header: 'Company Number',
-              accessor: 'companyNo',
+              accessor: 'CompanyNo',
               Cell: row => (
                 <a target="_blank" rel="noopener noreferrer" href={`http://data.companieshouse.gov.uk/doc/company/${row.value}`}>{row.value}</a>
               ),
             },
             {
               Header: 'VAT References',
-              accessor: 'vatRefs',
+              accessor: 'VatRefs',
             },
             {
               Header: 'PAYE References',
-              accessor: 'payeRefs',
+              accessor: 'PayeRefs',
             },
           ]}
           pageSize={formattedData.length}
@@ -47,7 +47,7 @@ class ChildRefTable extends React.Component {
           showPaginationBottom={false}
         />
         <br />
-        <h4>Industry Code [{business.industryCode}]: {description}</h4>
+        <h4>Industry Code [{business.IndustryCode}]: {description}</h4>
         <Panel id="refsErrorPanel" text={this.props.errorMessage} level="error" show={this.props.error} close={null} marginBottom="1rem" />
       </div>
     );
@@ -59,7 +59,6 @@ ChildRefTable.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string.isRequired,
-  closeModal: PropTypes.func.isRequired,
   fetchData: PropTypes.func.isRequired,
   finishedLoading: PropTypes.bool.isRequired,
 };

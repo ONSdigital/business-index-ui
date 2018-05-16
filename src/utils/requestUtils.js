@@ -44,17 +44,17 @@ const randomArr = ({ length, lower = 10000, upper = 900000 }) => {
  */
 const returnBusiness = () => ({
   id: Math.floor(Math.random() * 900000000000) + 100000000000,
-  businessName: makeId(10),
-  uPRN: Math.floor(Math.random() * 900000000000) + 100000000000,
-  industryCode: Math.floor(Math.random() * 90000) + 10000,
-  legalStatus: Math.floor(Math.random() * 8) + 1,
-  tradingStatus: ['A', 'C', 'D', 'I'][Math.floor(Math.random() * 4) + 0],
-  turnover: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'][Math.floor(Math.random() * 9) + 0],
-  employmentBands: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'][Math.floor(Math.random() * 9) + 0],
-  postCode: `${makeId(4).toUpperCase()} ${makeId(3).toUpperCase()}`,
-  companyNo: makeId(8).toUpperCase(),
-  vatRefs: randomArr({ length: Math.floor(Math.random() * 6) + 0 }),
-  payeRefs: randomArr({ length: Math.floor(Math.random() * 6) + 0 }),
+  BusinessName: makeId(10),
+  UPRN: Math.floor(Math.random() * 900000000000) + 100000000000,
+  IndustryCode: Math.floor(Math.random() * 90000) + 10000,
+  LegalStatus: Math.floor(Math.random() * 8) + 1,
+  TradingStatus: ['A', 'C', 'D', 'I'][Math.floor(Math.random() * 4) + 0],
+  Turnover: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'][Math.floor(Math.random() * 9) + 0],
+  EmploymentBands: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'][Math.floor(Math.random() * 9) + 0],
+  PostCode: `${makeId(4).toUpperCase()} ${makeId(3).toUpperCase()}`,
+  CompanyNo: makeId(8).toUpperCase(),
+  VatRefs: randomArr({ length: Math.floor(Math.random() * 6) + 0 }),
+  PayeRefs: randomArr({ length: Math.floor(Math.random() * 6) + 0 }),
 });
 
 

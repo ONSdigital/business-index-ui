@@ -18,7 +18,7 @@ describe("export.js test suite", () => {
     // Check that businessName is present in the data
     // We need to remove the padded double qoutes around each bit of data
     results.forEach((business, i) => {
-      expect(business.businessName).toBe(splitCsvNoHeader[i].split(',')[1].replace(/['"]+/g, ''));
+      expect(business.BusinessName).toBe(splitCsvNoHeader[i].split(',')[1].replace(/['"]+/g, ''));
     });
 
     // Do a last check on the length to verify they are the same
@@ -28,26 +28,26 @@ describe("export.js test suite", () => {
   it("converts the bands correctly", () => {
     const business = {
       id: '020541',
-      businessName: 'TEST GRILL LTD',
-      postCode: 'ID80 5QB',
-      industryCode: '86762',
-      legalStatus: '2',
-      tradingStatus: 'A',
-      turnover: 'A',
-      employmentBands: 'B',
-      companyNo: '2953156',
+      BusinessName: 'TEST GRILL LTD',
+      PostCode: 'ID80 5QB',
+      IndustryCode: '86762',
+      LegalStatus: '2',
+      TradingStatus: 'A',
+      Turnover: 'A',
+      EmploymentBands: 'B',
+      CompanyNo: '2953156',
     }
 
     const expected = [{
       id: '020541',
-      businessName: 'TEST GRILL LTD',
-      postCode: 'ID80 5QB',
-      industryCode: '86762',
-      legalStatus: 'Sole Proprietor',
-      tradingStatus: 'Active',
-      turnover: '0-99',
-      employmentBands: '1',
-      companyNo: '2953156',
+      BusinessName: 'TEST GRILL LTD',
+      PostCode: 'ID80 5QB',
+      IndustryCode: '86762',
+      LegalStatus: 'Sole Proprietor',
+      TradingStatus: 'Active',
+      Turnover: '0-99',
+      EmploymentBands: '1',
+      CompanyNo: '2953156',
     }];
 
     Promise.all(convertBands([business])).then(result => {

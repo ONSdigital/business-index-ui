@@ -25,7 +25,7 @@ const transformBusiness = (business) => new Promise((resolve) => resolve(pipe(
  * @return {string} A string of all the results in CSV format
  */
 const formCSV = (header, results) => {
-  const cols = ['id', 'businessName', 'postCode', 'industryCode', 'legalStatus', 'tradingStatus', 'turnover', 'employmentBands', 'companyNo'];
+  const cols = ['id', 'BusinessName', 'PostCode', 'IndustryCode', 'LegalStatus', 'TradingStatus', 'Turnover', 'EmploymentBands', 'CompanyNo'];
   const rows = results.map(
     leu => cols.map(
       col => ((leu[col] === undefined) ? '"",' : `"${leu[col]}",`), // Use empty string if no value present
