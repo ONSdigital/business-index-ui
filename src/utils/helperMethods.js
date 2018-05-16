@@ -76,7 +76,7 @@ const formatData = (business) => {
     }
     return {
       CompanyNo: '',
-      VatRefs: (business.vatRefs[b] !== undefined) ? business.VatRefs[b] : '',
+      VatRefs: (business.VatRefs[b] !== undefined) ? business.VatRefs[b] : '',
       PayeRefs: (business.PayeRefs[b] !== undefined) ? business.PayeRefs[b] : '',
     };
   });
