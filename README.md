@@ -14,8 +14,9 @@ The following tutorials were used to help with the deployment using Node.js and 
 **[4. Testing](#testing)**<br>
 **[5. Useful Extensions](#useful-extensions)**<br>
 **[6. Logging into the UI](#logging-into-the-ui)**<br>
-**[7. Contributing](#contributing)**<br>
-**[8. License](#license)**<br>
+**[7. Accessibility](#accessibility)**<br>
+**[8. Contributing](#contributing)**<br>
+**[9. License](#license)**<br>
 
 ## Environment Setup for the UI
 
@@ -82,6 +83,10 @@ Running `npm test` will run all the unit, server and load tests.
 ## Logging into the UI:
 
 Username and password are `test` or `admin`.
+
+## Accessibility
+
+For more details on the Accessibility of the Business Index User Interface, see the [Accessibility README](./ACCESSIBILITY).
 
 ## Contributing
 
