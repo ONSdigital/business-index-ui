@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import DocumentTitle from 'react-document-title';
 import history from '../history';
 import { checkAuth } from '../actions/LoginActions';
 import Header from './Header';
@@ -32,12 +33,14 @@ class Template extends React.Component {
     // logged in / not logged in states, we handle changes (i.e. not showing the sign
     // out button) in the underlying components
     return (
-      <section>
-        {confetti}
-        <Header location={location} />
-        {this.props.children}
-        <Footer />
-      </section>
+      <DocumentTitle title="Business Index - Home">
+        <section>
+          {confetti}
+          <Header location={location} />
+          {this.props.children}
+          <Footer />
+        </section>
+      </DocumentTitle>
     );
   };
 }

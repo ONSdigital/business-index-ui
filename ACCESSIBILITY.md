@@ -2,6 +2,23 @@
 
 This README will hold details of the steps that are taken to ensure that this user interface is accessible to all users.
 
+## Using a Relevant `document.title`
+
+As React uses a Single Page Application architecture, the one `index.html` page that contains the document title is used across all pages within the application. We use [react-document-title](https://github.com/gaearon/react-document-title) to make using a specific title per page easier, by doing the following:
+
+```javascript
+import React from 'react';
+import DocumentTitle from 'react-document-title';
+
+const NewPage = () => (
+  <DocumentTitle title="Business Index - New Page">
+    <h1>New Page</h1>
+  </DocumentTitle>
+);
+
+export default NewPage;
+```
+
 ## eslint-plugin-jsx-a11y
 
 During development, it is recommended for developers to use ESLint, which will pick up on our ESLint configuration (see [.eslintrc.json](./.eslintrc.json)) and highlight any parts of the code that violate the rules specified in the config file. We specify some custom rules, but most rules come from extending the [AirBnB](https://github.com/airbnb/javascript/tree/master/react) linter configuration, which defines a useful set of defaults.
@@ -19,3 +36,4 @@ Note: to get a representative view of how the user interface will perform in pro
 ## Useful Resources
 
 - [React Accessibility Docs](https://reactjs.org/docs/accessibility.html)
+- [ARIA Labels](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute)

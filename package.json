@@ -49,6 +49,7 @@
     "prop-types": "^15.5.10",
     "react": "^16.2.0",
     "react-confetti": "^2.0.1",
+    "react-document-title": "^2.0.3",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.5",
     "react-router": "^4.1.2",

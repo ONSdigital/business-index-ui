@@ -1,4 +1,5 @@
 import React from 'react';
+import DocumentTitle from 'react-document-title';
 import Panel from '../patterns/Panel';
 
 /**
@@ -6,21 +7,23 @@ import Panel from '../patterns/Panel';
  * go to an unkown route.
  */
 const NotFound = () => (
-  <section>
-    <div className="main-content">
-      <div className="wrapper">
-        <div className="group">
-          <div className="col-8">
-            <Panel
-              id="notFoundPanel"
-              text="404 Not Found"
-              level="error"
-            />
+  <DocumentTitle title="Business Index - Not Found">
+    <section>
+      <div className="main-content">
+        <div className="wrapper">
+          <div className="group">
+            <div className="col-8">
+              <Panel
+                id="notFoundPanel"
+                text="404 Not Found"
+                level="error"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </DocumentTitle>
 );
 
 export default NotFound;

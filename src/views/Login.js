@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { login, resetLoginErrorMsg } from '../actions/LoginActions';
 import Button from '../patterns/Button';
@@ -36,25 +37,27 @@ class Login extends React.Component {
   render = () => {
     const forgotPassMsg = 'If you have forgotten your password, please raise a Service Desk call to get it reset.';
     return (
-      <div className="main-content">
-        <div className="wrapper">
-          <div className="group">
-            <div className="col-12">
-              <form id="form-sign-in" className="form">
-                <h3 className="saturn">Sign in</h3>
-                <TextInput id="usernameInput" size="s" onChange={null} ref={(ref) => (this.usernameInput = ref)} autoFocus type="username" label="Username" />
-                <TextInput id="passwordInput" size="s" onChange={null} ref={(ref) => (this.passwordInput = ref)} type="password" label="Password" />
-                <p className="forgot-password">
-                  <LinkButton id="forgotPasswordLink" text="Forgot password?" onClick={() => this.setState({ ...this.state, showForgotPass: true })} />
-                </p>
-                <Button className="btn btn--primary venus btn--wide" id="loginButton" type="submit" text="Sign in" onClick={this.onSubmit} ariaLabel="Sign In Button" loading={this.props.currentlySending} />
-                <Panel id="forgotPassPanel" text={forgotPassMsg} level="info" show={this.state.showForgotPass} close={this.closeForgotPassModal} marginBottom="1rem" />
-                <Panel id="loginErrorPanel" text={this.props.errorMessage} level="info" show={this.state.showError && this.props.errorMessage !== ''} close={this.closeErrorModal} marginBottom="1rem" />
-              </form>
+      <DocumentTitle title="Business Index - Login">
+        <div className="main-content">
+          <div className="wrapper">
+            <div className="group">
+              <div className="col-12">
+                <form id="form-sign-in" className="form">
+                  <h3 className="saturn">Sign in</h3>
+                  <TextInput id="usernameInput" size="s" onChange={null} ref={(ref) => (this.usernameInput = ref)} autoFocus type="username" label="Username" />
+                  <TextInput id="passwordInput" size="s" onChange={null} ref={(ref) => (this.passwordInput = ref)} type="password" label="Password" />
+                  <p className="forgot-password">
+                    <LinkButton id="forgotPasswordLink" text="Forgot password?" onClick={() => this.setState({ ...this.state, showForgotPass: true })} />
+                  </p>
+                  <Button className="btn btn--primary venus btn--wide" id="loginButton" type="submit" text="Sign in" onClick={this.onSubmit} ariaLabel="Sign In Button" loading={this.props.currentlySending} />
+                  <Panel id="forgotPassPanel" text={forgotPassMsg} level="info" show={this.state.showForgotPass} close={this.closeForgotPassModal} marginBottom="1rem" />
+                  <Panel id="loginErrorPanel" text={this.props.errorMessage} level="info" show={this.state.showError && this.props.errorMessage !== ''} close={this.closeErrorModal} marginBottom="1rem" />
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </DocumentTitle>
     );
   }
 }
