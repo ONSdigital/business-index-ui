@@ -22,12 +22,6 @@ const store = createStoreWithMiddleware(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
 
-const a = () => {
-  const loggedIn = store.getState().login.loggedIn;
-  console.log('calling a: ', loggedIn);
-  return loggedIn;
-};
-
 const Routes = () => (
   <Provider store={store}>
     <Router history={history}>
@@ -35,10 +29,8 @@ const Routes = () => (
         <Template>
           <Switch>
             <Route exact path="/" component={Login} />
-            {/* <PrivateRoute authed={this.state.authed} path='/dashboard' component={Dashboard} /> */}
-            {/* <Route exact path="/Home" component={withSearch(Home)} /> */}
-            <PrivateRoute authed={a} exact path="/Home" component={withSearch(Home)} />
-            <Route exact path="/Results" component={withSearch(Results)} />
+            <PrivateRoute exact path="/Home" component={withSearch(Home)} />
+            <PrivateRoute exact path="/Results" component={withSearch(Results)} />
             <Route component={NotFound} />
           </Switch>
         </Template>
