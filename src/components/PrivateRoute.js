@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+/**
+ * @const PrivateRoute - A component that will display a given child component
+ * if the user is logged in, otherwise the user will be redirected back to
+ * the login page.
+ */
 const PrivateRoute = ({ component: Component, loggedIn, ...rest }) => {
   return (
     <Route
