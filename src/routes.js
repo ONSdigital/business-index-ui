@@ -11,6 +11,7 @@ import NotFound from './views/NotFound';
 import Template from './templates/Template';
 import Login from './views/Login';
 import withSearch from './components/SearchHOC';
+import PrivateRoute from './components/PrivateRoute';
 
 // Create the Redux store with the redux-thunk middleware (for async actions)
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
@@ -21,6 +22,12 @@ const store = createStoreWithMiddleware(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
 
+const a = () => {
+  const loggedIn = store.getState().login.loggedIn;
+  console.log('calling a: ', loggedIn);
+  return loggedIn;
+};
+
 const Routes = () => (
   <Provider store={store}>
     <Router history={history}>
@@ -28,7 +35,9 @@ const Routes = () => (
         <Template>
           <Switch>
             <Route exact path="/" component={Login} />
-            <Route exact path="/Home" component={withSearch(Home)} />
+            {/* <PrivateRoute authed={this.state.authed} path='/dashboard' component={Dashboard} /> */}
+            {/* <Route exact path="/Home" component={withSearch(Home)} /> */}
+            <PrivateRoute authed={a} exact path="/Home" component={withSearch(Home)} />
             <Route exact path="/Results" component={withSearch(Results)} />
             <Route component={NotFound} />
           </Switch>
