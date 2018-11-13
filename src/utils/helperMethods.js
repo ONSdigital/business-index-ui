@@ -117,7 +117,12 @@ const handleFormChange = (form, id, value) => {
   } else if (Array.isArray(value) && value.length === 0) {
     // Multiple select input will return an empty array if nothing is selected
     delete formCopy[id];
-  } else if (id === 'BusinessName' || id === 'PostCode') {
+  } else if (id === 'BusinessName' || id === 'PostCode'
+      || id === 'CompanyNo'
+      || id === 'Id'
+      || id === 'VatRefs'
+      || id === 'PayeRefs'
+  ) {
     formCopy[id] = value.toUpperCase();
   } else {
     formCopy[id] = value;
