@@ -137,10 +137,42 @@ describe("handleFormChange", () => {
     expect(JSON.stringify(result)).toBe(JSON.stringify(expected));
   });
 
-  it("transforms businessName to upper case", () => {
+  it("transforms PostCode to upper case", () => {
     const result = handleFormChange({ PostCode: 'a' }, 'PostCode', 'a');
     const expected = {
       PostCode: 'A',
+    };
+    expect(JSON.stringify(result)).toBe(JSON.stringify(expected));
+  });
+
+  it("transforms CompanyNo to upper case", () => {
+    const result = handleFormChange({ CompanyNo: 'a' }, 'CompanyNo', 'a');
+    const expected = {
+        CompanyNo: 'A',
+    };
+    expect(JSON.stringify(result)).toBe(JSON.stringify(expected));
+  });
+
+  it("transforms Id to upper case", () => {
+    const result = handleFormChange({ Id: 'a' }, 'Id', 'a');
+    const expected = {
+        Id: 'A',
+    };
+    expect(JSON.stringify(result)).toBe(JSON.stringify(expected));
+  });
+
+  it("transforms VatRefs to upper case", () => {
+    const result = handleFormChange({ VatRefs: 'a' }, 'VatRefs', 'a');
+    const expected = {
+        VatRefs: 'A',
+    };
+    expect(JSON.stringify(result)).toBe(JSON.stringify(expected));
+  });
+
+  it("transforms PayeRefs to upper case", () => {
+    const result = handleFormChange({ PayeRefs: 'a' }, 'PayeRefs', 'a');
+    const expected = {
+        PayeRefs: 'A',
     };
     expect(JSON.stringify(result)).toBe(JSON.stringify(expected));
   });
