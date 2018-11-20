@@ -79,9 +79,13 @@ Running `npm test` will run all the unit, server and load tests.
 
 * [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) - for seeing what is happening in your Redux store
 
-## Logging into the UI:
+## Logging into the UI
 
 Username and password are `test` or `admin`.
+
+### Login credentials for DEV, TEST and BETA
+
+The login to the UI deployed to CF is handled differently. Relevant documentation can be found on Confluence.
 
 ## Contributing
 
